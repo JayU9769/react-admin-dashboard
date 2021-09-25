@@ -17,6 +17,7 @@
     "history": "^5.0.1",
     "jquery": "^3.6.0",
     "jquery-confirm": "^3.3.4",
+    "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "node-sass": "4.14.1",
     "node-snackbar": "^0.1.16",

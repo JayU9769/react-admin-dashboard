@@ -1,6 +1,8 @@
 import React from "react";
+
 const Snackbar = require('node-snackbar');
 require('dotenv').config()
+const jwt = require("jsonwebtoken");
 
 export function displayMessage(message) {
   Snackbar.show({text: message, pos: 'top-right', duration: 6000});
@@ -33,10 +35,31 @@ export const encodeToken = (token) => {
   return btoa(reverseString(reverseString(salt) + token));
 }
 
+export const validateToken = () => {
+  const token = decodeToken();
+
+  if (token !== "" && token !== undefined) {
+    const userObj = jwt.decode(token);
+
+    let expDate = new Date(userObj.exp * 1000);
+
+    if (expDate.valueOf() > new Date().valueOf()) {
+      return true;
+    } else {
+      localStorage.removeItem('_randUid');
+      return false;
+    }
+  } else {
+    localStorage.removeItem('_randUid');
+    return false;
+  }
+
+}
+
 export const decodeToken = () => {
   try {
     const salt = process.env.REACT_APP_SECRET_SALT || '07Z54xtPbApkJacQ';
-    let decodedToken = reverseString(atob(localStorage.getItem('_randUid')));
+    let decodedToken = (reverseString(atob(localStorage.getItem('_randUid'))));
     return decodedToken.split(reverseString(salt))[1];
   } catch (e) {
     localStorage.removeItem('_randUid');

@@ -27,15 +27,15 @@ import AuthFooter from "components/Footers/AuthFooter.js";
 // import routes from "../routes";
 import Register from "../views/examples/Register";
 import Login from "../views/examples/Login";
-import {decodeToken} from "../config/helper";
+import {validateToken} from "../config/helper";
 
 const Auth = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
   const history = useHistory();
-  const token = decodeToken();
+  const tokenStatus = validateToken();
 
-  if (token !== "") { history.push('/admin/index') }
+  if (tokenStatus) { history.push('/admin/index') }
 
   React.useEffect(() => {
     document.body.classList.add("bg-default");

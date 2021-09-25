@@ -25,17 +25,17 @@ import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "../routes";
-import {decodeToken} from "../config/helper";
+import {validateToken} from "../config/helper";
 
 const Admin = (props) => {
   const history = useHistory();
   const mainContent = React.useRef(null);
   const location = useLocation();
 
-  const token = decodeToken();
+  const tokenStatus = validateToken();
 
-  console.log(token);
-  if (token === "") { history.push('/auth/login') }
+  if (!tokenStatus) { history.push('/auth/login') }
+
 
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
