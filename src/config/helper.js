@@ -66,3 +66,16 @@ export const decodeToken = () => {
     return "";
   }
 }
+
+export const auth = () => {
+  if (!validateToken()) {
+    return null;
+  } else {
+    const token = decodeToken();
+    if (token !== "" && token !== undefined) {
+      return jwt.decode(token);
+    } else {
+      return null;
+    }
+  }
+}
