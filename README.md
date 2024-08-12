@@ -1,50 +1,44 @@
-# React + TypeScript + Vite
+# React Admin
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+**React Admin** is a modern web application built using React, TypeScript, and Vite. This project leverages various tools and libraries to create a responsive, high-performance, and feature-rich admin panel. The project includes state management with Redux, form handling with React Hook Form, UI components from Radix UI, and animations with Framer Motion.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Radix UI** components for accessible and customizable UI elements.
+- **React Router DOM** for client-side routing.
+- **React Hook Form** for simple and powerful form handling.
+- **Redux Toolkit** for state management.
+- **Tailwind CSS** for utility-first styling and responsive design.
+- **Framer Motion** for fluid animations and page transitions.
+- **Vite** for fast development and optimized production builds.
+- **TypeScript** for static type-checking and better developer experience.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Installation
 
-- Configure the top-level `parserOptions` property like this:
+To get started with the project, clone the repository and install the dependencies:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+git clone https://github.com/JayU9769/react-admin-dashboard.git
+cd react-admin
+npm install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+## Scripts
+Here are the scripts available in this project:
+```bash
+npm run dev
+Build: Build the project for production.
+```
+```bash
+npm run build
+Lint: Run ESLint to lint your code.
+```
+```bash
+npm run lint
+Preview: Preview the production build.
+```
+```bash
+npm run preview
 ```
