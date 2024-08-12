@@ -1,7 +1,40 @@
+import React from "react";
 import { useTheme } from "next-themes"
-import { Toaster as Sonner } from "sonner"
+import { ExternalToast, toast, Toaster as Sonner } from "sonner"
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
+
+type ToastTypes = 'success' | 'info' | 'warning' | 'error' | 'default';
+
+export const showAlert = (message: string, variant: ToastTypes = 'default' , onAction?: () => void) => {
+
+  const data: ExternalToast = {
+    description: message,
+    action: {
+      label: 'X',
+      onClick: () => onAction,
+    },
+  };
+
+  switch (variant) {
+    case "success":
+      toast.success("Success", data);
+      break;
+    case "error":
+      toast.error("Error", data);
+      break;
+    case "warning":
+      toast.warning("Warning", data);
+      break;
+    case "info":
+      toast.info("Info", data);
+      break;
+    default:
+      toast("Success", data);
+      break
+  }
+
+}
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme()
