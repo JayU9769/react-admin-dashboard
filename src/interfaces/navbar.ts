@@ -7,5 +7,5 @@ export interface INavItem {
   title: string
   label?: string
   icon: LucideIcon
-  variant: INavItemVariant
+  path: string,
 }

@@ -7,8 +7,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import {Link} from "react-router-dom";
-import {INavItem} from "@/interfaces/navbar.tsx";
+import {Link, useLocation} from "react-router-dom";
+import {INavItem} from "@/interfaces/navbar.ts";
 
 interface IProps {
   isCollapsed: boolean
@@ -16,6 +16,9 @@ interface IProps {
 }
 
 const Index: React.FC<IProps> = ({links, isCollapsed = false}) => {
+
+  const { pathname } = useLocation();
+
   return (
     <div
       data-collapsed={isCollapsed}
@@ -29,11 +32,11 @@ const Index: React.FC<IProps> = ({links, isCollapsed = false}) => {
               <Tooltip key={index}>
                 <TooltipTrigger asChild>
                   <Link
-                    to="/"
+                    to={link.path}
                     className={cn(
-                      buttonVariants({variant: link.variant, size: "icon"}),
+                      buttonVariants({variant: link.path === pathname ? 'default' : 'ghost', size: "icon"}),
                       "h-9 w-9",
-                      link.variant === "default" &&
+                      link.path === pathname &&
                       "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
                     )}
                   >
@@ -53,10 +56,10 @@ const Index: React.FC<IProps> = ({links, isCollapsed = false}) => {
             ) : (
               <Link
                 key={index}
-                to="/"
+                to={link.path}
                 className={cn(
-                  buttonVariants({variant: link.variant, size: "sm"}),
-                  link.variant === "default" &&
+                  buttonVariants({variant: link.path === pathname ? 'default' : 'ghost', size: "sm"}),
+                  link.path === pathname &&
                   "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
                   "justify-start"
                 )}
@@ -67,7 +70,7 @@ const Index: React.FC<IProps> = ({links, isCollapsed = false}) => {
                   <span
                     className={cn(
                       "ml-auto",
-                      link.variant === "default" &&
+                      link.path === pathname &&
                       "text-background dark:text-white"
                     )}
                   >

@@ -5,6 +5,7 @@ import Login from "@/pages/Auth/Login.tsx";
 import MasterLayout from "@/components/layouts/MasterLayout.tsx";
 import Signup from "@/pages/Auth/Signup.tsx";
 import Dashboard from "@/pages/Dashboard.tsx";
+import Users from "@/pages/Users";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: 'signup',
         element: <Signup/>,
+      },
+      {
+        path: 'users',
+        element: <Users/>,
       }
     ]
   }

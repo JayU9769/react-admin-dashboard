@@ -1,32 +1,25 @@
-import {Home, LineChart, Package, ShoppingCart, Users2} from "lucide-react";
-import {INavItem} from "@/interfaces/navbar.tsx";
+import {Home, Package, ShoppingCart, Users2} from "lucide-react";
+import {INavItem} from "@/interfaces/navbar.ts";
 
 export const list: INavItem[] = [
   {
     title: "Home",
     icon: Home,
-    variant: "default",
+    path: '/admin'
   },
   {
     title: "Orders",
     icon: ShoppingCart,
-    variant: "ghost",
+    path: '/admin/orders'
   },
   {
     title: "Products",
     icon: Package,
-    variant: "ghost",
+    path: '/admin/products'
   },
   {
-    title: "Customers",
-    label: "23",
+    title: "Users",
     icon: Users2,
-    variant: "ghost",
-  },
-  {
-    title: "Analytics",
-    label: "",
-    icon: LineChart,
-    variant: "ghost",
-  },
+    path: '/admin/users'
+  }
 ]
