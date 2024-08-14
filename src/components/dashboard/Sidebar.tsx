@@ -16,7 +16,7 @@ const Index: React.FC = () => {
   } = useSelector(rootStates);
 
   return <aside
-    className={`fixed inset-y-0 left-0 z-10 m-2 hidden flex-col border border-r rounded-lg bg-background sm:flex ${isCollapsed ? 'w-14' : 'w-[180px]'} transition-all`}>
+    className={`fixed inset-y-0 left-0 z-10 m-2 hidden flex-col border border-r rounded-lg bg-background sm:flex ${isCollapsed ? 'w-14' : 'w-[240px]'} transition-all`}>
     <nav className={`flex flex-col ${isCollapsed ? 'items-center px-2' : ''} gap-4 sm:py-4`}>
       <Link
         to={"/admin"}

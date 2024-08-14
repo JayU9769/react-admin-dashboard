@@ -50,6 +50,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import {showAlert} from "@/components/ui/sonner.tsx";
 
 const Index: React.FC = () => {
   return (
@@ -67,7 +68,7 @@ const Index: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardFooter>
-              <Button>Create New Order</Button>
+              <Button onClick={() => showAlert("Sonner is working fine", "error")}>Create New Order</Button>
             </CardFooter>
           </Card>
           <Card x-chunk="dashboard-05-chunk-1">
