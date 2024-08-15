@@ -1,18 +1,21 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {configureStore} from '@reduxjs/toolkit';
 import rootReducer from "@/store/root/slice";
 import {ThunkAction} from 'redux-thunk';
 import {Action} from 'redux';
+import {rootApi} from "@/store/root/api.ts";
 
 // Use `configureStore` function to create the store:
 const store = configureStore({
   reducer: {
     // Specify our reducer in the reducers object:
     root: rootReducer,
+    [rootApi.reducerPath]: rootApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
     })
+      .concat(rootApi.middleware)
   ,
 });
 

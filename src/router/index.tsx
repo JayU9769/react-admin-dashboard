@@ -1,4 +1,4 @@
-import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+import {createBrowserRouter, RouteObject, RouterProvider} from 'react-router-dom';
 import React from 'react';
 import {ThemeProvider} from "next-themes";
 import Login from "@/pages/Auth/Login.tsx";
@@ -6,8 +6,10 @@ import MasterLayout from "@/components/layouts/MasterLayout.tsx";
 import Signup from "@/pages/Auth/Signup.tsx";
 import Dashboard from "@/pages/Dashboard.tsx";
 import Users from "@/pages/Users";
+import PageTransition from "@/components/PageTransition.tsx";
 
-const router = createBrowserRouter([
+
+const routes: RouteObject[] = [
   {
     path: '/admin',
     element: <MasterLayout/>,
@@ -30,7 +32,17 @@ const router = createBrowserRouter([
       }
     ]
   }
-], {
+];
+
+const buildRouter = (routes: RouteObject[]) : RouteObject[] => {
+  return routes.map((route) => ({
+    ...route,
+    element: !route.children ? <PageTransition>{ route.element }</PageTransition> : route.element,
+    children: route.children && route.children.length > 0 ? buildRouter(route.children) : []
+  })) as RouteObject[];
+}
+
+const router = createBrowserRouter(buildRouter(routes), {
   basename: "/"
 });
 
