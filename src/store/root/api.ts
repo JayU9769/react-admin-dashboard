@@ -7,7 +7,6 @@ export const rootApi = createApi({
   }),
   endpoints: (builder) => ({
     getUsers: builder.query({
-      // Will make a request like https://pokeapi.co/api/v2/pokemon/bulbasaur
       query: (query: string = '') => `/users${query}`,
     }),
   }),

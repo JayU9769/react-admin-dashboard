@@ -1,11 +1,11 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useMemo} from "react";
 import {useGetUsersQuery} from "@/store/root/api.ts";
 import DataTable from "@/components/dataTable";
-import {columns} from "@/pages/Users/columns.tsx";
+import {userColumns} from "@/pages/Users/columns.tsx";
 
 const Index: React.FC = () => {
   const { data = { users: [] }, isFetching,  } = useGetUsersQuery('?limit=10');
-
+  const columns = useMemo(() => userColumns, [])
   useEffect(() => {
     console.log(data.users, isFetching)
   }, [data.users]);

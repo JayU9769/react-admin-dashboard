@@ -68,3 +68,9 @@ export interface IUser {
   };
   role: string;
 }
+
+
+export interface IPaginationState {
+  pageIndex: number;
+  pageSize: number;
+}
