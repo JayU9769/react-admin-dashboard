@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/table"
 
 import Pagination from "./Pagination.tsx"
-import Toolbar from "@/components/dataTable/Toolbar.tsx";
+import Toolbar from "./Toolbar.tsx";
 
 interface IProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -43,6 +43,8 @@ const Index = <TData, TValue>(
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   )
+
+  const [globalFilter, setGlobalFilter] = useState('')
   const [sorting, setSorting] = useState<SortingState>([])
 
   const table = useReactTable({
@@ -53,11 +55,13 @@ const Index = <TData, TValue>(
       columnVisibility,
       rowSelection,
       columnFilters,
+      globalFilter
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -69,7 +73,11 @@ const Index = <TData, TValue>(
 
   return (
     <div className="space-y-4">
-      <Toolbar table={table}/>
+      <Toolbar
+        table={table}
+        filter={globalFilter}
+        onFilter={value => setGlobalFilter(value)}
+      />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

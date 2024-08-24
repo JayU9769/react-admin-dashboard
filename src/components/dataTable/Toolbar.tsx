@@ -4,22 +4,24 @@ import ViewOptions from "@/components/dataTable/ViewOptions.tsx";
 
 interface IToolbarProps<TData> {
   table: Table<TData>
+  filter: string,
+  onFilter: (filter: string) => void
 }
 
 const Index = <TData, >(
   {
     table,
+    filter,
+    onFilter
   }: IToolbarProps<TData>
 ) => {
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Filter tasks..."
-          value={(table.getColumn("firstName")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("firstName")?.setFilterValue(event.target.value)
-          }
+          placeholder="Search..."
+          value={filter ?? ''}
+          onChange={event => onFilter(String(event.target.value))}
           className="h-8 w-[150px] lg:w-[250px]"
         />
       </div>

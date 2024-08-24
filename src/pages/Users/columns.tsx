@@ -37,6 +37,7 @@ export const columns: ColumnDef<IUser>[] = [
     cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
     enableSorting: false,
     enableHiding: false,
+    filterFn: 'equalsString',
   },
   {
     accessorKey: "firstName",
@@ -46,6 +47,7 @@ export const columns: ColumnDef<IUser>[] = [
     cell: ({ row }) => <div className="w-[80px]">{row.getValue("firstName")}</div>,
     enableSorting: true,
     enableHiding: true,
+    filterFn: 'includesString',
   },
   {
     accessorKey: "lastName",
@@ -55,5 +57,6 @@ export const columns: ColumnDef<IUser>[] = [
     cell: ({ row }) => <div className="w-[80px]">{row.getValue("lastName")}</div>,
     enableSorting: true,
     enableHiding: true,
+    filterFn: 'includesString',
   },
 ]
