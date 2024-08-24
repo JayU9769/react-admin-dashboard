@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import ColumnHeader from "@/components/dataTable/ColumnHeader.tsx";
 import {IUser} from "@/interfaces";
 
-export const columns: ColumnDef<IUser>[] = [
+export const userColumns: ColumnDef<IUser>[] = [
   {
     id: "select",
     header: ({ table }) => (
