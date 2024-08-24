@@ -25,16 +25,20 @@ import {
 
 import Pagination from "./Pagination.tsx"
 import Toolbar from "./Toolbar.tsx";
+import {IPaginationState} from "@/interfaces";
+import {DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE} from "@/lib/constants.ts";
 
 interface IProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  data: TData[],
+  onPagination: (pagination: IPaginationState) => void
 }
 
 const Index = <TData, TValue>(
   {
     columns,
     data,
+    onPagination
   }: IProps<TData, TValue>
 ) => {
   const [rowSelection, setRowSelection] = useState({})
@@ -47,14 +51,16 @@ const Index = <TData, TValue>(
   const [globalFilter, setGlobalFilter] = useState('')
   const [sorting, setSorting] = useState<SortingState>([])
 
-  const [pagination, setPagination] = useState({
-    pageIndex: 0, //initial page index
-    pageSize: 10, //default page size
+  const [pagination, setPagination] = useState<IPaginationState>({
+    pageIndex: DEFAULT_PAGE_INDEX, //initial page index
+    pageSize: DEFAULT_PAGE_SIZE, //default page size
   });
 
   useEffect(() => {
-    console.log(pagination)
-  }, [pagination])
+    // Debounce pagination change...
+    const timeOut = setTimeout(() => onPagination(pagination), 300);
+    return () => clearTimeout(timeOut);
+  }, [onPagination, pagination])
 
   const table = useReactTable({
     data,

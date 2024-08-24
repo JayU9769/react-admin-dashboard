@@ -13,5 +13,5 @@ export const rootApi = createApi({
 });
 
 export const {
-  useGetUsersQuery
+  useLazyGetUsersQuery
 } = rootApi;
