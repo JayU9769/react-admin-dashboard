@@ -1,4 +1,4 @@
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -45,6 +45,15 @@ const Index = <TData, TValue>(
   )
   const [sorting, setSorting] = useState<SortingState>([])
 
+  const [pagination, setPagination] = useState({
+    pageIndex: 0, //initial page index
+    pageSize: 10, //default page size
+  });
+
+  useEffect(() => {
+    console.log(pagination)
+  }, [pagination])
+
   const table = useReactTable({
     data,
     columns,
@@ -53,8 +62,19 @@ const Index = <TData, TValue>(
       columnVisibility,
       rowSelection,
       columnFilters,
+      pagination
     },
+    initialState: {
+      pagination: {
+        pageIndex: 2, //custom initial page index
+        pageSize: 25, //custom default page size
+      },
+    },
+    rowCount: 100,
+    autoResetPageIndex: false,
     enableRowSelection: true,
+    manualPagination: true,
+    onPaginationChange: setPagination,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

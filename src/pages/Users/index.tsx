@@ -4,7 +4,7 @@ import DataTable from "@/components/dataTable";
 import {columns} from "@/pages/Users/columns.tsx";
 
 const Index: React.FC = () => {
-  const { data = { users: [] }, isFetching,  } = useGetUsersQuery('?limit=100');
+  const { data = { users: [] }, isFetching,  } = useGetUsersQuery('?limit=10');
 
   useEffect(() => {
     console.log(data.users, isFetching)
