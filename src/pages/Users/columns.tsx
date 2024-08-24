@@ -44,7 +44,16 @@ export const columns: ColumnDef<IUser>[] = [
       <ColumnHeader column={column} title="First Name" />
     ),
     cell: ({ row }) => <div className="w-[80px]">{row.getValue("firstName")}</div>,
-    enableSorting: false,
-    enableHiding: false,
+    enableSorting: true,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "lastName",
+    header: ({ column }) => (
+      <ColumnHeader column={column} title="Last Name" />
+    ),
+    cell: ({ row }) => <div className="w-[80px]">{row.getValue("lastName")}</div>,
+    enableSorting: true,
+    enableHiding: true,
   },
 ]

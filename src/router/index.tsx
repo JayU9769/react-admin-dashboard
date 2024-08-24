@@ -2,22 +2,19 @@ import {createBrowserRouter, RouteObject, RouterProvider} from 'react-router-dom
 import React from 'react';
 import {ThemeProvider} from "next-themes";
 import Login from "@/pages/Auth/Login.tsx";
-import MasterLayout from "@/components/layouts/MasterLayout.tsx";
 import Signup from "@/pages/Auth/Signup.tsx";
 import Dashboard from "@/pages/Dashboard.tsx";
 import Users from "@/pages/Users";
 import PageTransition from "@/components/PageTransition.tsx";
+import AuthLayout from "@/components/layouts/AuthLayout";
+import AdminDashboard from "@/components/layouts/AdminDashboard";
 
 
 const routes: RouteObject[] = [
   {
     path: '/admin',
-    element: <MasterLayout/>,
+    element: <AuthLayout/>,
     children: [
-      {
-        path: '',
-        element: <Dashboard/>,
-      },
       {
         path: 'login',
         element: <Login/>,
@@ -25,6 +22,16 @@ const routes: RouteObject[] = [
       {
         path: 'signup',
         element: <Signup/>,
+      }
+    ]
+  },
+  {
+    path: '/admin',
+    element: <AdminDashboard/>,
+    children: [
+      {
+        path: '',
+        element: <Dashboard/>,
       },
       {
         path: 'users',
