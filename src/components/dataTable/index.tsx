@@ -30,15 +30,20 @@ import {DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE} from "@/lib/constants.ts";
 
 interface IProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[],
-  onPagination: (pagination: IPaginationState) => void
+  data: {
+    count: number;
+    rows: TData[]
+  },
+  onPagination: (pagination: IPaginationState) => void,
+  onSearch?: (filter: string) => void,
 }
 
 const Index = <TData, TValue>(
   {
     columns,
     data,
-    onPagination
+    onPagination,
+    onSearch
   }: IProps<TData, TValue>
 ) => {
   const [rowSelection, setRowSelection] = useState({})
@@ -63,7 +68,7 @@ const Index = <TData, TValue>(
   }, [pagination])
 
   const table = useReactTable({
-    data,
+    data: data.rows,
     columns,
     state: {
       sorting,
@@ -73,12 +78,9 @@ const Index = <TData, TValue>(
       pagination
     },
     initialState: {
-      pagination: {
-        pageIndex: 2, //custom initial page index
-        pageSize: 25, //custom default page size
-      },
+      pagination: pagination,
     },
-    rowCount: 100,
+    rowCount: data.count,
     autoResetPageIndex: false,
     enableRowSelection: true,
     manualPagination: true,
@@ -101,7 +103,10 @@ const Index = <TData, TValue>(
       <Toolbar
         table={table}
         filter={globalFilter}
-        onFilter={value => setGlobalFilter(value)}
+        onFilter={value => {
+          if (onSearch) onSearch(value)
+          setGlobalFilter(value)
+        }}
       />
       <div className="rounded-md border">
         <Table>

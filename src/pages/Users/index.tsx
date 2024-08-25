@@ -1,35 +1,41 @@
-import React, {useEffect, useMemo} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {useLazyGetUsersQuery} from "@/store/root/api.ts";
 import DataTable from "@/components/dataTable";
 import {userColumns} from "@/pages/Users/columns.tsx";
 import {IPaginationState} from "@/interfaces";
+import {defaultAPIResponse} from "@/lib/constants.ts";
 
 const Index: React.FC = () => {
-  const [ getUsers, { data = {users: []}, isFetching, status } ] = useLazyGetUsersQuery();
+  const [queryString, setQueryString] = useState('')
+  const [ getUsers, { data = {data: defaultAPIResponse}, isFetching, status } ] = useLazyGetUsersQuery();
   const columns = useMemo(() => userColumns, [])
 
   useEffect(() => {
-    // getUsers(query)
-  }, []);
+    if (queryString) {
+      getUsers(queryString)
+    }
+  }, [queryString]);
 
   useEffect(() => {
-    console.log(data.users, isFetching, status)
+    console.log(data, isFetching, status)
   }, [data]);
 
   const handlePagination = (pagination: IPaginationState) => {
-    const skip = pagination.pageSize * pagination.pageIndex;
-    console.log(pagination, "skip ===", pagination.pageSize * pagination.pageIndex);
-    getUsers(`?limit=${pagination.pageSize}&skip=${skip}`)
-    // setQuery(query + '&skip=20')
+    setQueryString(`?perPage=${pagination.pageSize}&pageNumber=${pagination.pageIndex}`)
+  }
+
+  const handleSearch = (value: string) => {
+    setQueryString((prevState) => `${prevState}&search=${value}`)
   }
 
   return <>
     Users List
 
     <DataTable
-      data={data.users}
+      data={data.data}
       columns={columns}
       onPagination={handlePagination}
+      onSearch={handleSearch}
     />
   </>
 }

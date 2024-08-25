@@ -40,21 +40,21 @@ export const userColumns: ColumnDef<IUser>[] = [
     filterFn: 'equalsString',
   },
   {
-    accessorKey: "firstName",
+    accessorKey: "name",
     header: ({ column }) => (
-      <ColumnHeader column={column} title="First Name" />
+      <ColumnHeader column={column} title="Name" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("firstName")}</div>,
+    cell: ({ row }) => <div>{row.getValue("name")}</div>,
     enableSorting: true,
     enableHiding: true,
     filterFn: 'includesString',
   },
   {
-    accessorKey: "lastName",
+    accessorKey: "email",
     header: ({ column }) => (
       <ColumnHeader column={column} title="Last Name" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("lastName")}</div>,
+    cell: ({ row }) => <div>{row.getValue("email")}</div>,
     enableSorting: true,
     enableHiding: true,
     filterFn: 'includesString',
