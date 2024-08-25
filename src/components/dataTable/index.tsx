@@ -60,7 +60,7 @@ const Index = <TData, TValue>(
     // Debounce pagination change...
     const timeOut = setTimeout(() => onPagination(pagination), 300);
     return () => clearTimeout(timeOut);
-  }, [onPagination, pagination])
+  }, [pagination])
 
   const table = useReactTable({
     data,
