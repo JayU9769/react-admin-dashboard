@@ -10,6 +10,7 @@ import Signup from "@/pages/Auth/Signup.tsx";
 import Dashboard from "@/pages/Dashboard.tsx";
 import Users from "@/pages/Users";
 import UserForm from "@/pages/Users/form";
+import ProfileLayout from "@/pages/Profile/Layout";
 import PageTransition from "@/components/PageTransition.tsx";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import AdminDashboard from "@/components/layouts/AdminDashboard";
@@ -36,6 +37,32 @@ const routes: RouteObject[] = [
       {
         path: "",
         element: <Dashboard />,
+      },
+      {
+        path: "profile",
+        element: <ProfileLayout />,
+        children: [
+          {
+            path: "",
+            element: <>Basic Detail</>,
+          },
+          {
+            path: "account",
+            element: <>Account</>,
+          },
+          {
+            path: "appearance",
+            element: <>Appearance</>,
+          },
+          {
+            path: "notifications",
+            element: <>Notifications</>,
+          },
+          {
+            path: "display",
+            element: <>Display</>,
+          },
+        ],
       },
       {
         path: "users",
