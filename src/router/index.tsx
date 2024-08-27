@@ -4,7 +4,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import React from "react";
-import { ThemeProvider } from "next-themes";
+import {ThemeProvider} from "next-themes";
 import Login from "@/pages/Auth/Login.tsx";
 import Signup from "@/pages/Auth/Signup.tsx";
 import Dashboard from "@/pages/Dashboard.tsx";
@@ -17,33 +17,34 @@ import AdminDashboard from "@/components/layouts/AdminDashboard";
 const routes: RouteObject[] = [
   {
     path: "/admin",
-    element: <AuthLayout />,
+    element: <AuthLayout/>,
+    id: 'Dashboard',
     children: [
       {
         path: "login",
-        element: <Login />,
+        element: <Login/>,
       },
       {
         path: "signup",
-        element: <Signup />,
+        element: <Signup/>,
       },
     ],
   },
   {
     path: "/admin",
-    element: <AdminDashboard />,
+    element: <AdminDashboard/>,
     children: [
       {
         path: "",
-        element: <Dashboard />,
+        element: <Dashboard/>,
       },
       {
         path: "users",
-        element: <Users />,
+        element: <Users/>,
         children: [
           {
             path: "create",
-            element: <UserForm />,
+            element: <UserForm/>,
           },
         ],
       },
@@ -66,14 +67,17 @@ const buildRouter = (routes: RouteObject[]): RouteObject[] => {
   })) as RouteObject[];
 };
 
-const router = createBrowserRouter(buildRouter(routes), {
-  basename: "/",
-});
+const router = createBrowserRouter(
+  buildRouter(routes),
+  {
+    basename: "/",
+  }
+);
 
 const Routes: React.FC = () => {
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <RouterProvider router={router} />
+      <RouterProvider router={router}/>
     </ThemeProvider>
   );
 };

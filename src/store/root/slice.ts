@@ -6,6 +6,7 @@ const isCollapsed =  window.localStorage.getItem("isCollapsed");
 
 const initialState: IRootInitialState = {
   isCollapsed: isCollapsed === "true",
+  pageTitle: "Dashboard",
 };
 
 export const rootSlice = createSlice({
@@ -16,11 +17,15 @@ export const rootSlice = createSlice({
       window.localStorage.setItem("isCollapsed", JSON.stringify(action.payload));
       state.isCollapsed = action.payload;
     },
+    setPageTitle: (state, action: PayloadAction<string>) => {
+      state.pageTitle = action.payload;
+    }
   },
 });
 
 export const {
   setIsCollapsed,
+  setPageTitle
 } = rootSlice.actions;
 
 export const rootStates = (state: RootState) => state.root;

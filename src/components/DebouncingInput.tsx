@@ -19,13 +19,18 @@ const Index: React.FC<IProps> = (
   const [inputValue, setInputValue] = useState(value);
 
   useEffect(() => {
-    const timeout = setTimeout(() => onChange(value), 300);
+    const timeout = setTimeout(() => onChange(inputValue), 300);
     return () => clearTimeout(timeout);
   }, [inputValue]);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => setInputValue(value), 300);
+    return () => clearTimeout(timeout);
+  }, [value]);
+
   return <Input
     placeholder={placeholder}
-    value={value}
+    value={inputValue}
     onChange={event => setInputValue(String(event.target.value))}
     className={`${className}`}
   />
