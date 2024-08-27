@@ -1,27 +1,31 @@
+import React from "react";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Package2, PanelLeft, Search} from "lucide-react";
 import {Link} from "react-router-dom";
 import Nav from "@/components/dashboard/Nav.tsx";
 import {list} from "@/components/dashboard/NavList.tsx";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList, BreadcrumbPage,
-  BreadcrumbSeparator
-} from "@/components/ui/breadcrumb.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {
   DropdownMenu,
-  DropdownMenuContent, DropdownMenuItem,
-  DropdownMenuLabel, DropdownMenuSeparator,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
-import React from "react";
+import {useSelector} from "react-redux";
+import {rootStates} from "@/store/root/slice.ts";
 
 
 const Index: React.FC = () => {
+
+  ///////////////////////// Redux States and Actions... /////////////////////////
+  const {
+    pageTitle,
+  } = useSelector(rootStates);
+
+
   return <header
     className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
     <Sheet>
@@ -47,25 +51,11 @@ const Index: React.FC = () => {
         />
       </SheetContent>
     </Sheet>
-    <Breadcrumb className="hidden md:flex">
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link to={"/admin"}>Dashboard</Link>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator/>
-        <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link to={"/admin"}>Orders</Link>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator/>
-        <BreadcrumbItem>
-          <BreadcrumbPage>Recent Orders</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
+    <div className="hidden md:flex">
+      <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+        { pageTitle }
+      </h4>
+    </div>
     <div className="relative ml-auto flex-1 md:grow-0">
       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground"/>
       <Input

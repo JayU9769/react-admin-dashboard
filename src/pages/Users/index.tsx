@@ -2,56 +2,73 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useLazyGetUsersQuery } from "@/store/root/api.ts";
 import DataTable from "@/components/dataTable";
 import { userColumns } from "@/pages/Users/columns.tsx";
-import { IPaginationState } from "@/interfaces";
+import {IPaginationState, TRecord} from "@/interfaces";
 import { defaultAPIResponse } from "@/lib/constants.ts";
 import { Link, Outlet } from "react-router-dom";
-import { buttonVariants } from "@/components/ui/button";
+import {buttonVariants} from "@/components/ui/button";
+import {SortingState} from "@tanstack/react-table";
+import {convertToQuery} from "@/lib/utils.ts";
 
 const Index: React.FC = () => {
-  const [queryString, setQueryString] = useState("");
+  const [queryString, setQueryString] = useState<TRecord>({});
   const [
     getUsers,
-    { data = { data: defaultAPIResponse }, isFetching, status },
+    { data = { data: defaultAPIResponse }, isFetching },
   ] = useLazyGetUsersQuery();
   const columns = useMemo(() => userColumns, []);
 
   useEffect(() => {
-    if (queryString) {
-      getUsers(queryString);
+    if (Object.keys(queryString).length > 0) {
+      getUsers(convertToQuery(queryString));
     }
   }, [queryString]);
 
-  useEffect(() => {
-    console.log(data, isFetching, status);
-  }, [data]);
-
   const handlePagination = (pagination: IPaginationState) => {
-    setQueryString(
-      `?perPage=${pagination.pageSize}&pageNumber=${pagination.pageIndex}`
-    );
+    setQueryString({
+      ...queryString,
+      perPage:pagination.pageSize,
+      pageNumber: pagination.pageIndex
+    });
   };
 
   const handleSearch = (value: string) => {
-    setQueryString((prevState) => `${prevState}&search=${value}`);
+    setQueryString({
+      ...queryString,
+      q: value
+    });
   };
+
+  const handleSorting = (sorting: SortingState) => {
+    const tempQuery: TRecord = {
+      ...queryString,
+      sort: '',
+      order: ''
+    };
+    if (sorting.length > 0) {
+      tempQuery.sort = sorting[0].id;
+      tempQuery.order = sorting[0].desc ? 'DESC' : 'ASC';
+    }
+    setQueryString(tempQuery);
+  }
 
   return (
     <>
       <div className="flex justify-between">
         <h4>Users List</h4>
-        <div>
-          <Link to="create" className={buttonVariants({ variant: "default" })}>
-            Create
-          </Link>
-        </div>
       </div>
       <DataTable
         data={data.data}
         columns={columns}
         onPagination={handlePagination}
         onSearch={handleSearch}
+        onSorting={handleSorting}
+        toolbarChildren={<>
+          <Link to="create" className={buttonVariants({size: "sm"})}>
+            Create
+          </Link>
+        </>}
       />
-      <Outlet />
+      <Outlet/>
     </>
   );
 };

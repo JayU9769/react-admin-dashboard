@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
   Drawer,
   DrawerClose,
@@ -13,17 +13,22 @@ import { useNavigate } from "react-router-dom";
 const Index: React.FC = () => {
   const [goal, setGoal] = React.useState(350);
   const navigate = useNavigate();
+  const [open, setOpen] = useState(true)
 
   function onClick(adjustment: number) {
     setGoal(Math.max(200, Math.min(400, goal + adjustment)));
   }
 
-  const closeDrawer = () => {
-    console.log("test");
-    navigate(-1);
-  };
+  useEffect(() => {
+    if (!open) {
+      setTimeout(() => {
+        navigate(-1);
+      }, 300)
+    }
+  }, [open]);
+
   return (
-    <Drawer open={true} direction="right" onOpenChange={closeDrawer}>
+    <Drawer open={open} direction="right" onOpenChange={() => setOpen(false)}>
       <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-[80%] rounded-none">
         <div>
           <DrawerHeader className={""}>

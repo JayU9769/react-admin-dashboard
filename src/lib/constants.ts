@@ -1,4 +1,4 @@
-import {IListAPIResponse} from "@/interfaces";
+import {IListAPIResponse, IPaginationState} from "@/interfaces";
 
 
 export const authRoutes: string[] = [
@@ -10,6 +10,12 @@ export const authRoutes: string[] = [
 
 export const DEFAULT_PAGE_INDEX = 0;
 export const DEFAULT_PAGE_SIZE = 10;
+
+
+export const defaultPagination: IPaginationState = {
+  pageIndex: DEFAULT_PAGE_INDEX, //initial page index
+  pageSize: DEFAULT_PAGE_SIZE, //default page size
+}
 
 export const defaultAPIResponse: IListAPIResponse  = {
   count: 0,
