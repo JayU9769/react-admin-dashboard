@@ -2,7 +2,7 @@ import React from "react";
 import {Table} from "@tanstack/react-table"
 import ViewOptions from "@/components/dataTable/ViewOptions.tsx";
 import DebouncingInput from "@/components/DebouncingInput.tsx";
-import {ListCollapse, RefreshCw, Trash2} from "lucide-react";
+import {ListChecks, RefreshCw, Trash2} from "lucide-react";
 import {Button} from "@/components/ui/button.tsx";
 import {
   DropdownMenu,
@@ -45,7 +45,7 @@ const Index = <TData, >(
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size={`sm`} className={`gap-2`}>
-                <ListCollapse className={`h-4 w-4`}/>
+                <ListChecks className={`h-4 w-4`} />
                 Actions
                 <span className={`font-bold`}>( {table.getSelectedRowModel().rows.length} )</span>
               </Button>
