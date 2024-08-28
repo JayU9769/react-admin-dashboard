@@ -18,7 +18,8 @@ const Index: React.FC = () => {
   const columns = useMemo(() => userColumns, []);
 
   useEffect(() => {
-    if (Object.keys(queryString).length > 0) {
+    console.log(Object.keys(queryString).length, queryString)
+    if (Object.keys(queryString).length > 1) {
       getUsers(convertToQuery(queryString));
     }
   }, [queryString]);
@@ -40,9 +41,7 @@ const Index: React.FC = () => {
 
   const handleSorting = (sorting: SortingState) => {
     const tempQuery: TRecord = {
-      ...queryString,
-      sort: '',
-      order: ''
+      ...queryString
     };
     if (sorting.length > 0) {
       tempQuery.sort = sorting[0].id;
@@ -59,6 +58,7 @@ const Index: React.FC = () => {
       <DataTable
         data={data.data}
         columns={columns}
+        isLoading={isFetching}
         onPagination={handlePagination}
         onSearch={handleSearch}
         onSorting={handleSorting}

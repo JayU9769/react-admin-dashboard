@@ -37,7 +37,6 @@ const Index = <TData, >(
         </Button>
         <ViewOptions table={table}/>
       </div>
-
       { children }
     </div>
   )

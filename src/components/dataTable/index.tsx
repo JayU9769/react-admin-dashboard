@@ -27,6 +27,8 @@ import Pagination from "./Pagination.tsx"
 import Toolbar from "./Toolbar.tsx";
 import {IPaginationState} from "@/interfaces";
 import {defaultPagination} from "@/lib/constants.ts";
+import {Card, CardContent} from "@/components/ui/card.tsx";
+import {ReloadIcon} from "@radix-ui/react-icons";
 
 interface IProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -37,7 +39,8 @@ interface IProps<TData, TValue> {
   onPagination: (pagination: IPaginationState) => void,
   onSearch?: (filter: string) => void,
   onSorting?: (sorting: SortingState) => void,
-  toolbarChildren?: React.ReactNode
+  toolbarChildren?: React.ReactNode,
+  isLoading: boolean
 }
 
 const Index = <TData, TValue>(
@@ -47,7 +50,8 @@ const Index = <TData, TValue>(
     onPagination,
     onSearch,
     toolbarChildren,
-    onSorting
+    onSorting,
+    isLoading = true
   }: IProps<TData, TValue>
 ) => {
   const [rowSelection, setRowSelection] = useState({})
@@ -70,7 +74,6 @@ const Index = <TData, TValue>(
 
 
   useEffect(() => {
-    console.log(sorting)
     if (onSorting) onSorting(sorting)
   }, [sorting]);
 
@@ -111,9 +114,8 @@ const Index = <TData, TValue>(
         table={table}
         filter={globalFilter}
         children={toolbarChildren}
-        onRefresh={() => onPagination(defaultPagination)}
+        onRefresh={() => onPagination(pagination)}
         onFilter={value => {
-          console.log(value)
           if (onSearch) onSearch(value)
           setGlobalFilter(value)
         }}
@@ -139,6 +141,21 @@ const Index = <TData, TValue>(
             ))}
           </TableHeader>
           <TableBody>
+            { isLoading && <>
+              <TableRow>
+                <TableCell className={`w-full min-h-[360px] h-[calc(100%-45px)] bg-[#ffffff9c] absolute flex justify-center items-center z-10`}>
+                  <Card>
+                    <CardContent className={`p-3 flex justify-center items-center gap-2`}>
+                      <ReloadIcon className="h-6 w-6 animate-spin text-muted-foreground" />
+                      <h1 className="scroll-m-20 text-md font-bold text-muted-foreground">
+                        Loading...
+                      </h1>
+                    </CardContent>
+                  </Card>
+                </TableCell>
+
+              </TableRow>
+            </>}
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -147,7 +164,7 @@ const Index = <TData, TValue>(
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
+                    {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
                       )}
@@ -156,14 +173,16 @@ const Index = <TData, TValue>(
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
+              <>
+                { !isLoading && <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow> }
+              </>
             )}
           </TableBody>
         </Table>
