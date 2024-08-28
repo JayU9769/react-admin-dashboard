@@ -1,4 +1,4 @@
-import { ResponsiveNumberOrString, ResponsiveObject } from "./types";
+import { ResponsiveNumberOrString, ResponsiveObject } from "@/interfaces/utility.ts";
 
 export const generateResponsiveClasses = (
   prop: ResponsiveNumberOrString | ResponsiveObject | undefined,

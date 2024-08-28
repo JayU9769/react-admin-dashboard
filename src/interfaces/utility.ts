@@ -1,4 +1,4 @@
-// types.ts
+// utility.ts
 export type ResponsiveNumberOrString = number | string;
 export type JustifyContentValue =
   | "start"

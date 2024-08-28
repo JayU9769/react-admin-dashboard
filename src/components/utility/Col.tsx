@@ -1,6 +1,6 @@
 // Col.tsx
 import React from "react";
-import { ColProps, ResponsiveObject } from "./types";
+import { ColProps, ResponsiveObject } from "../../interfaces/utility.ts";
 import { generateResponsiveClasses } from "./utility";
 import clsx from "clsx";
 
