@@ -86,8 +86,10 @@ const routes: TRouteObject[] = [
         path: "users",
         element: <Users/>,
         animate: true,
+        id: 'users',
         children: [
           {
+            id: 'users-create',
             path: "create",
             element: <UserForm/>,
             animate: false,
@@ -101,7 +103,7 @@ const routes: TRouteObject[] = [
 const buildRouter = (routes: TRouteObject[]): RouteObject[] => {
   return routes.map((route) => ({
     ...route,
-    element: route.animate ? <PageTransition>{route.element}</PageTransition> : route.element,
+    element: route.animate ? <PageTransition id={route.id || ''}>{route.element}</PageTransition> : route.element,
     children:
       route.children && route.children.length > 0
         ? buildRouter(route.children)
