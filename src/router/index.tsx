@@ -14,64 +14,83 @@ import ProfileLayout from "@/pages/Profile/Layout";
 import PageTransition from "@/components/PageTransition.tsx";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import AdminDashboard from "@/components/layouts/AdminDashboard";
+import {AnimatePresence} from "framer-motion";
 
-const routes: RouteObject[] = [
+
+type TRouteObject = Omit<RouteObject, 'children'> & {
+  animate: boolean,
+  children?: TRouteObject[]; // Recursive type for nested routes
+};
+
+const routes: TRouteObject[] = [
   {
     path: "/admin",
     element: <AuthLayout/>,
-    id: 'Dashboard',
+    animate: false,
     children: [
       {
         path: "login",
         element: <Login/>,
+        animate: true,
       },
       {
         path: "signup",
         element: <Signup/>,
+        animate: true,
       },
     ],
   },
   {
     path: "/admin",
     element: <AdminDashboard/>,
+    animate: false,
     children: [
       {
         path: "",
         element: <Dashboard/>,
+        animate: true,
       },
       {
         path: "profile",
         element: <ProfileLayout />,
+        animate: false,
         children: [
           {
             path: "",
             element: <>Basic Detail</>,
+            animate: true,
           },
           {
             path: "account",
             element: <>Account</>,
+            animate: true,
           },
           {
             path: "appearance",
             element: <>Appearance</>,
+            animate: true,
           },
           {
             path: "notifications",
             element: <>Notifications</>,
+            animate: true,
           },
           {
             path: "display",
             element: <>Display</>,
+            animate: true,
           },
         ],
       },
       {
         path: "users",
         element: <Users/>,
+        animate: true,
         children: [
           {
             path: "create",
             element: <UserForm/>,
+            animate: false,
           },
         ],
       },
@@ -79,14 +98,10 @@ const routes: RouteObject[] = [
   },
 ];
 
-const buildRouter = (routes: RouteObject[]): RouteObject[] => {
+const buildRouter = (routes: TRouteObject[]): RouteObject[] => {
   return routes.map((route) => ({
     ...route,
-    element: !route.children ? (
-      <PageTransition>{route.element}</PageTransition>
-    ) : (
-      route.element
-    ),
+    element: route.animate ? <PageTransition>{route.element}</PageTransition> : route.element,
     children:
       route.children && route.children.length > 0
         ? buildRouter(route.children)
@@ -104,7 +119,9 @@ const router = createBrowserRouter(
 const Routes: React.FC = () => {
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <RouterProvider router={router}/>
+      <AnimatePresence mode="wait">
+        <RouterProvider router={router}/>
+      </AnimatePresence>
     </ThemeProvider>
   );
 };
