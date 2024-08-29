@@ -1,10 +1,10 @@
 // Grid.tsx
 import React, {memo} from "react";
-import {GridProps, ResponsiveObject} from "@/interfaces/utility.ts";
+import {IGridProps, IResponsiveObject} from "@/interfaces/utility.ts";
 import {generateResponsiveClasses} from "./utility";
 import clsx from "clsx";
 
-const Grid: React.FC<GridProps> = memo(
+const Grid: React.FC<IGridProps> = memo(
   (
     {
       children,
@@ -42,27 +42,27 @@ const Grid: React.FC<GridProps> = memo(
     });
 
     const responsiveOrderClasses: string[] = generateResponsiveClasses(
-      order as ResponsiveObject | undefined,
+      order as IResponsiveObject | undefined,
       "order"
     );
     const responsiveWrapClasses: string[] = generateResponsiveClasses(
-      wrap as ResponsiveObject | undefined,
+      wrap as IResponsiveObject | undefined,
       "flex"
     );
     const responsiveAlignClasses: string[] = generateResponsiveClasses(
-      align as ResponsiveObject | undefined,
+      align as IResponsiveObject | undefined,
       "items"
     );
     const responsiveJustifyClasses: string[] = generateResponsiveClasses(
-      justify as ResponsiveObject | undefined,
+      justify as IResponsiveObject | undefined,
       "justify"
     );
     const responsiveDirectionClasses: string[] = generateResponsiveClasses(
-      direction as ResponsiveObject | undefined,
+      direction as IResponsiveObject | undefined,
       "flex"
     );
     const responsiveAlignSelfClasses: string[] = generateResponsiveClasses(
-      alignSelf as ResponsiveObject | undefined,
+      alignSelf as IResponsiveObject | undefined,
       "self"
     );
 

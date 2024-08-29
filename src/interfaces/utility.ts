@@ -1,56 +1,58 @@
 // utility.ts
-export type ResponsiveNumberOrString = number | string;
-export type JustifyContentValue =
+import React from "react";
+
+export type TResponsiveNumberOrString = number | string;
+export type TJustifyContentValue =
   | "start"
   | "center"
   | "end"
   | "between"
   | "around";
-export type AlignItemsValue = "start" | "center" | "end" | "stretch";
-export type DirectionValue = "row" | "row-reverse" | "col" | "col-reverse";
-export type AlignSelfValue = "auto" | "start" | "center" | "end" | "stretch";
-export type WrapValue = "nowrap" | "wrap" | "wrap-reverse";
+export type TAlignItemsValue = "start" | "center" | "end" | "stretch";
+export type TDirectionValue = "row" | "row-reverse" | "col" | "col-reverse";
+export type TAlignSelfValue = "auto" | "start" | "center" | "end" | "stretch";
+export type TWrapValue = "nowrap" | "wrap" | "wrap-reverse";
 
 export interface ResponsiveString {
-  sm?: ResponsiveNumberOrString;
-  md?: ResponsiveNumberOrString;
-  lg?: ResponsiveNumberOrString;
-  xl?: ResponsiveNumberOrString;
+  sm?: TResponsiveNumberOrString;
+  md?: TResponsiveNumberOrString;
+  lg?: TResponsiveNumberOrString;
+  xl?: TResponsiveNumberOrString;
 }
 
-export interface ResponsiveObject {
+export interface IResponsiveObject {
   sm?: { [key: string]: string };
   md?: { [key: string]: string };
   lg?: { [key: string]: string };
   xl?: { [key: string]: string };
 }
 
-export interface ColProps {
+export interface IColProps {
   children: React.ReactNode;
   span?: number;
-  sm?: ResponsiveNumberOrString;
-  md?: ResponsiveNumberOrString;
-  lg?: ResponsiveNumberOrString;
-  xl?: ResponsiveNumberOrString;
-  gap?: ResponsiveNumberOrString;
-  order?: number | ResponsiveObject;
+  sm?: TResponsiveNumberOrString;
+  md?: TResponsiveNumberOrString;
+  lg?: TResponsiveNumberOrString;
+  xl?: TResponsiveNumberOrString;
+  gap?: TResponsiveNumberOrString;
+  order?: number | IResponsiveObject;
   className?: string;
 }
 
-export interface GridProps {
+export interface IGridProps {
   children: React.ReactNode;
-  cols?: ResponsiveNumberOrString;
-  sm?: ResponsiveNumberOrString;
-  md?: ResponsiveNumberOrString;
-  lg?: ResponsiveNumberOrString;
-  xl?: ResponsiveNumberOrString;
-  gap?: ResponsiveNumberOrString;
-  justify?: JustifyContentValue | ResponsiveObject;
-  align?: AlignItemsValue | ResponsiveObject;
-  direction?: DirectionValue | ResponsiveObject;
-  alignSelf?: AlignSelfValue | ResponsiveObject;
-  order?: number | ResponsiveObject;
-  wrap?: WrapValue | ResponsiveObject;
+  cols?: TResponsiveNumberOrString;
+  sm?: TResponsiveNumberOrString;
+  md?: TResponsiveNumberOrString;
+  lg?: TResponsiveNumberOrString;
+  xl?: TResponsiveNumberOrString;
+  gap?: TResponsiveNumberOrString;
+  justify?: TJustifyContentValue | IResponsiveObject;
+  align?: TAlignItemsValue | IResponsiveObject;
+  direction?: TDirectionValue | IResponsiveObject;
+  alignSelf?: TAlignSelfValue | IResponsiveObject;
+  order?: number | IResponsiveObject;
+  wrap?: TWrapValue | IResponsiveObject;
   rtl?: boolean;
   className?: string;
 }
