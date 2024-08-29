@@ -53,32 +53,32 @@ const routes: TRouteObject[] = [
       {
         path: "profile",
         element: <ProfileLayout />,
-        animate: true,
+        animate: false,
         children: [
           {
             path: "",
             element: <>Basic Detail</>,
-            animate: false,
+            animate: true,
           },
           {
             path: "account",
             element: <>Account</>,
-            animate: false,
+            animate: true,
           },
           {
             path: "appearance",
             element: <>Appearance</>,
-            animate: false,
+            animate: true,
           },
           {
             path: "notifications",
             element: <>Notifications</>,
-            animate: false,
+            animate: true,
           },
           {
             path: "display",
             element: <>Display</>,
-            animate: false,
+            animate: true,
           },
         ],
       },
