@@ -4,7 +4,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import React from "react";
-import {ThemeProvider} from "next-themes";
+import { ThemeProvider } from "next-themes";
 import Login from "@/pages/Auth/Login.tsx";
 import Signup from "@/pages/Auth/Signup.tsx";
 import Dashboard from "@/pages/Dashboard.tsx";
@@ -14,84 +14,99 @@ import ProfileLayout from "@/pages/Profile/Layout";
 import PageTransition from "@/components/PageTransition.tsx";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import AdminDashboard from "@/components/layouts/AdminDashboard";
-import {AnimatePresence} from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+import { TRecord } from "@/interfaces";
 
-
-type TRouteObject = Omit<RouteObject, 'children'> & {
-  animate: boolean,
+type TRouteObject = Omit<RouteObject, "children"> & {
+  animate: boolean;
+  data?: TRecord;
   children?: TRouteObject[]; // Recursive type for nested routes
 };
 
 const routes: TRouteObject[] = [
   {
     path: "/admin",
-    element: <AuthLayout/>,
+    element: <AuthLayout />,
     animate: false,
     children: [
       {
         path: "login",
-        element: <Login/>,
+        element: <Login />,
         animate: true,
       },
       {
         path: "signup",
-        element: <Signup/>,
+        element: <Signup />,
         animate: true,
       },
     ],
   },
   {
     path: "/admin",
-    element: <AdminDashboard/>,
+    element: <AdminDashboard />,
     animate: false,
+    id: "admin",
+    data: { title: "Admin" },
     children: [
       {
         path: "",
-        element: <Dashboard/>,
+        element: <Dashboard />,
+        id: "admin.home",
+        data: { title: "Dashboard" },
         animate: true,
       },
       {
         path: "profile",
         element: <ProfileLayout />,
         animate: false,
+        id: "admin.profile",
+        data: { title: "Profile" },
         children: [
           {
             path: "",
             element: <>Basic Detail</>,
+            id: "admin.profile.basic",
+            data: { title: "Profile" },
             animate: true,
           },
           {
             path: "account",
             element: <>Account</>,
+            data: { title: "Profile" },
             animate: true,
           },
           {
             path: "appearance",
             element: <>Appearance</>,
+            data: { title: "Profile" },
             animate: true,
           },
           {
             path: "notifications",
             element: <>Notifications</>,
+            data: { title: "Profile" },
             animate: true,
           },
           {
             path: "display",
             element: <>Display</>,
+            data: { title: "Profile" },
             animate: true,
           },
         ],
       },
       {
         path: "users",
-        element: <Users/>,
+        data: { title: "Users" },
+        element: <Users />,
         animate: true,
-        id: 'users',
+        id: "admin.users",
         children: [
           {
-            id: 'users-create',
+            id: "admin.users.create",
+            data: { title: "Create User" },
             path: "create",
-            element: <UserForm/>,
+            element: <UserForm />,
             animate: false,
           },
         ],
@@ -103,7 +118,12 @@ const routes: TRouteObject[] = [
 const buildRouter = (routes: TRouteObject[]): RouteObject[] => {
   return routes.map((route) => ({
     ...route,
-    element: route.animate ? <PageTransition id={route.id || ''}>{route.element}</PageTransition> : route.element,
+    element: route.animate ? (
+      <PageTransition id={route.id || ""}>{route.element}</PageTransition>
+    ) : (
+      route.element
+    ),
+    loader: route.data ? () => route.data : undefined,
     children:
       route.children && route.children.length > 0
         ? buildRouter(route.children)
@@ -111,18 +131,15 @@ const buildRouter = (routes: TRouteObject[]): RouteObject[] => {
   })) as RouteObject[];
 };
 
-const router = createBrowserRouter(
-  buildRouter(routes),
-  {
-    basename: "/",
-  }
-);
+const router = createBrowserRouter(buildRouter(routes), {
+  basename: "/",
+});
 
 const Routes: React.FC = () => {
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <AnimatePresence mode="wait">
-        <RouterProvider router={router}/>
+        <RouterProvider router={router} />
       </AnimatePresence>
     </ThemeProvider>
   );
