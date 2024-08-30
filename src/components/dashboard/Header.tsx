@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Package2, PanelLeft, Search} from "lucide-react";
-import {Link} from "react-router-dom";
+import {Link, useMatches} from "react-router-dom";
 import Nav from "@/components/dashboard/Nav.tsx";
 import {list} from "@/components/dashboard/NavList.tsx";
 import {Input} from "@/components/ui/input.tsx";
@@ -14,16 +14,32 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
-import {useSelector} from "react-redux";
-import {rootStates} from "@/store/root/slice.ts";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList, BreadcrumbPage,
+  BreadcrumbSeparator
+} from "@/components/ui/breadcrumb.tsx";
+import {useDispatch, useSelector} from "react-redux";
+import {rootStates, setCurrentRoute} from "@/store/root/slice.ts";
+import {AppDispatch} from "@/store";
 
 
 const Index: React.FC = () => {
 
   ///////////////////////// Redux States and Actions... /////////////////////////
+  const dispatch = useDispatch<AppDispatch>();
   const {
-    pageTitle,
+    currentRoute
   } = useSelector(rootStates);
+
+  const matches = useMatches()
+
+
+  useEffect(() => {
+    dispatch(setCurrentRoute(matches[matches.length - 1]))
+  }, [matches]);
 
 
   return <header
@@ -51,10 +67,32 @@ const Index: React.FC = () => {
         />
       </SheetContent>
     </Sheet>
-    <div className="hidden md:flex">
+    <div className="hidden md:flex flex-col">
       <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-        { pageTitle }
+        { currentRoute.data ? (currentRoute.data as any).title : "Dashboard" }
       </h4>
+      <Breadcrumb>
+        <BreadcrumbList >
+          {matches.map((match, index) => {
+            const isLast = !!matches[index + 1];
+            const data: any = match.data;
+            const title = data && data.title ? data.title : match.id;
+            return <React.Fragment key={index}>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  {isLast ?
+                    <Link  to={match.pathname}>{title}</Link>
+                    :
+                    <BreadcrumbPage>{title}</BreadcrumbPage>
+                  }
+
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              {isLast && <BreadcrumbSeparator/>}
+            </React.Fragment>
+          })}
+        </BreadcrumbList>
+      </Breadcrumb>
     </div>
     <div className="relative ml-auto flex-1 md:grow-0">
       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground"/>

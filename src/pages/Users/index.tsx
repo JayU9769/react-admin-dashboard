@@ -52,9 +52,6 @@ const Index: React.FC = () => {
 
   return (
     <>
-      <div className="flex justify-between">
-        <h4>Users List</h4>
-      </div>
       <DataTable
         data={data.data}
         columns={columns}
