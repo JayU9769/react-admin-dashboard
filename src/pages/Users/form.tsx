@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
-import DrawerForm from "@/components/form/DrawerForm";
+import React, { useEffect, useRef } from "react";
+import DrawerForm, { DrawerRef } from "@/components/form/DrawerForm";
 
 import { useFormik } from "formik";
 import { Col, Grid } from "@/components/utility";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { useCreateUserMutation } from "@/store/root/api";
+import { showAlert } from "@/components/ui/sonner";
+import Loader from "@/components/utility/BasicLoader";
 
 interface FormValues {
   name: string;
@@ -12,15 +15,28 @@ interface FormValues {
   password: string;
 }
 const Index: React.FC = () => {
+  const drawerRef = useRef<DrawerRef>(null);
+
+  const [createUser, { isLoading, error }] = useCreateUserMutation();
+
   const initialValues: FormValues = {
     name: "",
     email: "",
     password: "",
   };
+
   const formik = useFormik({
     initialValues: initialValues,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      createUser(values).then((res) => {
+        if (res.data) {
+          drawerRef.current?.closeDrawer();
+        }
+        if (res.error) {
+          console.log(isLoading, error);
+          showAlert("Error", "error");
+        }
+      });
     },
   });
 
@@ -28,10 +44,12 @@ const Index: React.FC = () => {
 
   return (
     <DrawerForm
+      ref={drawerRef}
       title="Create User"
       onSubmit={formik.handleSubmit}
       direction="right"
     >
+      {isLoading && <Loader />}
       <form onSubmit={formik.handleSubmit}>
         <Grid className="p-4 pb-0">
           <Col>

@@ -31,12 +31,12 @@ interface IProp {
   onSubmit: () => void;
 }
 
-export interface IndexRef {
+export interface DrawerRef {
   openDrawer: () => void;
   closeDrawer: () => void;
 }
 
-const Index = forwardRef<IndexRef, IProp>(
+const Index = forwardRef<DrawerRef, IProp>(
   (
     {
       title,
@@ -46,7 +46,7 @@ const Index = forwardRef<IndexRef, IProp>(
       closeLabel = "Cancel",
       hideClose = false,
       drawerHeaderClass = "",
-      size = "20%",
+      size = "30%",
       direction = "right",
       onSubmit,
     },
