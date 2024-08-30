@@ -1,6 +1,6 @@
 import Sidebar from "@/components/dashboard/Sidebar";
 import React from "react";
-import { Outlet, useMatches } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { rootStates } from "@/store/root/slice.ts";
 import { useSelector } from "react-redux";
 import Header from "@/components/dashboard/Header";
