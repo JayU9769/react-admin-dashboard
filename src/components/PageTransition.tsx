@@ -1,6 +1,6 @@
 import React from "react";
 import {motion} from 'framer-motion';
-import {useLocation, useMatches} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 
 
 interface IProps {
@@ -10,8 +10,6 @@ interface IProps {
 
 const Index: React.FC<IProps> = ({children, id}) => {
   const {pathname} = useLocation();
-  const matches = useMatches()
-  console.log(matches[matches.length - 1]?.id, "User");
   return (
     <motion.div
       key={id || pathname}

@@ -8,11 +8,6 @@ import Header from "@/components/dashboard/Header";
 const Index: React.FC = () => {
   ///////////////////////// Redux States and Actions... /////////////////////////
   const { isCollapsed } = useSelector(rootStates);
-
-  const match = useMatches();
-
-  console.log(match);
-
   return (
     <>
       <div className="flex min-h-screen w-full flex-col bg-muted/40">

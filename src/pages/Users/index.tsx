@@ -18,7 +18,6 @@ const Index: React.FC = () => {
   const columns = useMemo(() => userColumns, []);
 
   useEffect(() => {
-    console.log(Object.keys(queryString).length, queryString)
     if (Object.keys(queryString).length > 1) {
       getUsers(convertToQuery(queryString));
     }
