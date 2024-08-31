@@ -2,12 +2,21 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
+  safelist: [
+    { pattern: /grid-/, variants: ["lg", "md", "lg", "xl", "sm"] },
+    { pattern: /gap-/, variants: ["lg", "md", "lg", "xl", "sm"] },
+    { pattern: /col-/, variants: ["lg", "md", "lg", "xl", "sm"] },
+    { pattern: /justify-/, variants: ["lg", "md", "lg", "xl", "sm"] },
+    { pattern: /items-/, variants: ["lg", "md", "lg", "xl", "sm"] },
+    { pattern: /flex-/, variants: ["lg", "md", "lg", "xl", "sm"] },
+    { pattern: /self-/, variants: ["lg", "md", "lg", "xl", "sm"] },
+  ],
   theme: {
     container: {
       center: true,
@@ -74,4 +83,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};
