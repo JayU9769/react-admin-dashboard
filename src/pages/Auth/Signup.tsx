@@ -8,7 +8,7 @@ import {Link} from "react-router-dom";
 const Index: React.FC = () => {
   return (
     <>
-      <div className="grid gap-2 text-center">
+      <div className="grid gap-2 text-center mb-4">
         <h1 className="text-3xl font-bold">Sign Up</h1>
         <p className="text-balance text-muted-foreground">
           Enter your information to create an account

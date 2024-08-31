@@ -8,7 +8,7 @@ import {Link} from "react-router-dom";
 const Login: React.FC = () => {
   return (
     <>
-      <div className="grid gap-2 text-center">
+      <div className="grid gap-2 text-center mb-4">
         <h1 className="text-3xl font-bold">Login</h1>
         <p className="text-balance text-muted-foreground">
           Enter your email below to login to your account
@@ -37,7 +37,10 @@ const Login: React.FC = () => {
           <Input id="password" type="password" placeholder="Enter your password" required/>
         </div>
         <Button type="submit" className="w-full">
-          Login
+          <Link to="/admin">
+            Login
+          </Link>
+
         </Button>
       </div>
       <div className="mt-4 text-center text-sm">
