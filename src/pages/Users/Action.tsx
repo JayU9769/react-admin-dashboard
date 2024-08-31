@@ -3,8 +3,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuPortal,
+  DropdownMenuItem, DropdownMenuLabel,
+  DropdownMenuPortal, DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
@@ -12,19 +12,43 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {EllipsisVertical, Trash2} from "lucide-react";
+import {EllipsisVertical, ListChecks, Trash2} from "lucide-react";
 import ConfirmDialog from "@/components/ConfirmDialog.tsx";
+import {TActionType, TIds} from "@/interfaces";
 
-const Index: React.FC = () => {
+interface IProps {
+  type: TActionType;
+  ids: TIds;
+}
+
+const Index: React.FC<IProps> = ({type, ids}) => {
+
   const [model, setModel] = useState(false);
+
   return <>
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="link" size={`sm`} className={`gap-2 text-muted-foreground`}>
-          <EllipsisVertical className={`h-4 w-4`}/>
+      {(type === 'bulk' && ids.length > 0) && <DropdownMenuTrigger asChild>
+        <Button variant="outline" size={`sm`} className={`gap-2`}>
+          <ListChecks className={`h-4 w-4`}/>
+          Actions
+          <span
+            className={`font-bold`}>
+            ( {ids.includes('all') ? 'All' : ids.length} )
+          </span>
         </Button>
-      </DropdownMenuTrigger>
+      </DropdownMenuTrigger>}
+      {type === 'single' &&
+        <DropdownMenuTrigger asChild>
+          <Button variant="link" size={`sm`} className={`gap-2 text-muted-foreground`}>
+            <EllipsisVertical className={`h-4 w-4`}/>
+          </Button>
+        </DropdownMenuTrigger>
+      }
       <DropdownMenuContent className="w-56">
+        { type === 'bulk' && <>
+          <DropdownMenuLabel>Bulk Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator/>
+        </> }
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={() => setModel(!model)}>
             Delete
@@ -45,7 +69,7 @@ const Index: React.FC = () => {
 
     <ConfirmDialog open={model} onClose={() => setModel(false)} callBack={() => {
       console.log("Confirm modal");
-    }} />
+    }}/>
   </>
 }
 

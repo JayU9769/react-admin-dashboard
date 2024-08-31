@@ -87,8 +87,8 @@ export const userColumns: ColumnDef<IUser>[] = [
       <ColumnHeader column={column} title="Actions"/>
     ),
     cell: ({row}) => {
-      const status = row.getValue("status") as string;
-      return <Action />
+      const id = row.getValue("id") as string;
+      return <Action type={'single'} ids={[id]} />
     },
     enableSorting: false,
     enableHiding: true,

@@ -17,3 +17,8 @@ export interface IListAPIResponse {
   count: number;
   rows: TRecord[]
 }
+
+
+export type TActionType = 'single' | 'bulk';
+
+export type TIds = Array<string | number>;

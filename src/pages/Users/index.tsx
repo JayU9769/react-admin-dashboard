@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useLazyGetUsersQuery } from "@/store/root/api.ts";
+import { useLazyGetUsersQuery } from "@/store/user/api.ts";
 import DataTable from "@/components/dataTable";
 import { userColumns } from "@/pages/Users/columns.tsx";
 import {IPaginationState, TRecord} from "@/interfaces";

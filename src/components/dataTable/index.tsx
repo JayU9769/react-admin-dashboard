@@ -30,21 +30,9 @@ import {Card, CardContent} from "@/components/ui/card.tsx";
 import {ReloadIcon} from "@radix-ui/react-icons";
 import DebouncingInput from "@/components/DebouncingInput.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {ListChecks, RefreshCw, Trash2} from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import ViewOptions from "@/components/dataTable/ViewOptions.tsx";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub, DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu.tsx";
+import Action from "@/pages/Users/Action.tsx";
 
 interface IProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -123,7 +111,7 @@ const Index = <TData, TValue>(
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
-
+  console.log(table.getSelectedRowModel().rows)
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -137,37 +125,7 @@ const Index = <TData, TValue>(
             }}
             className="h-8 w-[150px] lg:w-[250px] bg-white"
           />
-          {table.getSelectedRowModel().rows.length > 0 &&
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size={`sm`} className={`gap-2`}>
-                  <ListChecks className={`h-4 w-4`}/>
-                  Actions
-                  <span
-                    className={`font-bold`}>( {table.getIsAllPageRowsSelected() ? 'All' : table.getSelectedRowModel().rows.length} )</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel>Bulk Actions</DropdownMenuLabel>
-                <DropdownMenuSeparator/>
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    Delete
-                    <DropdownMenuShortcut><Trash2 className={`h-4 w-4`}/></DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                  <DropdownMenuSub>
-                    <DropdownMenuSubTrigger>Status</DropdownMenuSubTrigger>
-                    <DropdownMenuPortal>
-                      <DropdownMenuSubContent>
-                        <DropdownMenuItem>Active</DropdownMenuItem>
-                        <DropdownMenuItem>In-Active</DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuPortal>
-                  </DropdownMenuSub>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          }
+          <Action type={'bulk'} ids={table.getIsAllPageRowsSelected() ? ['all'] : table.getSelectedRowModel().rows.map(row => row.id)} />
           <Button variant={'outline'} size={'sm'} onClick={() => onPagination(pagination)}>
             <RefreshCw className="mr-2 h-4 w-4"/>
             Reload
