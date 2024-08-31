@@ -1,12 +1,12 @@
 import React from "react";
-import { useTheme } from "next-themes"
-import { ExternalToast, toast, Toaster as Sonner } from "sonner"
+import {useTheme} from "next-themes"
+import {ExternalToast, toast, Toaster as Sonner} from "sonner"
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
 type ToastTypes = 'success' | 'info' | 'warning' | 'error' | 'default';
 
-export const showAlert = (message: string, variant: ToastTypes = 'default' , onAction?: () => void) => {
+export const showAlert = (message: string, variant: ToastTypes = 'default', onAction?: () => void) => {
 
   const data: ExternalToast = {
     description: message,
@@ -36,13 +36,13 @@ export const showAlert = (message: string, variant: ToastTypes = 'default' , onA
 
 }
 
-const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme()
+const Toaster = ({...props}: ToasterProps) => {
+  const {theme = "system"} = useTheme()
 
   return (
     <Sonner
       theme={theme as ToasterProps["theme"]}
-      className="toaster group"
+      className="toaster group capitalize"
       toastOptions={{
         classNames: {
           toast:
@@ -59,4 +59,4 @@ const Toaster = ({ ...props }: ToasterProps) => {
   )
 }
 
-export { Toaster }
+export {Toaster}

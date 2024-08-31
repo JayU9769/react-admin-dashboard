@@ -16,6 +16,7 @@ import AuthLayout from "@/components/layouts/AuthLayout";
 import AdminDashboard from "@/components/layouts/AdminDashboard";
 import { AnimatePresence } from "framer-motion";
 import { TRecord } from "@/interfaces";
+import {Toaster} from "@/components/ui/sonner.tsx";
 
 type TRouteObject = Omit<RouteObject, "children"> & {
   animate: boolean;
@@ -145,6 +146,7 @@ const Routes: React.FC = () => {
       <AnimatePresence mode="wait">
         <RouterProvider router={router} />
       </AnimatePresence>
+      <Toaster position={'top-right'} visibleToasts={5}/>
     </ThemeProvider>
   );
 };

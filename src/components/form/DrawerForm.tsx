@@ -72,7 +72,7 @@ const Index = forwardRef<DrawerRef, IProp>(
     let directionClass: string = "";
     switch (direction) {
       case "right":
-        directionClass = `h-screen top-0 right-0 left-auto w-[${size}]`;
+        directionClass = `h-screen top-0 right-0 left-auto w-[30%]`;
         break;
 
       case "left":
