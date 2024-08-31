@@ -3,7 +3,7 @@ import { useLazyGetUsersQuery } from "@/store/user/api.ts";
 import DataTable from "@/components/dataTable";
 import { userColumns } from "@/pages/Users/columns.tsx";
 import {IPaginationState, TRecord} from "@/interfaces";
-import { defaultAPIResponse } from "@/lib/constants.ts";
+import {defaultAPIResponse, defaultPagination} from "@/lib/constants.ts";
 import { Link, Outlet } from "react-router-dom";
 import {buttonVariants} from "@/components/ui/button";
 import {SortingState} from "@tanstack/react-table";
@@ -40,7 +40,9 @@ const Index: React.FC = () => {
 
   const handleSorting = (sorting: SortingState) => {
     const tempQuery: TRecord = {
-      ...queryString
+      ...queryString,
+      perPage: defaultPagination.pageSize,
+      pageNumber: defaultPagination.pageIndex,
     };
     if (sorting.length > 0) {
       tempQuery.sort = sorting[0].id;
