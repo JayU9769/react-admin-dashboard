@@ -41,7 +41,7 @@ const Index: React.FC<IProps> = (
           callBack();
         }} className={`w-full`}>
           <Button type="submit" variant={`destructive`} className={`w-full gap-2 ${isLoading && 'disabled:opacity-75'}`} disabled={isLoading}>
-            { isLoading ? <><ReloadIcon className="h-4 w-4"/> Deleting...</> : <><Trash2 className={`h-4 w-4`} /> Yes, Delete</> }
+            { isLoading ? <><ReloadIcon className="h-4 w-4 animate-spin"/> Deleting...</> : <><Trash2 className={`h-4 w-4`} /> Yes, Delete</> }
           </Button>
         </form>
         <Button type="button" variant={`outline`} className={`w-full`} onClick={onClose}>Cancel</Button>
