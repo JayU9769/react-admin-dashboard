@@ -15,6 +15,7 @@ import {Switch} from "@/components/ui/switch.tsx";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
+    .email('Invalid Email')
     .required('First Name is required')
     .max(50, 'Name must be 50 characters or less'),
   password: Yup.string()
