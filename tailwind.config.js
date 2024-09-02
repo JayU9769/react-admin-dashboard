@@ -16,6 +16,10 @@ module.exports = {
     { pattern: /items-/, variants: ["lg", "md", "lg", "xl", "sm"] },
     { pattern: /flex-/, variants: ["lg", "md", "lg", "xl", "sm"] },
     { pattern: /self-/, variants: ["lg", "md", "lg", "xl", "sm"] },
+    {
+      pattern: /w-/,
+      variants: ["sm", "md", "lg", "xl"],
+    },
   ],
   theme: {
     container: {
