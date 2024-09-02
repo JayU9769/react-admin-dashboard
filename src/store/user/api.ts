@@ -5,9 +5,11 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000",
   }),
+  tagTypes: ["User"],
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: (query: string = "") => `/users${query}`,
+      providesTags: ["User"],
     }),
     getUserById: builder.query({
       query: (id: string) => `/users/${id}`
@@ -18,6 +20,7 @@ export const userApi = createApi({
         method: "POST",
         body: newUser,
       }),
+      invalidatesTags: ["User"],
     }),
     // Update an existing user
     updateUser: builder.mutation({
@@ -26,13 +29,18 @@ export const userApi = createApi({
         method: "PUT", // Use "PATCH" if you prefer partial updates
         body: updatedUser,
       }),
+      invalidatesTags: ["User"],
     }),
     // Delete a user
     deleteUser: builder.mutation({
-      query: (id) => ({
-        url: `/users/${id}`,
+      query: (ids) => ({
+        url: `/users`,
         method: "DELETE",
+        body: {
+          ids: ids
+        }
       }),
+      invalidatesTags: ["User"],
     }),
   }),
 });

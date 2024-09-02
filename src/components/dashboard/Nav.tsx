@@ -19,9 +19,6 @@ interface IProps {
 
 const Index: React.FC<IProps> = ({ links, isCollapsed = false }) => {
   const { currentRoute } = useSelector(rootStates);
-
-  console.log(currentRoute);
-
   return (
     <div
       data-collapsed={isCollapsed}

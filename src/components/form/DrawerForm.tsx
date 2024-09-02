@@ -97,7 +97,7 @@ const Index = forwardRef<DrawerRef, IProp>(
         direction={direction}
         onOpenChange={() => setOpen(false)}
       >
-        <DrawerContent className={`${directionClass} mt-0 rounded-none`}>
+        <DrawerContent className={`${directionClass} mt-0 rounded-none`} >
           <DrawerHeader className={`${drawerHeaderClass}`}>
             {title && <DrawerTitle>{title}</DrawerTitle>}
             {description && (

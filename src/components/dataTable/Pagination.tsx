@@ -28,7 +28,7 @@ const Index = <TData, >(
     <div className="flex items-center justify-between px-2">
       <div className="flex-1 text-sm text-muted-foreground">
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
+        {table.getFilteredRowModel().rows.length} row(s) selected out of { table.getRowCount() } row(s).
       </div>
       <div className="flex items-center space-x-4 lg:space-x-4">
         <div className="flex items-center space-x-2">
@@ -39,7 +39,7 @@ const Index = <TData, >(
               table.setPageSize(Number(value))
             }}
           >
-            <SelectTrigger className="h-8 w-[70px]">
+            <SelectTrigger className="h-8 w-[70px] bg-white">
               <SelectValue placeholder={table.getState().pagination.pageSize}/>
             </SelectTrigger>
             <SelectContent side="top">

@@ -41,12 +41,12 @@ const Index: React.FC = () => {
   const handleSorting = (sorting: SortingState) => {
     const tempQuery: TRecord = {
       ...queryString,
-      perPage: defaultPagination.pageSize,
-      pageNumber: defaultPagination.pageIndex,
     };
     if (sorting.length > 0) {
       tempQuery.sort = sorting[0].id;
       tempQuery.order = sorting[0].desc ? 'DESC' : 'ASC';
+      tempQuery.perPage = defaultPagination.pageSize;
+      tempQuery.pageNumber = defaultPagination.pageIndex;
     }
     setQueryString(tempQuery);
   }
