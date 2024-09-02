@@ -24,6 +24,7 @@ const Index: React.FC = () => {
   }, [queryString]);
 
   const handlePagination = (pagination: IPaginationState) => {
+    console.log(pagination);
     setQueryString({
       ...queryString,
       perPage:pagination.pageSize,

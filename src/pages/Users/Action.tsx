@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { EllipsisVertical, ListChecks, Trash2 } from "lucide-react";
+import {EllipsisVertical, ListChecks, SquarePen, Trash2} from "lucide-react";
 import ConfirmDialog from "@/components/ConfirmDialog.tsx";
 import { TActionType, TIds } from "@/interfaces";
 import { useDeleteUserMutation } from "@/store/user/api.ts";
@@ -39,9 +39,6 @@ const Index: React.FC<IProps> = ({ type, ids }) => {
             <Button variant="outline" size={`sm`} className={`gap-2`}>
               <ListChecks className={`h-4 w-4`} />
               Actions
-              <span className={`font-bold`}>
-                ( {ids.includes("all") ? "All" : ids.length} )
-              </span>
             </Button>
           </DropdownMenuTrigger>
         )}
@@ -70,12 +67,13 @@ const Index: React.FC<IProps> = ({ type, ids }) => {
                 <Trash2 className={`h-4 w-4`} />
               </DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => navigate(`edit/${ids[0]}`)}>
-              Edit
-              <DropdownMenuShortcut>
-                <Trash2 className={`h-4 w-4`} />
-              </DropdownMenuShortcut>
-            </DropdownMenuItem>
+            { type === 'single' &&
+                <DropdownMenuItem onClick={() => navigate(`edit/${ids[0]}`)}>
+                Edit
+                <DropdownMenuShortcut>
+                  <SquarePen className={`h-4 w-4`} />
+                </DropdownMenuShortcut>
+            </DropdownMenuItem> }
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>Status</DropdownMenuSubTrigger>
               <DropdownMenuPortal>
@@ -97,6 +95,7 @@ const Index: React.FC<IProps> = ({ type, ids }) => {
           deleteUser(ids).then((res) => {
             if (res.data) {
               showAlert("Deleted Successfully", "success");
+              setModel(false)
             }
             if (res.error) {
               showAlert(

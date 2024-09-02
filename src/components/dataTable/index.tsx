@@ -114,7 +114,6 @@ const Index = <TData, TValue>(
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getRowId: (row: any) => row.id,
   })
-
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -129,7 +128,9 @@ const Index = <TData, TValue>(
             className="h-8 w-[150px] lg:w-[250px] bg-white"
           />
           <Action type={'bulk'} ids={table.getSelectedRowModel().rows.map(row => row.id)} />
-          <Button variant={'outline'} size={'sm'} onClick={() => onPagination(pagination)}>
+          <Button variant={'outline'} size={'sm'} onClick={() => {
+            onPagination(pagination)
+          }}>
             <RefreshCw className="mr-2 h-4 w-4"/>
             Reload
           </Button>

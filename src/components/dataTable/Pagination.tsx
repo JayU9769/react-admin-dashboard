@@ -19,12 +19,10 @@ interface IPaginationProps<TData> {
   table: Table<TData>;
 }
 const Index = <TData,>({ table }: IPaginationProps<TData>) => {
-  console.log(table.getState().rowSelection);
   return (
     <div className="flex items-center justify-between px-2">
       <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected out of{" "}
+        {Object.keys(table.getState().rowSelection).length} row(s) selected out of{" "}
         {table.getRowCount()} row(s).
       </div>
       <div className="flex items-center space-x-4 lg:space-x-4">
