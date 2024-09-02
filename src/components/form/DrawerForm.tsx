@@ -46,7 +46,7 @@ const Index = forwardRef<DrawerRef, IProp>(
       closeLabel = "Cancel",
       hideClose = false,
       drawerHeaderClass = "",
-      size = "30%",
+      size = "4/12",
       direction = "right",
       onSubmit,
     },
@@ -72,19 +72,19 @@ const Index = forwardRef<DrawerRef, IProp>(
     let directionClass: string = "";
     switch (direction) {
       case "right":
-        directionClass = `h-screen top-0 right-0 left-auto w-[30%]`;
+        directionClass = `h-screen top-0 right-0 left-auto w-${size}`;
         break;
 
       case "left":
-        directionClass = `h-screen top-0 left-0 right-auto w-[${size}]`;
+        directionClass = `h-screen top-0 left-0 right-auto w-${size}`;
         break;
 
       case "top":
-        directionClass = `w-full top-0 bottom-auto h-[${size}]`;
+        directionClass = `w-full top-0 bottom-auto h-${size}`;
         break;
 
       case "bottom":
-        directionClass = `w-full bottom-0 top-auto h-[${size}]`;
+        directionClass = `w-full bottom-0 top-auto h-${size}`;
         break;
 
       default:
@@ -97,12 +97,10 @@ const Index = forwardRef<DrawerRef, IProp>(
         direction={direction}
         onOpenChange={() => setOpen(false)}
       >
-        <DrawerContent className={`${directionClass} mt-0 rounded-none`} >
+        <DrawerContent className={`${directionClass} mt-0 rounded-none`}>
           <DrawerHeader className={`${drawerHeaderClass}`}>
             {title && <DrawerTitle>{title}</DrawerTitle>}
-            {description && (
-              <DrawerDescription>{description}</DrawerDescription>
-            )}
+            <DrawerDescription>{description}</DrawerDescription>
           </DrawerHeader>
           {children}
           <DrawerFooter className={""}>

@@ -16,7 +16,7 @@ import AuthLayout from "@/components/layouts/AuthLayout";
 import AdminDashboard from "@/components/layouts/AdminDashboard";
 import { AnimatePresence } from "framer-motion";
 import { TRecord } from "@/interfaces";
-import {Toaster} from "@/components/ui/sonner.tsx";
+import { Toaster } from "@/components/ui/sonner.tsx";
 
 type TRouteObject = Omit<RouteObject, "children"> & {
   animate: boolean;
@@ -114,6 +114,13 @@ const routes: TRouteObject[] = [
             element: <UserForm />,
             animate: false,
           },
+          {
+            id: "admin.users.edit",
+            data: { title: "Edit User" },
+            path: "edit/:id",
+            element: <UserForm />,
+            animate: false,
+          },
         ],
       },
     ],
@@ -146,7 +153,7 @@ const Routes: React.FC = () => {
       <AnimatePresence mode="wait">
         <RouterProvider router={router} />
       </AnimatePresence>
-      <Toaster position={'top-right'} visibleToasts={5}/>
+      <Toaster position={"top-right"} visibleToasts={5} />
     </ThemeProvider>
   );
 };
