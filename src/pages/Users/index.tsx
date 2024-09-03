@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useLazyGetUsersQuery } from "@/store/user/api.ts";
 import DataTable from "@/components/dataTable";
 import { userColumns } from "@/pages/Users/columns.tsx";
-import {IPaginationState, TRecord} from "@/interfaces";
+import { IPaginationState, TRecord} from "@/interfaces";
 import {defaultAPIResponse, defaultPagination} from "@/lib/constants.ts";
 import { Link, Outlet } from "react-router-dom";
 import {buttonVariants} from "@/components/ui/button";
@@ -13,7 +13,7 @@ const Index: React.FC = () => {
   const [queryString, setQueryString] = useState<TRecord>({});
   const [
     getUsers,
-    { data = { data: defaultAPIResponse }, isFetching },
+    { data = defaultAPIResponse , isFetching },
   ] = useLazyGetUsersQuery();
   const columns = useMemo(() => userColumns, []);
 
@@ -55,7 +55,7 @@ const Index: React.FC = () => {
   return (
     <>
       <DataTable
-        data={data.data}
+        data={data}
         columns={columns}
         isLoading={isFetching}
         onPagination={handlePagination}

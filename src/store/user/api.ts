@@ -1,5 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {IUser} from "@/interfaces/user.ts";
+import {IDeleteUserArgs, IUpdateUserArgs} from "@/store/user/types.ts";
+import {IListAPIResponse} from "@/interfaces";
 
+// Create API service
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
@@ -7,47 +11,50 @@ export const userApi = createApi({
   }),
   tagTypes: ["User"],
   endpoints: (builder) => ({
-    getUsers: builder.query({
+    getUsers: builder.query<IListAPIResponse, string>({
       query: (query: string = "") => `/users${query}`,
-      providesTags: ["User"],
+      transformResponse: ({ data }) => data,
+      providesTags: ({ data }: any) =>
+        data ? data.rows.map(({ id }: any) => ({ type: "User", id })) : ["User"],
     }),
-    getUserById: builder.query({
-      query: (id: string) => `/users/${id}`
+    getUserById: builder.query<IUser, string>({
+      query: (id) => `/users/${id}`,
+      transformResponse: ({ data }) => data,
+      providesTags: (_result, _error, id) => [{ type: "User", id }],
     }),
-    createUser: builder.mutation({
+    createUser: builder.mutation<IUser, Partial<IUser>>({
       query: (newUser) => ({
         url: "/users",
         method: "POST",
         body: newUser,
       }),
+      transformResponse: ({ data }) => data,
       invalidatesTags: ["User"],
     }),
-    // Update an existing user
-    updateUser: builder.mutation({
-      query: ({ id, ...updatedUser }) => ({
+    updateUser: builder.mutation<IUser, IUpdateUserArgs>({
+      query: ({ id, updatedUser }) => ({
         url: `/users/${id}`,
         method: "PUT", // Use "PATCH" if you prefer partial updates
         body: updatedUser,
       }),
-      invalidatesTags: ["User"],
+      transformResponse: ({ data }) => data,
+      invalidatesTags: (_result, _error, { id }) => [{ type: "User", id }],
     }),
-    // Delete a user
-    deleteUser: builder.mutation({
+    deleteUser: builder.mutation<void, IDeleteUserArgs>({
       query: (ids) => ({
         url: `/users`,
         method: "DELETE",
-        body: {
-          ids: ids
-        }
+        body: { ids },
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: () => ["User"],
     }),
   }),
 });
 
+// Export hooks for usage in functional components
 export const {
   useLazyGetUsersQuery,
-  useGetUserByIdQuery,
+  useLazyGetUserByIdQuery,
   useCreateUserMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,

@@ -5,10 +5,10 @@ import { useFormik } from "formik";
 import { Col, Grid } from "@/components/utility";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useCreateUserMutation } from "@/store/user/api";
+import {useCreateUserMutation, useLazyGetUserByIdQuery} from "@/store/user/api";
 import { showAlert } from "@/components/ui/sonner";
 import Loader from "@/components/utility/BasicLoader";
-import { defaultUser } from "@/interfaces/user.ts";
+import {defaultUser, IUser} from "@/interfaces/user.ts";
 import InputErrorMessage from "@/components/form/InputErrorMessage.tsx";
 import RequiredMark from "@/components/form/RequiredMark.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
@@ -33,22 +33,30 @@ const Index: React.FC = () => {
   const drawerRef = useRef<DrawerRef>(null);
 
   const [createUser, { isLoading, error }] = useCreateUserMutation();
+  const [getUserById, { data }] = useLazyGetUserByIdQuery()
+  const [formData, setFormData] = useState<IUser>(defaultUser);
+
+  const params = useParams();
 
   const [formState, setFormState] = useState(0);
 
-  const params = useParams();
-  console.log(formState);
   useEffect(() => {
     if (params.id) {
       setFormState(1);
-      console.log(params.id);
+      getUserById(params.id)
     } else {
       setFormState(0);
     }
   }, [params.id]);
 
+  useEffect(() => {
+    if (data) {
+      setFormData(data)
+    }
+  }, [data]);
+
   const formik = useFormik({
-    initialValues: defaultUser,
+    initialValues: formData,
     validationSchema,
     onSubmit: async (values) => {
       createUser(values).then((res) => {

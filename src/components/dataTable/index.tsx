@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/table"
 
 import Pagination from "./Pagination.tsx"
-import {IPaginationState} from "@/interfaces";
+import {IListAPIResponse, IPaginationState} from "@/interfaces";
 import {defaultPagination} from "@/lib/constants.ts";
 import {Card, CardContent} from "@/components/ui/card.tsx";
 import {ReloadIcon} from "@radix-ui/react-icons";
@@ -36,10 +36,7 @@ import Action from "@/pages/Users/Action.tsx";
 
 interface IProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: {
-    count: number;
-    rows: TData[]
-  },
+  data: IListAPIResponse,
   onPagination: (pagination: IPaginationState) => void,
   onSearch?: (filter: string) => void,
   onSorting?: (sorting: SortingState) => void,

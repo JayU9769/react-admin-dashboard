@@ -1,10 +1,3 @@
-export interface IUser {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-}
-
 
 export interface IPaginationState {
   pageIndex: number;
@@ -12,6 +5,11 @@ export interface IPaginationState {
 }
 
 export type TRecord = Record<string, any>;
+
+export interface IPaginationResponse {
+  data: IListAPIResponse;
+  message: string;
+}
 
 export interface IListAPIResponse {
   count: number;
