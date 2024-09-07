@@ -1,11 +1,11 @@
 import React from "react";
-import {Button} from "@/components/ui/button.tsx";
-import {Input} from "@/components/ui/input.tsx"
-import {Label} from "@/components/ui/label.tsx"
-import {Link} from "react-router-dom";
-
+import { Button } from "@/components/ui/button.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Label } from "@/components/ui/label.tsx";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div className="grid gap-2 text-center mb-4">
@@ -17,12 +17,7 @@ const Login: React.FC = () => {
       <div className="grid gap-4">
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="Enter your email"
-            required
-          />
+          <Input id="email" type="email" placeholder="Enter your email" />
         </div>
         <div className="grid gap-2">
           <div className="flex items-center">
@@ -34,24 +29,28 @@ const Login: React.FC = () => {
               Forgot your password?
             </a>
           </div>
-          <Input id="password" type="password" placeholder="Enter your password" required/>
+          <Input
+            id="password"
+            type="password"
+            placeholder="Enter your password"
+          />
         </div>
-        <Button type="submit" className="w-full">
-          <Link to="/admin">
-            Login
-          </Link>
-
+        <Button
+          type="submit"
+          className="w-full"
+          onClick={() => navigate("/admin")}
+        >
+          Login
         </Button>
       </div>
       <div className="mt-4 text-center text-sm">
         Don&apos;t have an account?{" "}
-        <Link to="/admin/signup" className="underline">
+        <Link to="/signup" className="underline">
           Sign up
         </Link>
       </div>
     </>
-  )
+  );
+};
 
-}
-
-export default Login
+export default Login;

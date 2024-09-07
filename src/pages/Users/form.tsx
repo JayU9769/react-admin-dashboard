@@ -5,10 +5,13 @@ import { useFormik } from "formik";
 import { Col, Grid } from "@/components/utility";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {useCreateUserMutation, useLazyGetUserByIdQuery} from "@/store/user/api";
+import {
+  useCreateUserMutation,
+  useLazyGetUserByIdQuery,
+} from "@/store/user/api";
 import { showAlert } from "@/components/ui/sonner";
 import Loader from "@/components/utility/BasicLoader";
-import {defaultUser, IUser} from "@/interfaces/user.ts";
+import { defaultUser, IUser } from "@/interfaces/user.ts";
 import InputErrorMessage from "@/components/form/InputErrorMessage.tsx";
 import RequiredMark from "@/components/form/RequiredMark.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
@@ -16,15 +19,15 @@ import { useParams } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
-    .required('First Name is required')
-    .max(50, 'Name must be 50 characters or less'),
+    .required("First Name is required")
+    .max(50, "Name must be 50 characters or less"),
   password: Yup.string()
     .required("Last Name is required")
-    .min(8,"Password must be at least 8 characters")
+    .min(8, "Password must be at least 8 characters")
     .max(50, "Last must be 50 characters or less"),
   email: Yup.string()
     .required("Email is required")
-    .email('Invalid Email')
+    .email("Invalid Email")
     .max(50, "Email must be 50 characters or less"),
   // Add additional validation rules for other fields if necessary
 });
@@ -33,7 +36,7 @@ const Index: React.FC = () => {
   const drawerRef = useRef<DrawerRef>(null);
 
   const [createUser, { isLoading, error }] = useCreateUserMutation();
-  const [getUserById, { data }] = useLazyGetUserByIdQuery()
+  const [getUserById, { data }] = useLazyGetUserByIdQuery();
   const [formData, setFormData] = useState<IUser>(defaultUser);
 
   const params = useParams();
@@ -43,7 +46,7 @@ const Index: React.FC = () => {
   useEffect(() => {
     if (params.id) {
       setFormState(1);
-      getUserById(params.id)
+      getUserById(params.id);
     } else {
       setFormState(0);
     }
@@ -51,7 +54,7 @@ const Index: React.FC = () => {
 
   useEffect(() => {
     if (data) {
-      setFormData(data)
+      setFormData(data);
     }
   }, [data]);
 

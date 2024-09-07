@@ -1,9 +1,8 @@
 import React from "react";
-import {Button} from "@/components/ui/button.tsx";
-import {Input} from "@/components/ui/input.tsx"
-import {Label} from "@/components/ui/label.tsx"
-import {Link} from "react-router-dom";
-
+import { Button } from "@/components/ui/button.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Label } from "@/components/ui/label.tsx";
+import { Link } from "react-router-dom";
 
 const Index: React.FC = () => {
   return (
@@ -27,12 +26,7 @@ const Index: React.FC = () => {
         </div>
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="m@example.com"
-            required
-          />
+          <Input id="email" type="email" placeholder="m@example.com" required />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
@@ -44,13 +38,12 @@ const Index: React.FC = () => {
       </div>
       <div className="mt-4 text-center text-sm">
         Already have an account?{" "}
-        <Link to="/admin/login" className="underline">
+        <Link to="/" className="underline">
           Sign in
         </Link>
       </div>
     </>
-  )
+  );
+};
 
-}
-
-export default Index
+export default Index;

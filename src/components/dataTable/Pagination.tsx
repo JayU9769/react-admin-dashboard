@@ -14,18 +14,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Col, Grid } from "../utility";
 
 interface IPaginationProps<TData> {
   table: Table<TData>;
 }
 const Index = <TData,>({ table }: IPaginationProps<TData>) => {
   return (
-    <div className="flex items-center justify-between px-2">
-      <div className="flex-1 text-sm text-muted-foreground">
-        {Object.keys(table.getState().rowSelection).length} row(s) selected out of{" "}
-        {table.getRowCount()} row(s).
-      </div>
-      <div className="flex items-center space-x-4 lg:space-x-4">
+    <Grid>
+      <Col
+        md={4}
+        className="flex-1 flex text-sm text-muted-foreground justify-center md:justify-start"
+      >
+        {Object.keys(table.getState().rowSelection).length} row(s) selected out
+        of {table.getRowCount()} row(s).
+      </Col>
+      <Col
+        md={8}
+        className="flex items-center space-x-4 justify-center md:justify-end lg:space-x-4"
+      >
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
           <Select
@@ -88,9 +95,8 @@ const Index = <TData,>({ table }: IPaginationProps<TData>) => {
             <DoubleArrowRightIcon className="h-4 w-4" />
           </Button>
         </div>
-      </div>
-    </div>
+      </Col>
+    </Grid>
   );
 };
-
 export default Index;
