@@ -75,7 +75,11 @@
 .sidebar-brand {
   @apply py-3 px-4 flex justify-center;
 }
-.sidebar-brand img {
+.logo-default img {
+  height: 35px;
+}
+.sidebar-brand .logo-default img,
+.sidebar-brand .logo-mini img {
   height: 30px;
 }
 .sidebar-mini .sidebar-brand .logo-mini {

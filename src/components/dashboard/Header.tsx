@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { PanelLeft, Search } from "lucide-react";
 import { Link, useMatches } from "react-router-dom";
@@ -26,8 +25,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { rootStates, setCurrentRoute } from "@/store/root/slice.ts";
 import { AppDispatch } from "@/store";
 import { Logo } from "./Logo";
+import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
 
-const Index: React.FC = () => {
+interface IProp {
+  size?: string;
+  direction?: "right" | "left" | "bottom" | "top";
+}
+const Index: React.FC<IProp> = ({ direction = "left" }) => {
   ///////////////////////// Redux States and Actions... /////////////////////////
   const dispatch = useDispatch<AppDispatch>();
   const { currentRoute } = useSelector(rootStates);
@@ -38,22 +42,44 @@ const Index: React.FC = () => {
     dispatch(setCurrentRoute(matches[matches.length - 1]));
   }, [matches]);
 
+  let directionClass: string = "";
+  switch (direction) {
+    case "right":
+      directionClass = `h-screen top-0 right-0 left-auto w-3/5`;
+      break;
+
+    case "left":
+      directionClass = `h-screen top-0 left-0 right-auto w-3/5`;
+      break;
+
+    case "top":
+      directionClass = `w-full top-0 bottom-auto h-full`;
+      break;
+
+    case "bottom":
+      directionClass = `w-full bottom-0 top-auto h-full`;
+      break;
+
+    default:
+      break;
+  }
+
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-      <Sheet>
-        <SheetTrigger asChild>
+      <Drawer direction={direction}>
+        <DrawerTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
             <PanelLeft className="h-5 w-5" />
             <span className="sr-only">Toggle Menu</span>
           </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="sm:max-w-xs p-0">
-          <nav className="grid gap-6 text-lg font-medium mt-2 ms-2 mb-4">
+        </DrawerTrigger>
+        <DrawerContent className={`${directionClass} mt-0 rounded-none`}>
+          <nav className="grid gap-6 text-lg font-medium py-3 px-4 justify-center">
             <Logo />
           </nav>
           <Nav isCollapsed={false} links={list} />
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
       <div className="hidden md:flex flex-col">
         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
           {currentRoute.data ? (currentRoute.data as any).title : "Dashboard"}
