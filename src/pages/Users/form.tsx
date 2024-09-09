@@ -1,21 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
-import DrawerForm, { DrawerRef } from "@/components/form/DrawerForm";
+import React, {useEffect, useRef, useState} from "react";
+import DrawerForm, {DrawerRef} from "@/components/form/DrawerForm";
 import * as Yup from "yup";
-import { useFormik } from "formik";
-import { Col, Grid } from "@/components/utility";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import {
-  useCreateUserMutation,
-  useLazyGetUserByIdQuery,
-} from "@/store/user/api";
-import { showAlert } from "@/components/ui/sonner";
+import {useFormik} from "formik";
+import {Col, Grid} from "@/components/utility";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
+import {useCreateUserMutation, useLazyGetUserByIdQuery, useUpdateUserMutation} from "@/store/user/api";
+import {showAlert} from "@/components/ui/sonner";
 import Loader from "@/components/utility/BasicLoader";
 import { defaultUser, IUser } from "@/interfaces/user.ts";
 import InputErrorMessage from "@/components/form/InputErrorMessage.tsx";
 import RequiredMark from "@/components/form/RequiredMark.tsx";
-import { Switch } from "@/components/ui/switch.tsx";
-import { useParams } from "react-router-dom";
+import {Switch} from "@/components/ui/switch.tsx";
+import {useParams} from "react-router-dom";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -34,14 +31,13 @@ const validationSchema = Yup.object().shape({
 
 const Index: React.FC = () => {
   const drawerRef = useRef<DrawerRef>(null);
-
+  const [updateUser, {isLoading: isUpdateLoding}] = useUpdateUserMutation();
+  const [getUserById, {data}] = useLazyGetUserByIdQuery()
   const [createUser, { isLoading, error }] = useCreateUserMutation();
-  const [getUserById, { data }] = useLazyGetUserByIdQuery();
   const [formData, setFormData] = useState<IUser>(defaultUser);
+  const [formState, setFormState] = useState(0);
 
   const params = useParams();
-
-  const [formState, setFormState] = useState(0);
 
   useEffect(() => {
     if (params.id) {
@@ -61,19 +57,21 @@ const Index: React.FC = () => {
   const formik = useFormik({
     initialValues: formData,
     validationSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
-      createUser(values).then((res) => {
-        if (res.data) {
-          drawerRef.current?.closeDrawer();
-        }
-        if (res.error) {
-          console.log((res.error as any).data.message, error);
-          showAlert(
-            (res.error as any).data.message || "Internal server error",
-            "error"
-          );
-        }
-      });
+      (formState ? updateUser({id: params.id as string, updatedUser: values}) : createUser(values))
+        .then((res) => {
+          if (res.data) {
+            drawerRef.current?.closeDrawer();
+          }
+          if (res.error) {
+            console.log((res.error as any).data.message, error);
+            showAlert(
+              (res.error as any).data.message || "Internal server error",
+              "error"
+            );
+          }
+        });
     },
   });
 
@@ -85,12 +83,12 @@ const Index: React.FC = () => {
       // size={"9/12"}
       direction="right"
     >
-      {isLoading && <Loader />}
+      {(isLoading || isUpdateLoding) && <Loader/>}
       <form onSubmit={formik.handleSubmit}>
         <Grid className="p-4 pb-0">
           <Col>
             <Label htmlFor="name">
-              Name <RequiredMark />
+              Name <RequiredMark/>
             </Label>
             <Input
               id="name"
@@ -102,13 +100,13 @@ const Index: React.FC = () => {
             />
             <div className={`min-h-4`}>
               {formik.touched.name && formik.errors.name && (
-                <InputErrorMessage message={formik.errors.name} />
+                <InputErrorMessage message={formik.errors.name}/>
               )}
             </div>
           </Col>
           <Col>
             <Label htmlFor="email">
-              E-Mail <RequiredMark />
+              E-Mail <RequiredMark/>
             </Label>
             <Input
               id="email"
@@ -120,13 +118,13 @@ const Index: React.FC = () => {
             />
             <div className={`min-h-4`}>
               {formik.touched.email && formik.errors.email && (
-                <InputErrorMessage message={formik.errors.email} />
+                <InputErrorMessage message={formik.errors.email}/>
               )}
             </div>
           </Col>
           <Col>
             <Label htmlFor="password">
-              Password <RequiredMark />
+              Password <RequiredMark/>
             </Label>
             <Input
               id="password"
@@ -139,7 +137,7 @@ const Index: React.FC = () => {
             />
             <div className={`min-h-4`}>
               {formik.touched.password && formik.errors.password && (
-                <InputErrorMessage message={formik.errors.password} />
+                <InputErrorMessage message={formik.errors.password}/>
               )}
             </div>
           </Col>
@@ -147,7 +145,7 @@ const Index: React.FC = () => {
             <div className="flex items-center space-x-4 rounded-md border p-4">
               <div className="flex-1 space-y-1">
                 <Label htmlFor="status">
-                  Status <RequiredMark />
+                  Status <RequiredMark/>
                 </Label>
                 <p className="text-xs leading-normal text-muted-foreground">
                   Use this option to set the user as Active or Inactive across

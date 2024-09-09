@@ -13,12 +13,9 @@ export const userApi = createApi({
   endpoints: (builder) => ({
     getUsers: builder.query<IListAPIResponse, string>({
       query: (query: string = "") => `/users${query}`,
-      transformResponse: (response: any) =>
-        response?.data ? response?.data : [],
-      providesTags: (response: any) =>
-        response?.data
-          ? response.data.rows.map(({ id }: any) => ({ type: "User", id }))
-          : ["User"],
+      transformResponse: ({ data }) => data,
+      providesTags: ({ rows }: any) =>
+        rows ? rows.map(({ id }: IUser) => ({ type: "User", id })) : ["User"],
     }),
     getUserById: builder.query<IUser, string>({
       query: (id) => `/users/${id}`,
@@ -41,7 +38,7 @@ export const userApi = createApi({
         body: updatedUser,
       }),
       transformResponse: ({ data }) => data,
-      invalidatesTags: (_result, _error, { id }) => [{ type: "User", id }],
+      invalidatesTags: () => ["User"],
     }),
     deleteUser: builder.mutation<void, IDeleteUserArgs>({
       query: (ids: any) => ({
