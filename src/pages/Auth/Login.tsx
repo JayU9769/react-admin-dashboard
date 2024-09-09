@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
 import { useLoginMutation } from "@/store/admin/api";
-
 import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
@@ -25,7 +23,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const Login: React.FC = () => {
-  const [login, { isLoading, isError, error }] = useLoginMutation();
+  const [login, { isLoading, isError, error  }] = useLoginMutation();
 
   const [formData] = useState({
     email: "",
@@ -49,8 +47,8 @@ const Login: React.FC = () => {
       </div>
       <form onSubmit={formik.handleSubmit} method="post">
         <div className={`min-h-2 mb-4`}>
-          {isError && error.message && (
-            <InputErrorMessage message={error.message} />
+          {isError && (error as any).message && (
+            <InputErrorMessage message={(error as any).message} />
           )}
         </div>
         <div className="grid gap-4">
