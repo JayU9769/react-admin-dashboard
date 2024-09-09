@@ -1,13 +1,41 @@
 import Sidebar from "@/components/dashboard/Sidebar";
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React, { useCallback, useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { rootStates } from "@/store/root/slice.ts";
 import { useSelector } from "react-redux";
 import Header from "@/components/dashboard/Header";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 const Index: React.FC = () => {
   ///////////////////////// Redux States and Actions... /////////////////////////
   const { isCollapsed } = useSelector(rootStates);
+
+  const navigate = useNavigate();
+
+  const authCheck = useCallback(async () => {
+    const sessionCookie = Cookies.get("connect.sid");
+    console.log(sessionCookie);
+    if (!sessionCookie) {
+      // return navigate("/");
+    }
+
+    try {
+      const response = await axios.get("http://localhost:3000/admins/profile", {
+        withCredentials: true,
+      });
+
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+      navigate("/");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    authCheck();
+  }, [authCheck]);
+
   return (
     <>
       <div className="flex min-h-screen w-full flex-col bg-muted/40">

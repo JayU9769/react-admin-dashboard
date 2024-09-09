@@ -1,11 +1,35 @@
-import React from "react";
+import React, { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
+
+  const login = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/admins/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+      console.log(response);
+      navigate("/admin");
+    } catch (e: any) {
+      console.log(e);
+      setError("Invalid credentials, please try again");
+    }
+  };
   return (
     <>
       <div className="grid gap-2 text-center mb-4">
@@ -17,7 +41,13 @@ const Login: React.FC = () => {
       <div className="grid gap-4">
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="Enter your email" />
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            placeholder="Enter your email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
         <div className="grid gap-2">
           <div className="flex items-center">
@@ -33,16 +63,15 @@ const Login: React.FC = () => {
             id="password"
             type="password"
             placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <Button
-          type="submit"
-          className="w-full"
-          onClick={() => navigate("/admin")}
-        >
+        <Button type="submit" className="w-full" onClick={login}>
           Login
         </Button>
       </div>
+      {error && <p>{error}</p>}
       <div className="mt-4 text-center text-sm">
         Don&apos;t have an account?{" "}
         <Link to="/signup" className="underline">
