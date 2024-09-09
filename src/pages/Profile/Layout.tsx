@@ -5,7 +5,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 
-const ProfleLayout: React.FC = () => {
+const Index: React.FC = () => {
   const { pathname } = useLocation();
   const items = [
     {
@@ -71,4 +71,4 @@ const ProfleLayout: React.FC = () => {
     </>
   );
 };
-export default ProfleLayout;
+export default Index;
