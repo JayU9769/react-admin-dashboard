@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {IUser} from "@/interfaces/user.ts";
-import {IDeleteUserArgs, IUpdateUserArgs} from "@/store/user/types.ts";
-import {IListAPIResponse} from "@/interfaces";
+import { IUser } from "@/interfaces/user.ts";
+import { IDeleteUserArgs, IUpdateUserArgs } from "@/store/user/types.ts";
+import { IListAPIResponse } from "@/interfaces";
 
 // Create API service
 export const userApi = createApi({
@@ -41,7 +41,7 @@ export const userApi = createApi({
       invalidatesTags: () => ["User"],
     }),
     deleteUser: builder.mutation<void, IDeleteUserArgs>({
-      query: (ids) => ({
+      query: (ids: any) => ({
         url: `/users`,
         method: "DELETE",
         body: { ids },

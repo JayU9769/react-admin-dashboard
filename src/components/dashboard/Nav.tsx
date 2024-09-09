@@ -22,11 +22,13 @@ const Index: React.FC<IProps> = ({ links, isCollapsed = false }) => {
   return (
     <div
       data-collapsed={isCollapsed}
-      className={`group flex flex-col gap-4 py-2 ${isCollapsed ? "py-2" : ""}`}
+      className={`group border-t flex flex-col gap-4 py-3 ${
+        isCollapsed ? "" : ""
+      }`}
     >
       <TooltipProvider delayDuration={0}>
         <nav
-          className={`grid gap-1 px-2 ${
+          className={`grid gap-1 px-3 ${
             isCollapsed ? "justify-center px-2" : ""
           }`}
         >
@@ -73,7 +75,7 @@ const Index: React.FC<IProps> = ({ links, isCollapsed = false }) => {
                     variant: currentRoute.id.includes(link.id)
                       ? "default"
                       : "ghost",
-                    size: "sm",
+                    size: "default",
                   }),
                   currentRoute.id.includes(link.id) &&
                     "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",

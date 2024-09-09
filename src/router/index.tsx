@@ -26,12 +26,12 @@ type TRouteObject = Omit<RouteObject, "children"> & {
 
 const routes: TRouteObject[] = [
   {
-    path: "/admin",
+    path: "/",
     element: <AuthLayout />,
     animate: false,
     children: [
       {
-        path: "login",
+        path: "",
         element: <Login />,
         animate: true,
       },
