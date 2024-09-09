@@ -1,15 +1,18 @@
+import { useGetAuthQuery } from "@/store/admin/api";
+import { adminStates } from "@/store/admin/slice";
 import React, { useEffect } from "react";
-import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 
 const AuthLayout: React.FC = () => {
+  useGetAuthQuery();
   const navigate = useNavigate();
+  const { auth } = useSelector(adminStates);
   useEffect(() => {
-    const sessionCookie = Cookies.get("connect.sid");
-    if (sessionCookie) {
-      return navigate("/admin");
+    if (auth.id) {
+      navigate("/admin");
     }
-  }, [navigate]);
+  }, [auth, navigate]);
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px] h-screen">
       <div className="flex items-center justify-center py-12">

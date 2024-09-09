@@ -1,40 +1,29 @@
 import Sidebar from "@/components/dashboard/Sidebar";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { rootStates } from "@/store/root/slice.ts";
 import { useSelector } from "react-redux";
 import Header from "@/components/dashboard/Header";
-import Cookies from "js-cookie";
-import axios from "axios";
+import { useGetAuthQuery } from "@/store/admin/api";
+import { adminStates } from "@/store/admin/slice";
 
 const Index: React.FC = () => {
   ///////////////////////// Redux States and Actions... /////////////////////////
   const { isCollapsed } = useSelector(rootStates);
-
+  const { isError } = useGetAuthQuery();
   const navigate = useNavigate();
-
-  const authCheck = useCallback(async () => {
-    const sessionCookie = Cookies.get("connect.sid");
-    console.log(sessionCookie);
-    if (!sessionCookie) {
-      // return navigate("/");
+  const { auth } = useSelector(adminStates);
+  useEffect(() => {
+    if (auth.id) {
+      navigate("/admin");
     }
-
-    try {
-      const response = await axios.get("http://localhost:3000/admins/profile", {
-        withCredentials: true,
-      });
-
-      console.log(response);
-    } catch (e) {
-      console.log(e);
-      navigate("/");
-    }
-  }, [navigate]);
+  }, [auth, navigate]);
 
   useEffect(() => {
-    authCheck();
-  }, [authCheck]);
+    if (isError) {
+      navigate("/");
+    }
+  }, [isError, navigate]);
 
   return (
     <>

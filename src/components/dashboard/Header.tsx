@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button.tsx";
 import { PanelLeft, Search } from "lucide-react";
-import { Link, useMatches } from "react-router-dom";
+import { Link, useMatches, useNavigate } from "react-router-dom";
 import Nav from "@/components/dashboard/Nav.tsx";
 import { list } from "@/components/dashboard/NavList.tsx";
 import { Input } from "@/components/ui/input.tsx";
@@ -26,6 +26,7 @@ import { rootStates, setCurrentRoute } from "@/store/root/slice.ts";
 import { AppDispatch } from "@/store";
 import { Logo } from "./Logo";
 import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
+import { useLogoutMutation } from "@/store/admin/api";
 
 interface IProp {
   size?: string;
@@ -34,13 +35,15 @@ interface IProp {
 const Index: React.FC<IProp> = ({ direction = "left" }) => {
   ///////////////////////// Redux States and Actions... /////////////////////////
   const dispatch = useDispatch<AppDispatch>();
+  const [logout] = useLogoutMutation();
+  const navigate = useNavigate();
   const { currentRoute } = useSelector(rootStates);
 
   const matches = useMatches();
 
   useEffect(() => {
     dispatch(setCurrentRoute(matches[matches.length - 1]));
-  }, [matches]);
+  }, [dispatch, matches]);
 
   let directionClass: string = "";
   switch (direction) {
@@ -63,6 +66,10 @@ const Index: React.FC<IProp> = ({ direction = "left" }) => {
     default:
       break;
   }
+
+  const handleLogout = () => {
+    logout().then(() => navigate("/"));
+  };
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -138,7 +145,7 @@ const Index: React.FC<IProp> = ({ direction = "left" }) => {
           <DropdownMenuItem>Settings</DropdownMenuItem>
           <DropdownMenuItem>Support</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
