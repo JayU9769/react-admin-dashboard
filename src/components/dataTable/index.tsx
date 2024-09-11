@@ -33,6 +33,12 @@ import {Button} from "@/components/ui/button.tsx";
 import { RefreshCw } from "lucide-react";
 import ViewOptions from "@/components/dataTable/ViewOptions.tsx";
 import Action from "@/pages/Users/Action.tsx";
+import { TableState as OriginalTableState } from '@tanstack/react-table'; // Adjust the import path as needed
+
+
+interface TableState extends OriginalTableState {
+  id: string; // Add your custom property here
+}
 
 interface IProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -41,7 +47,8 @@ interface IProps<TData, TValue> {
   onSearch?: (filter: string) => void,
   onSorting?: (sorting: SortingState) => void,
   toolbarChildren?: React.ReactNode,
-  isLoading: boolean
+  isLoading: boolean,
+  id: string;
 }
 
 const Index = <TData, TValue>(
@@ -52,15 +59,13 @@ const Index = <TData, TValue>(
     onSearch,
     toolbarChildren,
     onSorting,
-    isLoading = true
+    isLoading = true,
+    id
   }: IProps<TData, TValue>
 ) => {
   const [rowSelection, setRowSelection] = useState({})
-  const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  )
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
   const [globalFilter, setGlobalFilter] = useState('')
   const [sorting, setSorting] = useState<SortingState>([])
@@ -78,8 +83,6 @@ const Index = <TData, TValue>(
     if (onSorting) onSorting(sorting)
   }, [sorting]);
 
-
-
   const table = useReactTable({
     data: data.rows,
     columns,
@@ -88,8 +91,9 @@ const Index = <TData, TValue>(
       columnVisibility,
       rowSelection,
       columnFilters,
-      pagination
-    },
+      pagination,
+      id
+    } as TableState,
     initialState: {
       pagination: pagination,
     },
@@ -111,6 +115,7 @@ const Index = <TData, TValue>(
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getRowId: (row: any) => row.id,
   })
+  console.log((table.getState() as TableState).id)
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -124,7 +129,11 @@ const Index = <TData, TValue>(
             }}
             className="h-8 w-[150px] lg:w-[250px] bg-white"
           />
-          <Action type={'bulk'} ids={table.getSelectedRowModel().rows.map(row => row.id)} />
+          <Action
+            type={'bulk'}
+            ids={Object.keys(table.getState().rowSelection)}
+            onDelete={() => table.setRowSelection({})}
+          />
           <Button variant={'outline'} size={'sm'} onClick={() => {
             onPagination(pagination)
           }}>

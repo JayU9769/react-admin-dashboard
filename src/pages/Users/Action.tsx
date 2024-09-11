@@ -24,9 +24,10 @@ import { useNavigate } from "react-router-dom";
 interface IProps {
   type: TActionType;
   ids: TIds;
+  onDelete?: () => void
 }
 
-const Index: React.FC<IProps> = ({ type, ids }) => {
+const Index: React.FC<IProps> = ({ type, ids, onDelete }) => {
   const [deleteUser, { isLoading }] = useDeleteUserMutation();
   const navigate = useNavigate();
   const [model, setModel] = useState(false);
@@ -97,6 +98,7 @@ const Index: React.FC<IProps> = ({ type, ids }) => {
             if (res.data) {
               showAlert("Deleted Successfully", "success");
               setModel(false);
+              if (onDelete) onDelete();
             }
             if (res.error) {
               showAlert(

@@ -67,14 +67,13 @@ export const userColumns: ColumnDef<IUser>[] = [
     ),
     cell: ({row}) => {
       const status = row.getValue("status") as string;
-      return <div className={`capitalize flex gap-2 text-muted-foreground`}>
+      return <div className={`capitalize flex gap-1 text-muted-foreground items-center`}>
         {
-          status === 'active'
-            ? <CircleCheck className={`h-4 w-4 text-green-600`}/>
+          status
+            ? <><CircleCheck className={`text-green-600`} size={16}/> Active</>
             :
-            <CircleX className={`h-4 w-4 text-red-600`}/>
+            <><CircleX className={`text-red-600`} size={16} /> Inactive</>
         }
-        {status}
       </div>
     },
     enableSorting: true,

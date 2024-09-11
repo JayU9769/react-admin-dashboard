@@ -55,6 +55,7 @@ const Index: React.FC = () => {
   return (
     <>
       <DataTable
+        id={'users'}
         data={data}
         columns={columns}
         isLoading={isFetching}
