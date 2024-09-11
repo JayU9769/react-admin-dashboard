@@ -1,7 +1,7 @@
-import { ResponsiveNumberOrString, ResponsiveObject } from "@/interfaces/utility.ts";
+import {IResponsiveObject, TResponsiveNumberOrString} from "@/interfaces/utility.ts";
 
 export const generateResponsiveClasses = (
-  prop: ResponsiveNumberOrString | ResponsiveObject | undefined,
+  prop: TResponsiveNumberOrString | IResponsiveObject | undefined,
   className: string
 ): string[] => {
   if (!prop) return [];

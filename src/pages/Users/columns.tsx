@@ -1,9 +1,9 @@
 import {ColumnDef} from "@tanstack/react-table"
 import {Checkbox} from "@/components/ui/checkbox"
 import ColumnHeader from "@/components/dataTable/ColumnHeader.tsx";
-import {IUser} from "@/interfaces";
 import {CircleCheck, CircleX } from "lucide-react";
 import Action from "@/pages/Users/Action.tsx";
+import {IUser} from "@/interfaces/user.ts";
 
 export const userColumns: ColumnDef<IUser>[] = [
   {

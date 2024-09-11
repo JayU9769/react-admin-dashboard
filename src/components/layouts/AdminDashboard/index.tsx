@@ -5,19 +5,12 @@ import { rootStates } from "@/store/root/slice.ts";
 import { useSelector } from "react-redux";
 import Header from "@/components/dashboard/Header";
 import { useGetAuthQuery } from "@/store/admin/api";
-import { adminStates } from "@/store/admin/slice";
 
 const Index: React.FC = () => {
   ///////////////////////// Redux States and Actions... /////////////////////////
   const { isCollapsed } = useSelector(rootStates);
   const { isError } = useGetAuthQuery();
   const navigate = useNavigate();
-  const { auth } = useSelector(adminStates);
-  useEffect(() => {
-    if (auth.id) {
-      navigate("/admin");
-    }
-  }, [auth, navigate]);
 
   useEffect(() => {
     if (isError) {
