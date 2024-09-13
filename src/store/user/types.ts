@@ -1,8 +1,7 @@
-import {IUser} from "@/interfaces/user.ts";
+import { IUser } from "@/interfaces/user.ts";
 
-export type IUserInitialState = {
-};
-
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export type IUserInitialState = {};
 
 export interface IUpdateUserArgs {
   id: string;

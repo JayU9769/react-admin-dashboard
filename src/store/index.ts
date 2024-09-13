@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "@/store/root/slice";
 import userReducer from "@/store/user/slice";
+import roleReducer from "@/store/roles/slice";
 import adminReducer from "@/store/admin/slice";
 import { ThunkAction } from "redux-thunk";
 import { Action } from "redux";
 import { rootApi } from "@/store/root/api.ts";
 import { userApi } from "@/store/user/api.ts";
+import { roleApi } from "@/store/roles/api.ts";
 import { adminApi } from "@/store/admin/api.ts";
 
 // Use `configureStore` function to create the store:
@@ -16,6 +18,8 @@ const store = configureStore({
     [rootApi.reducerPath]: rootApi.reducer,
     user: userReducer,
     [userApi.reducerPath]: userApi.reducer,
+    role: roleReducer,
+    [roleApi.reducerPath]: roleApi.reducer,
     admin: adminReducer,
     [adminApi.reducerPath]: adminApi.reducer,
   },
@@ -25,6 +29,7 @@ const store = configureStore({
     })
       .concat(rootApi.middleware)
       .concat(userApi.middleware)
+      .concat(roleApi.middleware)
       .concat(adminApi.middleware),
 });
 

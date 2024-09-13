@@ -5,18 +5,19 @@ import { useFormik } from "formik";
 import { Col, Grid } from "@/components/utility";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {
-  useCreateUserMutation,
-  useLazyGetUserByIdQuery,
-  useUpdateUserMutation,
-} from "@/store/user/api";
 import { showAlert } from "@/components/ui/sonner";
 import Loader from "@/components/utility/BasicLoader";
-import { defaultUser, IUser } from "@/interfaces/user.ts";
+import { defaultAdminForm } from "@/interfaces/admin.ts";
 import InputErrorMessage from "@/components/form/InputErrorMessage.tsx";
 import RequiredMark from "@/components/form/RequiredMark.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
 import { useParams } from "react-router-dom";
+import {
+  useCreateAdminMutation,
+  useUpdateAdminMutation,
+  useLazyGetAdminByIdQuery,
+} from "@/store/admin/api";
+import { IAdminForm } from "@/interfaces/admin";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -35,10 +36,10 @@ const validationSchema = Yup.object().shape({
 
 const Index: React.FC = () => {
   const drawerRef = useRef<DrawerRef>(null);
-  const [updateUser, { isLoading: isUpdateLoding }] = useUpdateUserMutation();
-  const [getUserById, { data }] = useLazyGetUserByIdQuery();
-  const [createUser, { isLoading }] = useCreateUserMutation();
-  const [formData, setFormData] = useState<IUser>(defaultUser);
+  const [updateAdmin, { isLoading: isUpdateLoding }] = useUpdateAdminMutation();
+  const [getAdminById, { data }] = useLazyGetAdminByIdQuery();
+  const [createAdmin, { isLoading }] = useCreateAdminMutation();
+  const [formData, setFormData] = useState<IAdminForm>(defaultAdminForm);
   const [formState, setFormState] = useState(0);
 
   const params = useParams();
@@ -46,11 +47,11 @@ const Index: React.FC = () => {
   useEffect(() => {
     if (params.id) {
       setFormState(1);
-      getUserById(params.id);
+      getAdminById(params.id);
     } else {
       setFormState(0);
     }
-  }, [params.id]);
+  }, [getAdminById, params.id]);
 
   useEffect(() => {
     if (data) {
@@ -64,8 +65,8 @@ const Index: React.FC = () => {
     enableReinitialize: true,
     onSubmit: async (values) => {
       (formState
-        ? updateUser({ id: params.id as string, updatedUser: values })
-        : createUser(values)
+        ? updateAdmin({ id: params.id as string, updatedBody: values })
+        : createAdmin(values)
       ).then((res) => {
         if (res.data) {
           drawerRef.current?.closeDrawer();
@@ -160,7 +161,7 @@ const Index: React.FC = () => {
               <Switch
                 id="status"
                 name="status"
-                checked={formik.values.status === "active"}
+                checked={formik.values.status ? true : false}
                 onCheckedChange={(value) => {
                   formik.setFieldValue("status", value ? "active" : "inactive");
                 }}

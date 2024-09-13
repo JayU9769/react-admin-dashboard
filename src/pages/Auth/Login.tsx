@@ -23,7 +23,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const Login: React.FC = () => {
-  const [login, { isLoading, isError, error  }] = useLoginMutation();
+  const [login, { isLoading, isError, error }] = useLoginMutation();
 
   const [formData] = useState({
     email: "",
@@ -82,6 +82,7 @@ const Login: React.FC = () => {
             <Input
               id="password"
               type="password"
+              autoComplete="current-password"
               placeholder="Enter your password"
               value={formik.values.password}
               onChange={formik.handleChange}

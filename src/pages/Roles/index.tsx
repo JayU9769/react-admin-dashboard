@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useLazyGetUsersQuery } from "@/store/user/api.ts";
 import DataTable from "@/components/dataTable";
 import { userColumns } from "@/pages/Users/columns.tsx";
 import { IPaginationState, TRecord } from "@/interfaces";
@@ -8,18 +7,19 @@ import { Link, Outlet } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
 import { SortingState } from "@tanstack/react-table";
 import { convertToQuery } from "@/lib/utils.ts";
+import { useLazyGetRolesQuery } from "@/store/roles/api";
 
 const Index: React.FC = () => {
   const [queryString, setQueryString] = useState<TRecord>({});
-  const [getUsers, { data = defaultAPIResponse, isFetching }] =
-    useLazyGetUsersQuery();
+  const [getRoles, { data = defaultAPIResponse, isFetching }] =
+    useLazyGetRolesQuery();
   const columns = useMemo(() => userColumns, []);
 
   useEffect(() => {
     if (Object.keys(queryString).length > 1) {
-      getUsers(convertToQuery(queryString));
+      getRoles(convertToQuery(queryString));
     }
-  }, [queryString]);
+  }, [getRoles, queryString]);
 
   const handlePagination = (pagination: IPaginationState) => {
     setQueryString({
@@ -52,7 +52,7 @@ const Index: React.FC = () => {
   return (
     <>
       <DataTable
-        id={"users"}
+        id={"roles"}
         data={data}
         columns={columns}
         isLoading={isFetching}

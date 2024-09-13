@@ -12,6 +12,26 @@ export interface IAdmin {
   updatedAt: Date;
 }
 
+export interface IAdminForm {
+  id: string;
+  email: string;
+  status: number;
+  password?: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export const defaultAdminForm: IAdminForm = {
+  id: "",
+  email: "",
+  name: "",
+  password: "",
+  status: 1,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
 export const defaultAdmin: IAdmin = {
   id: "",
   email: "",

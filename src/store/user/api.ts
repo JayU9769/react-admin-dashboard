@@ -1,14 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IUser } from "@/interfaces/user.ts";
-import { IDeleteUserArgs, IUpdateUserArgs } from "@/store/user/types.ts";
+import { IDeleteUserArgs, IUpdateUserArgs } from "./types.ts";
 import { IListAPIResponse } from "@/interfaces";
-import {API_BASE_URL} from "@/lib/constants.ts";
+import { API_BASE_URL } from "@/lib/constants.ts";
 
 // Create API service
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_URL,
+    credentials: "include",
   }),
   tagTypes: ["User"],
   endpoints: (builder) => ({

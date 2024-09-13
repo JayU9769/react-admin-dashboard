@@ -1,5 +1,3 @@
-
-
 // User interface
 export interface IUser {
   id?: number;
@@ -9,11 +7,10 @@ export interface IUser {
   status: string;
 }
 
-
 export const defaultUser: IUser = {
   id: 0,
   name: "",
   email: "",
   password: "",
-  status: 'active'
-}
+  status: "active",
+};

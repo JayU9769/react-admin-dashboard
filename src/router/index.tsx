@@ -3,20 +3,26 @@ import {
   RouteObject,
   RouterProvider,
 } from "react-router-dom";
-import React from "react";
+import React, { lazy } from "react";
 import { ThemeProvider } from "next-themes";
-import Login from "@/pages/Auth/Login.tsx";
-import Signup from "@/pages/Auth/Signup.tsx";
-import Dashboard from "@/pages/Dashboard.tsx";
-import Users from "@/pages/Users";
-import UserForm from "@/pages/Users/form";
-import ProfileLayout from "@/pages/Profile/Layout";
-import PageTransition from "@/components/PageTransition.tsx";
-import AuthLayout from "@/components/layouts/AuthLayout";
-import AdminDashboard from "@/components/layouts/AdminDashboard";
 import { AnimatePresence } from "framer-motion";
 import { TRecord } from "@/interfaces";
-import { Toaster } from "@/components/ui/sonner.tsx";
+import { Toaster } from "@/components/ui/sonner";
+import PageTransition from "@/components/PageTransition";
+import AuthLayout from "@/components/layouts/AuthLayout";
+import AdminDashboard from "@/components/layouts/AdminDashboard";
+
+// Lazy-loaded components
+const Login = lazy(() => import("@/pages/Auth/Login.tsx"));
+const Signup = lazy(() => import("@/pages/Auth/Signup.tsx"));
+const Dashboard = lazy(() => import("@/pages/Dashboard.tsx"));
+const Users = lazy(() => import("@/pages/Users"));
+const UserForm = lazy(() => import("@/pages/Users/form"));
+const Roles = lazy(() => import("@/pages/Roles"));
+const RoleForm = lazy(() => import("@/pages/Roles/form"));
+const Admins = lazy(() => import("@/pages/Admins"));
+const AdminForm = lazy(() => import("@/pages/Admins/form"));
+const ProfileLayout = lazy(() => import("@/pages/Profile/Layout"));
 
 type TRouteObject = Omit<RouteObject, "children"> & {
   animate: boolean;
@@ -119,6 +125,52 @@ const routes: TRouteObject[] = [
             data: { title: "Edit User" },
             path: "edit/:id",
             element: <UserForm />,
+            animate: false,
+          },
+        ],
+      },
+      {
+        path: "roles",
+        data: { title: "Roles" },
+        element: <Roles />,
+        animate: true,
+        id: "admin.roles",
+        children: [
+          {
+            id: "admin.roles.create",
+            data: { title: "Create Role" },
+            path: "create",
+            element: <RoleForm />,
+            animate: false,
+          },
+          {
+            id: "admin.roles.edit",
+            data: { title: "Edit Role" },
+            path: "edit/:id",
+            element: <RoleForm />,
+            animate: false,
+          },
+        ],
+      },
+      {
+        path: "list",
+        data: { title: "Admins" },
+        element: <Admins />,
+        animate: true,
+        id: "admin.admins",
+        children: [
+          {
+            id: "admin.admins.create",
+            data: { title: "Create Admin" },
+            path: "create",
+            element: <AdminForm />,
+            animate: false,
+          },
+          {
+            id: "admin.admins.edit",
+            data: { title: "Edit Admin" },
+            path: "edit/:id",
+            element: <AdminForm />,
             animate: false,
           },
         ],

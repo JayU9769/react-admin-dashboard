@@ -30,7 +30,11 @@ const Index: React.FC = () => {
         </div>
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" type="password" />
+          <Input
+            id="password"
+            type="password"
+            autoComplete="current-password"
+          />
         </div>
         <Button type="submit" className="w-full">
           Create an account
