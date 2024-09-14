@@ -53,7 +53,7 @@ export const userColumns: ColumnDef<IUser>[] = [
   {
     accessorKey: "email",
     header: ({column}) => (
-      <ColumnHeader column={column} title="Last Name"/>
+      <ColumnHeader column={column} title="Email"/>
     ),
     cell: ({row}) => <div>{row.getValue("email")}</div>,
     enableSorting: true,

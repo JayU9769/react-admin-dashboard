@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/table";
 
 import Pagination from "./Pagination.tsx";
-import { IListAPIResponse, IPaginationState } from "@/interfaces";
+import {IListAPIResponse, IPaginationState, ITableState} from "@/interfaces";
 import { defaultPagination } from "@/lib/constants.ts";
 import { Card, CardContent } from "@/components/ui/card.tsx";
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -33,11 +33,6 @@ import { Button } from "@/components/ui/button.tsx";
 import { RefreshCw } from "lucide-react";
 import ViewOptions from "@/components/dataTable/ViewOptions.tsx";
 import Action from "@/pages/Users/Action.tsx";
-import { TableState as OriginalTableState } from "@tanstack/react-table"; // Adjust the import path as needed
-
-interface TableState extends OriginalTableState {
-  id: string; // Add your custom property here
-}
 
 interface IProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -60,6 +55,7 @@ const Index = <TData, TValue>({
   isLoading = true,
   id,
 }: IProps<TData, TValue>) => {
+
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -90,7 +86,7 @@ const Index = <TData, TValue>({
       columnFilters,
       pagination,
       id,
-    } as TableState,
+    } as ITableState,
     initialState: {
       pagination: pagination,
     },
@@ -112,7 +108,7 @@ const Index = <TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getRowId: (row: any) => row.id,
   });
-  // console.log((table.getState() as TableState).id)
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">

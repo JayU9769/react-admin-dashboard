@@ -1,4 +1,8 @@
+import { TableState as OriginalTableState } from "@tanstack/react-table"; // Adjust the import path as needed
 
+export interface ITableState extends OriginalTableState {
+  id: string;
+}
 export interface IPaginationState {
   pageIndex: number;
   pageSize: number;
