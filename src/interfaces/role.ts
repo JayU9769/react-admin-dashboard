@@ -1,9 +1,13 @@
 export interface IRole {
-  id: number;
+  id: string;
   name: string;
+  type: string;
+  status: number;
 }
 
 export const defaultRole = {
-  id: 0,
+  id: "",
   name: "",
+  type: "",
+  status: 1,
 };

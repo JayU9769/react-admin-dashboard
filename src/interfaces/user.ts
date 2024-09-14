@@ -1,6 +1,6 @@
 // User interface
 export interface IUser {
-  id?: number;
+  id?: string;
   name: string;
   email: string;
   password: string;
@@ -8,7 +8,7 @@ export interface IUser {
 }
 
 export const defaultUser: IUser = {
-  id: 0,
+  id: "",
   name: "",
   email: "",
   password: "",

@@ -19,7 +19,7 @@ import { useParams } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
-    .required("First Name is required")
+    .required("Name is required")
     .max(50, "Name must be 50 characters or less"),
   // Add additional validation rules for other fields if necessary
 });
@@ -76,7 +76,7 @@ const Index: React.FC = () => {
       ref={drawerRef}
       title={formState ? "Edit Role" : "Create Role"}
       onSubmit={formik.handleSubmit}
-      // size={"9/12"}
+      size="sm"
       direction="right"
     >
       {(isLoading || isUpdateLoding) && <Loader />}
@@ -97,6 +97,24 @@ const Index: React.FC = () => {
             <div className={`min-h-4`}>
               {formik.touched.name && formik.errors.name && (
                 <InputErrorMessage message={formik.errors.name} />
+              )}
+            </div>
+          </Col>
+          <Col>
+            <Label htmlFor="type">
+              Type <RequiredMark />
+            </Label>
+            <Input
+              id="type"
+              name="type"
+              type="text"
+              onChange={formik.handleChange}
+              value={formik.values.type}
+              onBlur={formik.handleBlur}
+            />
+            <div className={`min-h-4`}>
+              {formik.touched.type && formik.errors.type && (
+                <InputErrorMessage message={formik.errors.type} />
               )}
             </div>
           </Col>

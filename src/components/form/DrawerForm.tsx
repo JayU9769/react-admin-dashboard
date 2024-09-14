@@ -26,7 +26,7 @@ interface IProp {
   closeLabel?: string | ReactNode;
   hideClose?: boolean;
   drawerHeaderClass?: string;
-  size?: string;
+  size?: "sm" | "md" | "lg" | "xl" | "fullscreen";
   direction?: "right" | "left" | "bottom" | "top";
   onSubmit: () => void;
 }
@@ -70,21 +70,43 @@ const Index = forwardRef<DrawerRef, IProp>(
     }, [navigate, open]);
 
     let directionClass: string = "";
+    let sizeWidthClass: string = "w-4/12";
+    let sizeHeightClass: string = "h-4/12";
+    switch (size) {
+      case "sm":
+        sizeWidthClass = "w-2/12";
+        sizeHeightClass = "h-2/12";
+        break;
+      case "lg":
+        sizeWidthClass = "w-6/12";
+        sizeHeightClass = "h-6/12";
+        break;
+      case "xl":
+        sizeWidthClass = "w-8/12";
+        sizeHeightClass = "h-8/12";
+        break;
+      case "fullscreen":
+        sizeWidthClass = "w-full";
+        sizeHeightClass = "h-full";
+        break;
+      default:
+        break;
+    }
     switch (direction) {
       case "right":
-        directionClass = `h-screen top-0 right-0 left-auto w-${size}`;
+        directionClass = `h-screen top-0 right-0 left-auto ${sizeWidthClass}`;
         break;
 
       case "left":
-        directionClass = `h-screen top-0 left-0 right-auto w-${size}`;
+        directionClass = `h-screen top-0 left-0 right-auto ${sizeWidthClass}`;
         break;
 
       case "top":
-        directionClass = `w-full top-0 bottom-auto h-${size}`;
+        directionClass = `w-full top-0 bottom-auto h-${sizeHeightClass}`;
         break;
 
       case "bottom":
-        directionClass = `w-full bottom-0 top-auto h-${size}`;
+        directionClass = `w-full bottom-0 top-auto h-${sizeHeightClass}`;
         break;
 
       default:

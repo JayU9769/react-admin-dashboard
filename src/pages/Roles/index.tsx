@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import DataTable from "@/components/dataTable";
-import { userColumns } from "@/pages/Users/columns.tsx";
+import { userColumns } from "./columns.tsx";
 import { IPaginationState, TRecord } from "@/interfaces";
 import { defaultAPIResponse, defaultPagination } from "@/lib/constants.ts";
 import { Link, Outlet } from "react-router-dom";
