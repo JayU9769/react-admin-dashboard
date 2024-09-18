@@ -12,16 +12,17 @@ import PageTransition from "@/components/PageTransition";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import AdminDashboard from "@/components/layouts/AdminDashboard";
 
+import UserForm from "@/pages/Users/form";
+import RoleForm from "@/pages/Roles/form";
+import AdminForm from "@/pages/Admins/form";
+
 // Lazy-loaded components
 const Login = lazy(() => import("@/pages/Auth/Login.tsx"));
 const Signup = lazy(() => import("@/pages/Auth/Signup.tsx"));
 const Dashboard = lazy(() => import("@/pages/Dashboard.tsx"));
 const Users = lazy(() => import("@/pages/Users"));
-const UserForm = lazy(() => import("@/pages/Users/form"));
 const Roles = lazy(() => import("@/pages/Roles"));
-const RoleForm = lazy(() => import("@/pages/Roles/form"));
 const Admins = lazy(() => import("@/pages/Admins"));
-const AdminForm = lazy(() => import("@/pages/Admins/form"));
 const ProfileLayout = lazy(() => import("@/pages/Profile/Layout"));
 
 type TRouteObject = Omit<RouteObject, "children"> & {

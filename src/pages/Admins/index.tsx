@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import DataTable from "@/components/dataTable";
-import { userColumns } from "@/pages/Users/columns.tsx";
+import { tableColumns } from "./columns.tsx";
 import { IPaginationState, TRecord } from "@/interfaces";
 import { defaultAPIResponse, defaultPagination } from "@/lib/constants.ts";
 import { Link, Outlet } from "react-router-dom";
@@ -13,7 +13,7 @@ const Index: React.FC = () => {
   const [queryString, setQueryString] = useState<TRecord>({});
   const [getAdmins, { data = defaultAPIResponse, isFetching }] =
     useLazyGetAdminsQuery();
-  const columns = useMemo(() => userColumns, []);
+  const columns = useMemo(() => tableColumns, []);
 
   useEffect(() => {
     if (Object.keys(queryString).length > 1) {

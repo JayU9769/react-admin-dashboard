@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useLazyGetUsersQuery } from "@/store/user/api.ts";
 import DataTable from "@/components/dataTable";
-import { userColumns } from "@/pages/Users/columns.tsx";
+import { tableColumn } from "./columns.tsx";
 import { IPaginationState, TRecord } from "@/interfaces";
 import { defaultAPIResponse, defaultPagination } from "@/lib/constants.ts";
 import { Link, Outlet } from "react-router-dom";
@@ -13,13 +13,13 @@ const Index: React.FC = () => {
   const [queryString, setQueryString] = useState<TRecord>({});
   const [getUsers, { data = defaultAPIResponse, isFetching }] =
     useLazyGetUsersQuery();
-  const columns = useMemo(() => userColumns, []);
+  const columns = useMemo(() => tableColumn, []);
 
   useEffect(() => {
     if (Object.keys(queryString).length > 1) {
       getUsers(convertToQuery(queryString));
     }
-  }, [queryString]);
+  }, [getUsers, queryString]);
 
   const handlePagination = (pagination: IPaginationState) => {
     setQueryString({

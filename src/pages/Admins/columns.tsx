@@ -5,7 +5,7 @@ import { CircleCheck, CircleX } from "lucide-react";
 import { IAdmin } from "@/interfaces/admin.ts";
 import Action from "./Action.tsx";
 
-export const userColumns: ColumnDef<IAdmin>[] = [
+export const tableColumns: ColumnDef<IAdmin>[] = [
   {
     id: "select",
     header: ({ table }) => (

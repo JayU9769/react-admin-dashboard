@@ -5,7 +5,7 @@ import { CircleCheck, CircleX } from "lucide-react";
 import Action from "./Action.tsx";
 import { IRole } from "@/interfaces/role";
 
-export const userColumns: ColumnDef<IRole>[] = [
+export const tableColumn: ColumnDef<IRole>[] = [
   {
     id: "select",
     header: ({ table }) => (

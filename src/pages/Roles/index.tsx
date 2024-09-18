@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import DataTable from "@/components/dataTable";
-import { userColumns } from "./columns.tsx";
+import { tableColumn } from "./columns.tsx";
 import { IPaginationState, TRecord } from "@/interfaces";
 import { defaultAPIResponse, defaultPagination } from "@/lib/constants.ts";
 import { Link, Outlet } from "react-router-dom";
@@ -13,7 +13,7 @@ const Index: React.FC = () => {
   const [queryString, setQueryString] = useState<TRecord>({});
   const [getRoles, { data = defaultAPIResponse, isFetching }] =
     useLazyGetRolesQuery();
-  const columns = useMemo(() => userColumns, []);
+  const columns = useMemo(() => tableColumn, []);
 
   useEffect(() => {
     if (Object.keys(queryString).length > 1) {
