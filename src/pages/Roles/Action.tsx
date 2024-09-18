@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { EllipsisVertical, ListChecks, SquarePen, Trash2 } from "lucide-react";
 import ConfirmDialog from "@/components/ConfirmDialog.tsx";
 import { TActionType, TIds } from "@/interfaces";
-import { useDeleteRoleMutation } from "@/store/roles/api.ts";
+import { useDeleteRoleMutation } from "@/store/role/api.ts";
 import { showAlert } from "@/components/ui/sonner.tsx";
 import { useNavigate } from "react-router-dom";
 

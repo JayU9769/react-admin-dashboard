@@ -15,10 +15,10 @@ export const list: INavItem[] = [
     path: "/admin/users",
   },
   {
-    id: "roles",
+    id: "role",
     title: "Roles",
     icon: UserCog,
-    path: "/admin/roles",
+    path: "/admin/role",
   },
   {
     id: "admins",

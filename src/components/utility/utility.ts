@@ -1,5 +1,6 @@
 import {IResponsiveObject, TResponsiveNumberOrString} from "@/interfaces/utility.ts";
 
+
 export const generateResponsiveClasses = (
   prop: TResponsiveNumberOrString | IResponsiveObject | undefined,
   className: string

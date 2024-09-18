@@ -1,14 +1,16 @@
-import { configureStore } from "@reduxjs/toolkit";
+import {configureStore} from "@reduxjs/toolkit";
 import rootReducer from "@/store/root/slice";
 import userReducer from "@/store/user/slice";
-import roleReducer from "@/store/roles/slice";
+import roleReducer from "@/store/role/slice";
 import adminReducer from "@/store/admin/slice";
-import { ThunkAction } from "redux-thunk";
-import { Action } from "redux";
-import { rootApi } from "@/store/root/api.ts";
-import { userApi } from "@/store/user/api.ts";
-import { roleApi } from "@/store/roles/api.ts";
-import { adminApi } from "@/store/admin/api.ts";
+import {ThunkAction} from "redux-thunk";
+import {Action} from "redux";
+import handleError from "@/store/middlewares/handleError.ts";
+import {rootApi} from "@/store/root/api.ts";
+import {userApi} from "@/store/user/api.ts";
+import {roleApi} from "@/store/role/api.ts";
+import {adminApi} from "@/store/admin/api.ts";
+
 
 // Use `configureStore` function to create the store:
 const store = configureStore({
@@ -30,7 +32,8 @@ const store = configureStore({
       .concat(rootApi.middleware)
       .concat(userApi.middleware)
       .concat(roleApi.middleware)
-      .concat(adminApi.middleware),
+      .concat(adminApi.middleware)
+      .concat(handleError),
 });
 
 // Define the `RootState` as the return type:

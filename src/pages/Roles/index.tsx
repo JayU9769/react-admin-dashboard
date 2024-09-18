@@ -7,7 +7,7 @@ import { Link, Outlet } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
 import { SortingState } from "@tanstack/react-table";
 import { convertToQuery } from "@/lib/utils.ts";
-import { useLazyGetRolesQuery } from "@/store/roles/api";
+import { useLazyGetRolesQuery } from "@/store/role/api";
 
 const Index: React.FC = () => {
   const [queryString, setQueryString] = useState<TRecord>({});
@@ -52,7 +52,7 @@ const Index: React.FC = () => {
   return (
     <>
       <DataTable
-        id={"roles"}
+        id={"role"}
         data={data}
         columns={columns}
         isLoading={isFetching}
