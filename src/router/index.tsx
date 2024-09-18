@@ -11,6 +11,9 @@ import { Toaster } from "@/components/ui/sonner";
 import PageTransition from "@/components/PageTransition";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import AdminDashboard from "@/components/layouts/AdminDashboard";
+import {useSelector} from "react-redux";
+import {rootStates} from "@/store/root/slice.ts";
+import ErrorComponent from "@/components/ErrorComponent.tsx";
 
 // Lazy-loaded components
 const Login = lazy(() => import("@/pages/Auth/Login.tsx"));
@@ -130,21 +133,21 @@ const routes: TRouteObject[] = [
         ],
       },
       {
-        path: "roles",
+        path: "role",
         data: { title: "Roles" },
         element: <Roles />,
         animate: true,
-        id: "admin.roles",
+        id: "admin.role",
         children: [
           {
-            id: "admin.roles.create",
+            id: "admin.role.create",
             data: { title: "Create Role" },
             path: "create",
             element: <RoleForm />,
             animate: false,
           },
           {
-            id: "admin.roles.edit",
+            id: "admin.role.edit",
             data: { title: "Edit Role" },
             path: "edit/:id",
             element: <RoleForm />,
@@ -200,10 +203,12 @@ const router = createBrowserRouter(buildRouter(routes), {
 });
 
 const Routes: React.FC = () => {
+  const { error } = useSelector(rootStates);
+
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <AnimatePresence mode="wait">
-        <RouterProvider router={router} />
+        { error.statusCode !== 0 ? <ErrorComponent /> : <RouterProvider router={router} /> }
       </AnimatePresence>
       <Toaster position={"top-right"} visibleToasts={5} />
     </ThemeProvider>

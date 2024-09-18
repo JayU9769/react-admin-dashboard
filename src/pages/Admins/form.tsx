@@ -36,7 +36,7 @@ const validationSchema = Yup.object().shape({
 
 const Index: React.FC = () => {
   const drawerRef = useRef<DrawerRef>(null);
-  const [updateAdmin, { isLoading: isUpdateLoding }] = useUpdateAdminMutation();
+  const [updateAdmin, { isLoading: isUpdateLoading }] = useUpdateAdminMutation();
   const [getAdminById, { data }] = useLazyGetAdminByIdQuery();
   const [createAdmin, { isLoading }] = useCreateAdminMutation();
   const [formData, setFormData] = useState<IAdminForm>(defaultAdminForm);
@@ -89,7 +89,7 @@ const Index: React.FC = () => {
       // size={"9/12"}
       direction="right"
     >
-      {(isLoading || isUpdateLoding) && <Loader />}
+      {(isLoading || isUpdateLoading) && <Loader />}
       <form onSubmit={formik.handleSubmit}>
         <Grid className="p-4 pb-0">
           <Col>

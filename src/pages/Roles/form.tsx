@@ -9,7 +9,7 @@ import {
   useCreateRoleMutation,
   useLazyGetRoleByIdQuery,
   useUpdateRoleMutation,
-} from "@/store/roles/api";
+} from "@/store/role/api";
 import { showAlert } from "@/components/ui/sonner";
 import Loader from "@/components/utility/BasicLoader";
 import { defaultRole, IRole } from "@/interfaces/role.ts";
