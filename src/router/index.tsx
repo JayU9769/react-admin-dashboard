@@ -11,13 +11,16 @@ import { Toaster } from "@/components/ui/sonner";
 import PageTransition from "@/components/PageTransition";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import AdminDashboard from "@/components/layouts/AdminDashboard";
-import {useSelector} from "react-redux";
-import {rootStates} from "@/store/root/slice.ts";
+import { useSelector } from "react-redux";
+import { rootStates } from "@/store/root/slice.ts";
 import ErrorComponent from "@/components/ErrorComponent.tsx";
 
 import UserForm from "@/pages/Users/form";
 import RoleForm from "@/pages/Roles/form";
 import AdminForm from "@/pages/Admins/form";
+import BasicProfile from "@/pages/Profile/Forms/BasicProfile";
+import ChangePassword from "@/pages/Profile/Forms/ChangePassword";
+import DeleteAccount from "@/pages/Profile/Forms/DeleteAccount";
 
 // Lazy-loaded components
 const Login = lazy(() => import("@/pages/Auth/Login.tsx"));
@@ -75,37 +78,23 @@ const routes: TRouteObject[] = [
         children: [
           {
             path: "",
-            element: <>Basic Detail</>,
+            element: <BasicProfile />,
             id: "admin.profile.basic",
             data: { title: "Basic Profile" },
             animate: true,
           },
           {
-            id: "admin.profile.account",
-            path: "account",
-            element: <>Account</>,
-            data: { title: "Account Profile" },
+            id: "admin.profile.change-password",
+            path: "change-password",
+            element: <ChangePassword />,
+            data: { title: "Change Password" },
             animate: true,
           },
           {
-            id: "admin.profile.appearance",
-            path: "appearance",
-            element: <>Appearance</>,
-            data: { title: "Profile Appearance" },
-            animate: true,
-          },
-          {
-            id: "admin.profile.notification",
-            path: "notifications",
-            element: <>Notifications</>,
-            data: { title: "Profile Notifications" },
-            animate: true,
-          },
-          {
-            id: "admin.profile.display",
-            path: "display",
-            element: <>Display</>,
-            data: { title: "Display Profile" },
+            id: "admin.profile.delete-account",
+            path: "delete-account",
+            element: <DeleteAccount />,
+            data: { title: "Delete Account" },
             animate: true,
           },
         ],
@@ -209,7 +198,11 @@ const Routes: React.FC = () => {
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <AnimatePresence mode="wait">
-        { error.statusCode !== 0 ? <ErrorComponent /> : <RouterProvider router={router} /> }
+        {error.statusCode !== 0 ? (
+          <ErrorComponent />
+        ) : (
+          <RouterProvider router={router} />
+        )}
       </AnimatePresence>
       <Toaster position={"top-right"} visibleToasts={5} />
     </ThemeProvider>

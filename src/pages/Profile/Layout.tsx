@@ -13,20 +13,12 @@ const Index: React.FC = () => {
       href: "",
     },
     {
-      title: "Account",
-      href: "account",
+      title: "Change Password",
+      href: "change-password",
     },
     {
-      title: "Appearance",
-      href: "appearance",
-    },
-    {
-      title: "Notifications",
-      href: "notifications",
-    },
-    {
-      title: "Display",
-      href: "display",
+      title: "Delete Account",
+      href: "delete-account",
     },
   ];
   return (
@@ -63,7 +55,7 @@ const Index: React.FC = () => {
               ))}
             </nav>
           </aside>
-          <div className="flex-1 lg:max-w-2xl">
+          <div className="flex-1">
             <Outlet />
           </div>
         </div>
