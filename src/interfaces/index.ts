@@ -23,4 +23,9 @@ export interface IListAPIResponse {
 
 export type TActionType = 'single' | 'bulk';
 
+export enum EUserType {
+  USER = 'user',
+  ADMIN = 'admin'
+}
+
 export type TIds = Array<string | number>;

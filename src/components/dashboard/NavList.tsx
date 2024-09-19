@@ -1,4 +1,4 @@
-import { Home, Users2, UserCog, ShipWheel } from "lucide-react";
+import { Home, Users2, UserCog, ShipWheel, FolderLock } from "lucide-react";
 import { INavItem } from "@/interfaces/navbar.ts";
 
 export const list: INavItem[] = [
@@ -25,5 +25,11 @@ export const list: INavItem[] = [
     title: "Admins",
     icon: ShipWheel,
     path: "/admin/list",
+  },
+  {
+    id: "permissions",
+    title: "Permissions",
+    icon: FolderLock,
+    path: "/admin/permissions",
   },
 ];
