@@ -27,6 +27,7 @@ const Login = lazy(() => import("@/pages/Auth/Login.tsx"));
 const Signup = lazy(() => import("@/pages/Auth/Signup.tsx"));
 const Dashboard = lazy(() => import("@/pages/Dashboard.tsx"));
 const Users = lazy(() => import("@/pages/Users"));
+const Permissions = lazy(() => import("@/pages/Permissions"));
 const Roles = lazy(() => import("@/pages/Roles"));
 const Admins = lazy(() => import("@/pages/Admins"));
 const ProfileLayout = lazy(() => import("@/pages/Profile/Layout"));
@@ -144,6 +145,13 @@ const routes: TRouteObject[] = [
             animate: false,
           },
         ],
+      },
+      {
+        path: "permissions",
+        data: { title: "Permissions" },
+        element: <Permissions />,
+        animate: true,
+        id: "admin.permissions",
       },
       {
         path: "list",
