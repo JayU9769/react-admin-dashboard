@@ -7,7 +7,7 @@ const Index: React.FC = () => {
 
   const [search, setSearch] = useState<string>('')
   const [listType, setListType] = useState<EUserType>(EUserType.ADMIN)
-
+  console.log(listType);
   return <>
     <div className="space-y-4">
       <div className="flex items-center justify-between">
