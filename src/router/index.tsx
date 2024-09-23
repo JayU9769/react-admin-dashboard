@@ -18,6 +18,7 @@ import ErrorComponent from "@/components/ErrorComponent.tsx";
 import UserForm from "@/pages/Users/form";
 import RoleForm from "@/pages/Roles/form";
 import AdminForm from "@/pages/Admins/form";
+import AdminPasswordForm from "@/pages/Admins/ChangePassword";
 import BasicProfile from "@/pages/Profile/Forms/BasicProfile";
 import ChangePassword from "@/pages/Profile/Forms/ChangePassword";
 import DeleteAccount from "@/pages/Profile/Forms/DeleteAccount";
@@ -172,6 +173,13 @@ const routes: TRouteObject[] = [
             data: { title: "Edit Admin" },
             path: "edit/:id",
             element: <AdminForm />,
+            animate: false,
+          },
+          {
+            id: "admin.admins.change-password",
+            data: { title: "Change Password" },
+            path: "change-password/:id",
+            element: <AdminPasswordForm />,
             animate: false,
           },
         ],

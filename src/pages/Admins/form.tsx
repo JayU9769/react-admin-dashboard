@@ -19,24 +19,31 @@ import {
 } from "@/store/admin/api";
 import { IAdminForm } from "@/interfaces/admin";
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string()
-    .required("First Name is required")
-    .max(50, "Name must be 50 characters or less"),
-  password: Yup.string()
-    .required("Last Name is required")
-    .min(8, "Password must be at least 8 characters")
-    .max(50, "Last must be 50 characters or less"),
-  email: Yup.string()
-    .required("Email is required")
-    .email("Invalid Email")
-    .max(50, "Email must be 50 characters or less"),
-  // Add additional validation rules for other fields if necessary
-});
+const getValidationSchema = (isEditMode: boolean) => {
+  Yup.object().shape({
+    name: Yup.string()
+      .required("First Name is required")
+      .max(50, "Name must be 50 characters or less"),
+    email: Yup.string()
+      .required("Email is required")
+      .email("Invalid Email")
+      .max(50, "Email must be 50 characters or less"),
+    ...(isEditMode
+      ? {} // No password validation in edit mode
+      : {
+          password: Yup.string()
+            .required("Password is required")
+            .min(8, "Password must be at least 8 characters")
+            .max(50, "Password must be 50 characters or less"),
+        }),
+    // Add additional validation rules for other fields if necessary
+  });
+};
 
 const Index: React.FC = () => {
   const drawerRef = useRef<DrawerRef>(null);
-  const [updateAdmin, { isLoading: isUpdateLoading }] = useUpdateAdminMutation();
+  const [updateAdmin, { isLoading: isUpdateLoading }] =
+    useUpdateAdminMutation();
   const [getAdminById, { data }] = useLazyGetAdminByIdQuery();
   const [createAdmin, { isLoading }] = useCreateAdminMutation();
   const [formData, setFormData] = useState<IAdminForm>(defaultAdminForm);
@@ -61,7 +68,7 @@ const Index: React.FC = () => {
 
   const formik = useFormik({
     initialValues: formData,
-    validationSchema,
+    validationSchema: getValidationSchema(formState === 1),
     enableReinitialize: true,
     onSubmit: async (values) => {
       (formState
@@ -128,25 +135,27 @@ const Index: React.FC = () => {
               )}
             </div>
           </Col>
-          <Col>
-            <Label htmlFor="password">
-              Password <RequiredMark />
-            </Label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              onChange={formik.handleChange}
-              value={formik.values.password}
-              onBlur={formik.handleBlur}
-              autoComplete="off"
-            />
-            <div className={`min-h-4`}>
-              {formik.touched.password && formik.errors.password && (
-                <InputErrorMessage message={formik.errors.password} />
-              )}
-            </div>
-          </Col>
+          {!formState && (
+            <Col>
+              <Label htmlFor="password">
+                Password <RequiredMark />
+              </Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                onBlur={formik.handleBlur}
+                autoComplete="off"
+              />
+              <div className={`min-h-4`}>
+                {formik.touched.password && formik.errors.password && (
+                  <InputErrorMessage message={formik.errors.password} />
+                )}
+              </div>
+            </Col>
+          )}
           <Col>
             <div className="flex items-center space-x-4 rounded-md border p-4">
               <div className="flex-1 space-y-1">

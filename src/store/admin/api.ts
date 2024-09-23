@@ -2,7 +2,11 @@ import { IAdmin, IAdminForm, ILogin } from "@/interfaces/admin";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_BASE_URL } from "@/lib/constants.ts";
 import { IListAPIResponse } from "@/interfaces";
-import { IDeleteAdminArgs, IUpdateAdminArgs } from "./types";
+import {
+  IDeleteAdminArgs,
+  IUpdateAdminArgs,
+  IUpdatePasswordArgs,
+} from "./types";
 
 export const adminApi = createApi({
   reducerPath: "adminApi",
@@ -75,6 +79,15 @@ export const adminApi = createApi({
       }),
       invalidatesTags: () => ["Admin"],
     }),
+    updateAdminPassword: builder.mutation<IAdminForm, IUpdatePasswordArgs>({
+      query: ({ id, updatedBody }) => ({
+        url: `/change-password/${id}`,
+        method: "PATCH",
+        body: updatedBody,
+      }),
+      transformResponse: ({ message }) => message,
+      invalidatesTags: () => ["Admin"],
+    }),
   }),
 });
 
@@ -87,4 +100,5 @@ export const {
   useCreateAdminMutation,
   useDeleteAdminMutation,
   useUpdateAdminMutation,
+  useUpdateAdminPasswordMutation,
 } = adminApi;
