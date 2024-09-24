@@ -162,7 +162,7 @@ const Index = <TData, TValue>(
         </div>
         {toolbarChildren}
       </div>
-      <div className="rounded-md border bg-white ddd">
+      <div className="rounded-md border bg-white">
         <Table>
           <TableHeader className={`bg-muted`}>
             {table.getHeaderGroups().map((headerGroup) => (
