@@ -16,6 +16,7 @@ import { rootStates } from "@/store/root/slice.ts";
 import ErrorComponent from "@/components/ErrorComponent.tsx";
 
 import UserForm from "@/pages/Users/form";
+import UserPasswordForm from "@/pages/Users/ChangePassword";
 import RoleForm from "@/pages/Roles/form";
 import AdminForm from "@/pages/Admins/form";
 import AdminPasswordForm from "@/pages/Admins/ChangePassword";
@@ -120,6 +121,13 @@ const routes: TRouteObject[] = [
             data: { title: "Edit User" },
             path: "edit/:id",
             element: <UserForm />,
+            animate: false,
+          },
+          {
+            id: "admin.users.change-password",
+            data: { title: "Change Password" },
+            path: "change-password/:id",
+            element: <UserPasswordForm />,
             animate: false,
           },
         ],

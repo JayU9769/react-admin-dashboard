@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IUser } from "@/interfaces/user.ts";
-import { IUpdateUserArgs } from "./types.ts";
-import {IListAPIResponse, IUpdateAction, TIds} from "@/interfaces";
+import { IUpdatePasswordArgs, IUpdateUserArgs } from "./types.ts";
+import { IListAPIResponse, IUpdateAction, TIds } from "@/interfaces";
 import { API_BASE_URL } from "@/lib/constants.ts";
 
 // Create API service
@@ -58,6 +58,15 @@ export const userApi = createApi({
       }),
       invalidatesTags: () => ["User"],
     }),
+    updateUserPassword: builder.mutation<IUser, IUpdatePasswordArgs>({
+      query: ({ id, updatedBody }) => ({
+        url: `change-password/${id}`,
+        method: "PATCH",
+        body: updatedBody,
+      }),
+      transformResponse: ({ message }) => message,
+      invalidatesTags: () => ["User"],
+    }),
   }),
 });
 
@@ -69,4 +78,5 @@ export const {
   useUpdateUserMutation,
   useUpdateUserActionMutation,
   useDeleteUserMutation,
+  useUpdateUserPasswordMutation,
 } = userApi;
