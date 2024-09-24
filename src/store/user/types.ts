@@ -7,7 +7,3 @@ export interface IUpdateUserArgs {
   id: string;
   updatedUser: Partial<IUser>;
 }
-
-export interface IDeleteUserArgs {
-  ids: string[];
-}

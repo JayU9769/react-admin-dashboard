@@ -1,7 +1,7 @@
 import { IAdmin, IAdminForm, ILogin } from "@/interfaces/admin";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_BASE_URL } from "@/lib/constants.ts";
-import { IListAPIResponse } from "@/interfaces";
+import {IListAPIResponse, IUpdateAction} from "@/interfaces";
 import { IDeleteAdminArgs, IUpdateAdminArgs } from "./types";
 
 export const adminApi = createApi({
@@ -67,6 +67,15 @@ export const adminApi = createApi({
       transformResponse: ({ data }) => data,
       invalidatesTags: () => ["Admin"],
     }),
+    updateAdminAction: builder.mutation<void, IUpdateAction>({
+      query: (payload) => ({
+        url: `/update-action`,
+        method: "POST", // Use "PATCH" if you prefer partial updates
+        body: payload,
+      }),
+      transformResponse: ({ data }) => data,
+      invalidatesTags: () => ["Admin"],
+    }),
     deleteAdmin: builder.mutation<void, IDeleteAdminArgs>({
       query: (ids: any) => ({
         url: `/`,
@@ -85,6 +94,7 @@ export const {
   useLazyGetAdminsQuery,
   useLazyGetAdminByIdQuery,
   useCreateAdminMutation,
-  useDeleteAdminMutation,
   useUpdateAdminMutation,
+  useUpdateAdminActionMutation,
+  useDeleteAdminMutation,
 } = adminApi;

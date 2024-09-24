@@ -35,7 +35,7 @@ export const tableColumns: ColumnDef<IAdmin>[] = [
     header: ({ column }) => <ColumnHeader column={column} title="ID" />,
     cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
     enableSorting: false,
-    enableHiding: false,
+    enableHiding: true,
     filterFn: "equalsString",
   },
   {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -24,15 +24,14 @@ import {
 } from "@/components/ui/table";
 
 import Pagination from "./Pagination.tsx";
-import {IListAPIResponse, IPaginationState, ITableState} from "@/interfaces";
-import { defaultPagination } from "@/lib/constants.ts";
-import { Card, CardContent } from "@/components/ui/card.tsx";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import {IListAPIResponse, IPaginationState, ITableState, TRecord} from "@/interfaces";
+import {defaultPagination} from "@/lib/constants.ts";
+import {Card, CardContent} from "@/components/ui/card.tsx";
+import {ReloadIcon} from "@radix-ui/react-icons";
 import DebouncingInput from "@/components/DebouncingInput.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { RefreshCw } from "lucide-react";
+import {Button} from "@/components/ui/button.tsx";
+import {RefreshCw} from "lucide-react";
 import ViewOptions from "@/components/dataTable/ViewOptions.tsx";
-import Action from "@/pages/Users/Action.tsx";
 
 interface IProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,20 +40,28 @@ interface IProps<TData, TValue> {
   onSearch?: (filter: string) => void;
   onSorting?: (sorting: SortingState) => void;
   toolbarChildren?: React.ReactNode;
+  tableActions?: React.ReactNode;
   isLoading: boolean;
   id: string;
+  onRowSelection?: (table: TRecord) => void;
+  resetSelection?: number;
 }
 
-const Index = <TData, TValue>({
-  columns,
-  data,
-  onPagination,
-  onSearch,
-  toolbarChildren,
-  onSorting,
-  isLoading = true,
-  id,
-}: IProps<TData, TValue>) => {
+const Index = <TData, TValue>(
+  {
+    columns,
+    data,
+    onPagination,
+    onSearch,
+    toolbarChildren,
+    tableActions,
+    onSorting,
+    isLoading = true,
+    id,
+    onRowSelection,
+    resetSelection,
+  }: IProps<TData, TValue>
+) => {
 
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -65,16 +72,6 @@ const Index = <TData, TValue>({
 
   const [pagination, setPagination] =
     useState<IPaginationState>(defaultPagination);
-
-  useEffect(() => {
-    // Debounce pagination change...
-    const timeOut = setTimeout(() => onPagination(pagination), 300);
-    return () => clearTimeout(timeOut);
-  }, [pagination]);
-
-  useEffect(() => {
-    if (onSorting) onSorting(sorting);
-  }, [sorting]);
 
   const table = useReactTable({
     data: data.rows,
@@ -109,6 +106,34 @@ const Index = <TData, TValue>({
     getRowId: (row: any) => row.id,
   });
 
+  useEffect(() => {
+    // Debounce pagination change...
+    const timeOut = setTimeout(() => onPagination(pagination), 300);
+    return () => clearTimeout(timeOut);
+  }, [pagination]);
+
+  useEffect(() => {
+    if (onSorting) onSorting(sorting);
+  }, [sorting]);
+
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      if (onRowSelection) {
+        onRowSelection(rowSelection);
+      }
+    }, 200);
+
+    return () => clearTimeout(timeOut);
+  }, [rowSelection]);
+
+
+  useEffect(() => {
+    if (resetSelection) {
+      table.setRowSelection({})
+    }
+  }, [resetSelection]);
+
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -122,11 +147,7 @@ const Index = <TData, TValue>({
             }}
             className="h-8 w-[150px] lg:w-[250px] bg-white"
           />
-          <Action
-            type={"bulk"}
-            ids={Object.keys(table.getState().rowSelection)}
-            onDelete={() => table.setRowSelection({})}
-          />
+          {tableActions}
           <Button
             variant={"outline"}
             size={"sm"}
@@ -134,10 +155,10 @@ const Index = <TData, TValue>({
               onPagination(pagination);
             }}
           >
-            <RefreshCw className="mr-2 h-4 w-4" />
+            <RefreshCw className="mr-2 h-4 w-4"/>
             Reload
           </Button>
-          <ViewOptions table={table} />
+          <ViewOptions table={table}/>
         </div>
         {toolbarChildren}
       </div>
@@ -152,9 +173,9 @@ const Index = <TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -172,7 +193,7 @@ const Index = <TData, TValue>({
                       <CardContent
                         className={`p-3 flex justify-center items-center gap-2`}
                       >
-                        <ReloadIcon className="h-6 w-6 animate-spin text-muted-foreground" />
+                        <ReloadIcon className="h-6 w-6 animate-spin text-muted-foreground"/>
                         <h1 className="scroll-m-20 text-md font-bold text-muted-foreground">
                           Loading...
                         </h1>
@@ -215,7 +236,7 @@ const Index = <TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <Pagination table={table} />
+      <Pagination table={table}/>
     </div>
   );
 };

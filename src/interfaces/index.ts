@@ -20,6 +20,13 @@ export interface IListAPIResponse {
   rows: TRecord[]
 }
 
+export interface IUpdateAction {
+  ids: string[]
+  field: {
+    name: string;
+    value: number | string;
+  }
+}
 
 export type TActionType = 'single' | 'bulk';
 
@@ -28,4 +35,4 @@ export enum EUserType {
   ADMIN = 'admin'
 }
 
-export type TIds = Array<string | number>;
+export type TIds = Array<string>;

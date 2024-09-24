@@ -8,12 +8,15 @@ import { Link, Outlet } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
 import { SortingState } from "@tanstack/react-table";
 import { convertToQuery } from "@/lib/utils.ts";
+import Action from "@/pages/Users/Action.tsx";
 
 const Index: React.FC = () => {
   const [queryString, setQueryString] = useState<TRecord>({});
   const [getUsers, { data = defaultAPIResponse, isFetching }] =
     useLazyGetUsersQuery();
   const columns = useMemo(() => tableColumn, []);
+  const [selectedRows, setSelectedRows] = useState<TRecord>({});
+  const [resetTrigger, setResetTrigger] = useState<number>(0);
 
   useEffect(() => {
     if (Object.keys(queryString).length > 1) {
@@ -49,6 +52,11 @@ const Index: React.FC = () => {
     setQueryString(tempQuery);
   };
 
+  const handleResetTableSelection = () => {
+    setSelectedRows({});
+    setResetTrigger(prev => prev + 1);
+  };
+
   return (
     <>
       <DataTable
@@ -59,6 +67,16 @@ const Index: React.FC = () => {
         onPagination={handlePagination}
         onSearch={handleSearch}
         onSorting={handleSorting}
+        onRowSelection={(rows) => setSelectedRows(rows)}
+        resetSelection={resetTrigger}
+        tableActions={<>
+          <Action
+            type={"bulk"}
+            ids={Object.keys(selectedRows)}
+            onDelete={handleResetTableSelection}
+            onUpdateAction={handleResetTableSelection}
+          />
+        </>}
         toolbarChildren={
           <>
             <Link to="create" className={buttonVariants({ size: "sm" })}>
