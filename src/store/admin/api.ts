@@ -108,10 +108,7 @@ export const {
   useLazyGetAdminByIdQuery,
   useCreateAdminMutation,
   useUpdateAdminMutation,
-<<<<<<< HEAD
   useUpdateAdminActionMutation,
   useDeleteAdminMutation,
-=======
   useUpdateAdminPasswordMutation,
->>>>>>> a212a2d9598861cb98caee2414ed3c5c6bab5271
 } = adminApi;
