@@ -13,6 +13,6 @@ export const roleSlice = createSlice({
 // eslint-disable-next-line no-empty-pattern
 export const {} = roleSlice.actions;
 
-export const userStates = (state: RootState) => state.role;
+export const roleStates = (state: RootState) => state.role;
 
 export default roleSlice.reducer;

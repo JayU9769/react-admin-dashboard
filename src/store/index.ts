@@ -3,6 +3,7 @@ import rootReducer from "@/store/root/slice";
 import userReducer from "@/store/user/slice";
 import roleReducer from "@/store/role/slice";
 import adminReducer from "@/store/admin/slice";
+import permissionReducer from "@/store/permission/slice";
 import {ThunkAction} from "redux-thunk";
 import {Action} from "redux";
 import handleError from "@/store/middlewares/handleError.ts";
@@ -10,6 +11,7 @@ import {rootApi} from "@/store/root/api.ts";
 import {userApi} from "@/store/user/api.ts";
 import {roleApi} from "@/store/role/api.ts";
 import {adminApi} from "@/store/admin/api.ts";
+import {permissionApi} from "@/store/permission/api.ts";
 
 
 // Use `configureStore` function to create the store:
@@ -24,6 +26,8 @@ const store = configureStore({
     [roleApi.reducerPath]: roleApi.reducer,
     admin: adminReducer,
     [adminApi.reducerPath]: adminApi.reducer,
+    permission: permissionReducer,
+    [permissionApi.reducerPath]: permissionApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -33,6 +37,7 @@ const store = configureStore({
       .concat(userApi.middleware)
       .concat(roleApi.middleware)
       .concat(adminApi.middleware)
+      .concat(permissionApi.middleware)
       .concat(handleError),
 });
 

@@ -7,7 +7,3 @@ export interface IUpdateRoleArgs {
   id: string;
   updatedBody: Partial<IRole>;
 }
-
-export interface IDeleteRoleArgs {
-  ids: string[];
-}
