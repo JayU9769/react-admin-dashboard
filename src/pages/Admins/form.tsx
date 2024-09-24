@@ -159,7 +159,7 @@ const Index: React.FC = () => {
           <Col>
             <div className="flex items-center space-x-4 rounded-md border p-4">
               <div className="flex-1 space-y-1">
-                <Label htmlFor="status">
+                <Label className={`mb-0`} htmlFor="status">
                   Status <RequiredMark />
                 </Label>
                 <p className="text-xs leading-normal text-muted-foreground">

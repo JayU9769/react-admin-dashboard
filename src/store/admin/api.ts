@@ -1,9 +1,8 @@
 import { IAdmin, IAdminForm, ILogin } from "@/interfaces/admin";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_BASE_URL } from "@/lib/constants.ts";
-import {IListAPIResponse, IUpdateAction} from "@/interfaces";
+import {IListAPIResponse, IUpdateAction, TIds} from "@/interfaces";
 import {
-  IDeleteAdminArgs,
   IUpdateAdminArgs,
   IUpdatePasswordArgs,
 } from "./types";
@@ -80,8 +79,8 @@ export const adminApi = createApi({
       transformResponse: ({ data }) => data,
       invalidatesTags: () => ["Admin"],
     }),
-    deleteAdmin: builder.mutation<void, IDeleteAdminArgs>({
-      query: (ids: any) => ({
+    deleteAdmin: builder.mutation<void, TIds>({
+      query: (ids: TIds) => ({
         url: `/`,
         method: "DELETE",
         body: { ids },
