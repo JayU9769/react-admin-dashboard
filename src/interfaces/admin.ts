@@ -41,11 +41,27 @@ export const defaultAdmin: IAdmin = {
   updatedAt: new Date(),
 };
 
+export interface IProfileUpdate {
+  name: string;
+  email: string;
+}
 export interface IChangePassword {
   newPassword: string;
   confirmNewPassword: string;
 }
 export const defaultAdminChangePassword: IChangePassword = {
+  newPassword: "",
+  confirmNewPassword: "",
+};
+
+export interface IProfileChangePassword {
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
+
+export const defaultProfileChangePassword = {
+  currentPassword: "",
   newPassword: "",
   confirmNewPassword: "",
 };

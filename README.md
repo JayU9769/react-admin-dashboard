@@ -26,19 +26,26 @@ npm install
 ```
 
 ## Scripts
+
 Here are the scripts available in this project:
+
 ```bash
 npm run dev
 Build: Build the project for production.
 ```
+
 ```bash
 npm run build
 Lint: Run ESLint to lint your code.
 ```
+
 ```bash
 npm run lint
 Preview: Preview the production build.
 ```
+
 ```bash
 npm run preview
 ```
+
+https://react-international-phone.vercel.app/docs/getting-started

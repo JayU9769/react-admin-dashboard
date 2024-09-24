@@ -16,10 +16,6 @@ const Index: React.FC = () => {
       title: "Change Password",
       href: "change-password",
     },
-    {
-      title: "Delete Account",
-      href: "delete-account",
-    },
   ];
   return (
     <>

@@ -1,8 +1,10 @@
 import { IAdmin, IAdminForm, ILogin } from "@/interfaces/admin";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_BASE_URL } from "@/lib/constants.ts";
-import {IListAPIResponse, IUpdateAction, TIds} from "@/interfaces";
+import { IListAPIResponse, IUpdateAction, TIds } from "@/interfaces";
 import {
+  IProfileUpdatePasswordArgs,
+  IProfileUpdateProfilArgs,
   IUpdateAdminArgs,
   IUpdatePasswordArgs,
 } from "./types";
@@ -30,6 +32,27 @@ export const adminApi = createApi({
       providesTags: (result) =>
         result ? [{ type: "Auth", id: "PROFILE" }] : [],
     }),
+    updateProfile: builder.mutation<IAdmin, IProfileUpdateProfilArgs>({
+      query: ({ updatedBody }) => ({
+        url: "/profile",
+        method: "PATCH",
+        body: updatedBody,
+      }),
+      transformErrorResponse: ({ data }) => data,
+      transformResponse: (response: { data: IAdmin }) => response.data,
+      invalidatesTags: [{ type: "Auth", id: "PROFILE" }],
+    }),
+    updateProfilePassword: builder.mutation<IAdmin, IProfileUpdatePasswordArgs>(
+      {
+        query: ({ updatedBody }) => ({
+          url: "/change-password",
+          method: "PUT",
+          body: updatedBody,
+        }),
+        transformErrorResponse: ({ data }) => data,
+        transformResponse: ({ message }) => message,
+      }
+    ),
     logout: builder.mutation<IAdmin, void>({
       query: () => ({
         url: "/logout",
@@ -110,4 +133,6 @@ export const {
   useUpdateAdminActionMutation,
   useDeleteAdminMutation,
   useUpdateAdminPasswordMutation,
+  useUpdateProfileMutation,
+  useUpdateProfilePasswordMutation,
 } = adminApi;

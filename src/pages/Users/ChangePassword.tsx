@@ -74,7 +74,7 @@ const Index: React.FC = () => {
             <Input
               id="newPassword"
               name="newPassword"
-              type="newPassword"
+              type="password"
               onChange={formik.handleChange}
               value={formik.values.newPassword}
               onBlur={formik.handleBlur}
@@ -93,7 +93,7 @@ const Index: React.FC = () => {
             <Input
               id="confirmNewPassword"
               name="confirmNewPassword"
-              type="confirmNewPassword"
+              type="password"
               onChange={formik.handleChange}
               value={formik.values.confirmNewPassword}
               onBlur={formik.handleBlur}

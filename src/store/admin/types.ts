@@ -1,8 +1,21 @@
-import { IAdmin, IChangePassword } from "@/interfaces/admin";
+import {
+  IAdmin,
+  IChangePassword,
+  IProfileChangePassword,
+  IProfileUpdate,
+} from "@/interfaces/admin";
 
 export type IAdminInitialState = {
   auth: IAdmin;
 };
+
+export interface IProfileUpdateProfilArgs {
+  updatedBody: Partial<IProfileUpdate>;
+}
+
+export interface IProfileUpdatePasswordArgs {
+  updatedBody: Partial<IProfileChangePassword>;
+}
 
 export interface IUpdateAdminArgs {
   id: string;

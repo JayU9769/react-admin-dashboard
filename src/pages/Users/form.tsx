@@ -17,6 +17,8 @@ import InputErrorMessage from "@/components/form/InputErrorMessage.tsx";
 import RequiredMark from "@/components/form/RequiredMark.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
 import { useParams } from "react-router-dom";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 
 const getValidationSchema = (isEditMode: boolean) => {
   Yup.object().shape({
@@ -158,12 +160,11 @@ const Index: React.FC = () => {
             <Label htmlFor="phoneNo">
               Phone <RequiredMark />
             </Label>
-            <Input
-              id="phoneNo"
-              name="phoneNo"
-              type="tel"
-              onChange={formik.handleChange}
+            <PhoneInput
+              defaultCountry="in"
+              className="w-full"
               value={formik.values.phoneNo}
+              onChange={(phone) => formik.setFieldValue("phoneNo", phone)}
               onBlur={formik.handleBlur}
             />
             <div className={`min-h-4`}>
