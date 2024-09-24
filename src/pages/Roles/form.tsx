@@ -16,6 +16,9 @@ import { defaultRole, IRole } from "@/interfaces/role.ts";
 import InputErrorMessage from "@/components/form/InputErrorMessage.tsx";
 import RequiredMark from "@/components/form/RequiredMark.tsx";
 import { useParams } from "react-router-dom";
+import { EUserType } from "@/interfaces";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -94,28 +97,51 @@ const Index: React.FC = () => {
               value={formik.values.name}
               onBlur={formik.handleBlur}
             />
-            <div className={`min-h-4`}>
-              {formik.touched.name && formik.errors.name && (
+            {formik.touched.name && formik.errors.name && (
+              <div className={`min-h-4`}>
                 <InputErrorMessage message={formik.errors.name} />
-              )}
-            </div>
+              </div>
+            )}
           </Col>
-          <Col>
+          <Col className="flex justify-between items-center">
             <Label htmlFor="type">
               Type <RequiredMark />
             </Label>
-            <Input
-              id="type"
-              name="type"
-              type="text"
-              onChange={formik.handleChange}
+            <Tabs
               value={formik.values.type}
-              onBlur={formik.handleBlur}
-            />
+              defaultValue={EUserType.ADMIN}
+              onValueChange={(value) => formik.setFieldValue("type", value)}
+            >
+              <TabsList>
+                <TabsTrigger value={EUserType.ADMIN} className={`capitalize`}>
+                  {EUserType.ADMIN}
+                </TabsTrigger>
+                <TabsTrigger value={EUserType.USER} className={`capitalize`}>
+                  {EUserType.USER}
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </Col>
+          {formik.touched.type && formik.errors.type && (
             <div className={`min-h-4`}>
-              {formik.touched.type && formik.errors.type && (
-                <InputErrorMessage message={formik.errors.type} />
-              )}
+              <InputErrorMessage message={formik.errors.type} />
+            </div>
+          )}
+          <Col>
+            <div className="flex items-center rounded-md">
+              <div className="flex-1 space-y-1">
+                <Label className={`mb-0`} htmlFor="status">
+                  Status <RequiredMark />
+                </Label>
+              </div>
+              <Switch
+                id="status"
+                name="status"
+                checked={formik.values.status === 1}
+                onCheckedChange={(value) => {
+                  formik.setFieldValue("status", value ? 1 : 0);
+                }}
+              />
             </div>
           </Col>
         </Grid>
