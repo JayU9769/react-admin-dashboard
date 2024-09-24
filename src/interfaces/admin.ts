@@ -40,3 +40,12 @@ export const defaultAdmin: IAdmin = {
   createdAt: new Date(),
   updatedAt: new Date(),
 };
+
+export interface IChangePassword {
+  newPassword: string;
+  confirmNewPassword: string;
+}
+export const defaultAdminChangePassword: IChangePassword = {
+  newPassword: "",
+  confirmNewPassword: "",
+};

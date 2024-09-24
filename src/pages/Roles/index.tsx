@@ -9,6 +9,7 @@ import { SortingState } from "@tanstack/react-table";
 import { convertToQuery } from "@/lib/utils.ts";
 import { useLazyGetRolesQuery } from "@/store/role/api";
 import Action from "@/pages/Roles/Action.tsx";
+import { Plus } from "lucide-react";
 
 const Index: React.FC = () => {
   const [queryString, setQueryString] = useState<TRecord>({});
@@ -80,6 +81,7 @@ const Index: React.FC = () => {
         toolbarChildren={
           <>
             <Link to="create" className={buttonVariants({ size: "sm" })}>
+              <Plus size={18} />
               Create
             </Link>
           </>

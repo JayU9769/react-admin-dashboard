@@ -14,12 +14,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { EllipsisVertical, ListChecks, SquarePen, Trash2 } from "lucide-react";
+import {
+  EllipsisVertical,
+  Key,
+  ListChecks,
+  SquarePen,
+  Trash2,
+} from "lucide-react";
 import ConfirmDialog from "@/components/ConfirmDialog.tsx";
 import { TActionType, TIds } from "@/interfaces";
 import { useDeleteAdminMutation } from "@/store/admin/api.ts";
 import { showAlert } from "@/components/ui/sonner.tsx";
 import { useNavigate } from "react-router-dom";
+import { adminStates } from "@/store/admin/slice";
+import { useSelector } from "react-redux";
 
 interface IProps {
   type: TActionType;
@@ -31,7 +39,7 @@ const Index: React.FC<IProps> = ({ type, ids, onDelete }) => {
   const [deleteRecored, { isLoading }] = useDeleteAdminMutation();
   const navigate = useNavigate();
   const [model, setModel] = useState(false);
-
+  const { auth } = useSelector(adminStates);
   return (
     <>
       <DropdownMenu>
@@ -62,19 +70,31 @@ const Index: React.FC<IProps> = ({ type, ids, onDelete }) => {
             </>
           )}
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => setModel(!model)}>
-              Delete
-              <DropdownMenuShortcut>
-                <Trash2 className={`h-4 w-4`} />
-              </DropdownMenuShortcut>
-            </DropdownMenuItem>
-            {type === "single" && (
-              <DropdownMenuItem onClick={() => navigate(`edit/${ids[0]}`)}>
-                Edit
+            {!ids.includes(auth.id) && (
+              <DropdownMenuItem onClick={() => setModel(!model)}>
+                Delete
                 <DropdownMenuShortcut>
-                  <SquarePen className={`h-4 w-4`} />
+                  <Trash2 className={`h-4 w-4`} />
                 </DropdownMenuShortcut>
               </DropdownMenuItem>
+            )}
+            {type === "single" && (
+              <>
+                <DropdownMenuItem onClick={() => navigate(`edit/${ids[0]}`)}>
+                  Edit
+                  <DropdownMenuShortcut>
+                    <SquarePen className={`h-4 w-4`} />
+                  </DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => navigate(`change-password/${ids[0]}`)}
+                >
+                  Change Password
+                  <DropdownMenuShortcut>
+                    <Key className={`h-4 w-4`} />
+                  </DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </>
             )}
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>Status</DropdownMenuSubTrigger>
