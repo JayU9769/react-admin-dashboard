@@ -1,20 +1,25 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { rootStates } from "@/store/root/slice";
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 
 const Index: React.FC = () => {
-  const { pathname } = useLocation();
+  const { currentRoute } = useSelector(rootStates);
+
   const items = [
     {
       title: "Profile",
       href: "",
+      id: "admin.profile.basic",
     },
     {
       title: "Change Password",
       href: "change-password",
+      id: "admin.profile.change-password",
     },
   ];
   return (
@@ -40,7 +45,7 @@ const Index: React.FC = () => {
                   to={item.href}
                   className={cn(
                     buttonVariants({ variant: "ghost" }),
-                    pathname === item.href
+                    currentRoute.id === item.id
                       ? "bg-muted hover:bg-muted"
                       : "hover:bg-transparent hover:underline",
                     "justify-start"
