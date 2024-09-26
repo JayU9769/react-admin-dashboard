@@ -114,11 +114,7 @@ const Index = forwardRef<DrawerRef, IProp>(
     }
 
     return (
-      <Drawer
-        open={open}
-        direction={direction}
-        onOpenChange={() => setOpen(false)}
-      >
+      <Drawer open={open} direction={direction} dismissible={false}>
         <DrawerContent className={`${directionClass} mt-0 rounded-none`}>
           <DrawerHeader className={`${drawerHeaderClass}`}>
             {title && <DrawerTitle>{title}</DrawerTitle>}
@@ -131,7 +127,11 @@ const Index = forwardRef<DrawerRef, IProp>(
             </Button>
             {!hideClose && (
               <DrawerClose asChild>
-                <Button variant="outline" color="primary">
+                <Button
+                  variant="outline"
+                  color="primary"
+                  onClick={() => setOpen(false)}
+                >
                   {closeLabel}
                 </Button>
               </DrawerClose>

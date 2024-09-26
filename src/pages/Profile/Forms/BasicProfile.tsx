@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -67,7 +66,7 @@ const BasicProfile: React.FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={formik.handleSubmit}>
             <div className="mb-3">
               <Label htmlFor="name">
                 Name <RequiredMark />
@@ -104,14 +103,12 @@ const BasicProfile: React.FC = () => {
                 )}
               </div>
             </div>
+            <Button type="submit">
+              <Save size={18} />
+              Update
+            </Button>
           </form>
         </CardContent>
-        <CardFooter className="border-t px-6 py-4">
-          <Button onClick={() => formik.handleSubmit()}>
-            <Save size={18} />
-            Update
-          </Button>
-        </CardFooter>
       </Card>
     </>
   );
