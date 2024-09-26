@@ -5,7 +5,7 @@ import {showAlert} from "@/components/ui/sonner.tsx";
 const index: Middleware = ({dispatch}) => {
   return next => (action: any) => {
     if (action.type.includes("rejected") && action.error) {
-      const errorMessage = action.error.message || 'Server side validation failed';
+      const errorMessage = action.payload.message || 'Server side validation failed';
       const {pathname} = window.location
       if (pathname !== "/" && !pathname.includes('login')) {
         if (action.payload.status === 401) {
