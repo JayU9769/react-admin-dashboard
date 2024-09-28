@@ -50,7 +50,7 @@ const Index: React.FC = () => {
                     }),
                     currentRoute.id === item.id
                       ? "bg-primary hover:bg-primary"
-                      : "hover:bg-transparent hover:underline",
+                      : "",
                     "justify-start"
                   )}
                 >
