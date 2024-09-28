@@ -1,5 +1,5 @@
 import {EUserType} from "@/interfaces/index.ts";
-import {IRole} from "@/interfaces/role.ts";
+import {defaultRole, IRole} from "@/interfaces/role.ts";
 
 
 export interface IGetPermissionResponse {
@@ -17,6 +17,15 @@ export interface IPermission {
   updatedAt: Date;
 }
 
+export const defaultPermission: IPermission = {
+  id: "",
+  name: "",
+  type: EUserType.USER,
+  parentId: null,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
 export interface IRoleHasPermission {
   roleId: string;
   permissionId: string;
@@ -27,4 +36,16 @@ export const defaultGetPermissionResponse: IGetPermissionResponse = {
   permissions: [],
   roles: [],
   roleHasPermissions: []
+}
+
+export interface IUpdatePermissionRequest {
+  value: number;
+  role: IRole;
+  permission: IPermission;
+}
+
+export const defaultUpdatePermissionRequest: IUpdatePermissionRequest = {
+  value: 0,
+  role: defaultRole,
+  permission: defaultPermission
 }

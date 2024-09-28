@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_BASE_URL } from "@/lib/constants.ts";
-import {IGetPermissionResponse} from "@/interfaces/permission.ts";
+import {IGetPermissionResponse, IUpdatePermissionRequest} from "@/interfaces/permission.ts";
 
 // Create API service
 export const permissionApi = createApi({
@@ -15,11 +15,20 @@ export const permissionApi = createApi({
       query: (query: string = "") => `${query}`,
       transformResponse: ({ data }) => data,
       providesTags: ["Permission"],
-    })
+    }),
+    updatePermission: builder.mutation<void, IUpdatePermissionRequest>({
+      query: (payload) => ({
+        url: `/update-permission`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: () => ["Permission"],
+    }),
   }),
 });
 
 // Export hooks for usage in functional components
 export const {
   useLazyGetPermissionsQuery,
+  useUpdatePermissionMutation
 } = permissionApi;
