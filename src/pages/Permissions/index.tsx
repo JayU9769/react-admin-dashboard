@@ -2,17 +2,31 @@ import React, { useEffect, useMemo, useState } from "react";
 import DebouncingInput from "@/components/DebouncingInput.tsx";
 import { EUserType } from "@/interfaces";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
-import { useLazyGetPermissionsQuery, useUpdatePermissionMutation } from "@/store/permission/api.ts";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  useLazyGetPermissionsQuery,
+  useUpdatePermissionMutation,
+} from "@/store/permission/api.ts";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
-import { defaultGetPermissionResponse, IPermission } from "@/interfaces/permission.ts";
+import {
+  defaultGetPermissionResponse,
+  IPermission,
+} from "@/interfaces/permission.ts";
 import { IRole } from "@/interfaces/role.ts";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
 const Index: React.FC = () => {
-  const [getPermissions, { data = defaultGetPermissionResponse }] = useLazyGetPermissionsQuery();
+  const [getPermissions, { data = defaultGetPermissionResponse }] =
+    useLazyGetPermissionsQuery();
   const [updatePermission] = useUpdatePermissionMutation();
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState<string>("");
   const [listType, setListType] = useState<EUserType>(EUserType.ADMIN);
   const [assignedPermission, setAssignedPermission] = useState<string[]>([]);
   const [updatingPermission, setUpdatingPermission] = useState<string[]>([]);
@@ -24,37 +38,41 @@ const Index: React.FC = () => {
 
   // Update assigned permissions whenever new data is fetched
   useEffect(() => {
-    setAssignedPermission(data.roleHasPermissions.length > 0
-      ? data.roleHasPermissions.map(r => `${r.roleId}-${r.permissionId}`)
-      : []
+    setAssignedPermission(
+      data.roleHasPermissions.length > 0
+        ? data.roleHasPermissions.map((r) => `${r.roleId}-${r.permissionId}`)
+        : []
     );
   }, [data.roleHasPermissions]);
 
   // Filter permissions based on search input
   const filteredPermissions = useMemo(() => {
-    const searchLower = search.toLowerCase(); // Convert search input to lowercase for case-insensitive search
-    return data.permissions.filter(p => !p.parentId && p.name.toLowerCase().includes(searchLower));
-  }, [data.permissions, search]);
+    return data.permissions.filter((p) => !p.parentId);
+  }, [data.permissions]);
 
   // Memoized map of parent-child permissions for easy lookup
   const parentPermissions = useMemo(() => {
     return filteredPermissions.reduce((acc, parent) => {
       acc[parent.id] = data.permissions
-        .filter(child => child.parentId === parent.id)
-        .map(child => child.id);
+        .filter((child) => child.parentId === parent.id)
+        .map((child) => child.id);
       return acc;
     }, {} as Record<string, string[]>);
   }, [filteredPermissions, data.permissions]);
 
   // Handle updating the permission state
-  const handleChangeChecked = async (value: boolean, role: IRole, permission: IPermission) => {
+  const handleChangeChecked = async (
+    value: boolean,
+    role: IRole,
+    permission: IPermission
+  ) => {
     const loadingString = `${role.id}-${permission.id}`;
-    setUpdatingPermission(prev => [...prev, loadingString]);
+    setUpdatingPermission((prev) => [...prev, loadingString]);
 
     try {
       await updatePermission({ value: value ? 1 : 0, role, permission });
     } finally {
-      setUpdatingPermission(prev => prev.filter(p => p !== loadingString));
+      setUpdatingPermission((prev) => prev.filter((p) => p !== loadingString));
     }
   };
 
@@ -64,20 +82,26 @@ const Index: React.FC = () => {
       ? [permission.id]
       : parentPermissions[permission.id] || [];
 
-    return data.roles.map(role => {
+    return data.roles.map((role) => {
       const id = `${role.id}-${permission.id}`;
       const isUpdating = updatingPermission.includes(id);
-      const isChecked = permissionIds.every(pid => assignedPermission.includes(`${role.id}-${pid}`));
+      const isChecked = permissionIds.every((pid) =>
+        assignedPermission.includes(`${role.id}-${pid}`)
+      );
 
       return (
-        <TableCell key={role.id} className="capitalize flex justify-center">
-          {isUpdating
-            ? <ReloadIcon className="h-5 w-4 animate-spin text-primary" />
-            : <Checkbox
+        <TableCell key={role.id} className="capitalize text-center w-40">
+          {isUpdating ? (
+            <ReloadIcon className="h-5 w-4 animate-spin text-primary" />
+          ) : (
+            <Checkbox
               id={id}
               checked={isChecked}
-              onCheckedChange={(value) => handleChangeChecked(value as boolean, role, permission)}
-            />}
+              onCheckedChange={(value) =>
+                handleChangeChecked(value as boolean, role, permission)
+              }
+            />
+          )}
         </TableCell>
       );
     });
@@ -95,7 +119,10 @@ const Index: React.FC = () => {
           />
         </div>
         <div>
-          <Tabs defaultValue={EUserType.ADMIN} onValueChange={(value) => setListType(value as EUserType)}>
+          <Tabs
+            defaultValue={EUserType.ADMIN}
+            onValueChange={(value) => setListType(value as EUserType)}
+          >
             <TabsList>
               <TabsTrigger value={EUserType.ADMIN} className="capitalize">
                 {EUserType.ADMIN}
@@ -120,27 +147,47 @@ const Index: React.FC = () => {
               ))}
             </TableRow>
           </TableHeader>
-          <TableBody>
-            {filteredPermissions.map(permission => (
-              <React.Fragment key={permission.id}>
-                <TableRow>
-                  <TableCell className="font-medium capitalize">{permission.name}</TableCell>
-                  {renderRoleCells(permission)}
-                </TableRow>
+          {filteredPermissions.length > 0 ? (
+            <TableBody>
+              {filteredPermissions.map((permission) => (
+                <React.Fragment key={permission.id}>
+                  <TableRow>
+                    <TableCell className="font-medium capitalize">
+                      {permission.name}
+                    </TableCell>
+                    {renderRoleCells(permission)}
+                  </TableRow>
 
-                {data.permissions
-                  .filter(child => child.parentId === permission.id)
-                  .map(childPermission => (
-                    <TableRow key={childPermission.id}>
-                      <TableCell className="capitalize pl-8">
-                        {childPermission.name.replace(`${permission.name}-`, '')}
-                      </TableCell>
-                      {renderRoleCells(childPermission)}
-                    </TableRow>
-                  ))}
-              </React.Fragment>
-            ))}
-          </TableBody>
+                  {data.permissions
+                    .filter(
+                      (child) =>
+                        child.parentId === permission.id &&
+                        child.name.toLowerCase().includes(search.toLowerCase())
+                    )
+                    .map((childPermission) => (
+                      <TableRow key={childPermission.id}>
+                        <TableCell className="capitalize pl-8">
+                          {childPermission.name.replace(
+                            `${permission.name}-`,
+                            ""
+                          )}
+                        </TableCell>
+                        {renderRoleCells(childPermission)}
+                      </TableRow>
+                    ))}
+                </React.Fragment>
+              ))}
+            </TableBody>
+          ) : (
+            <TableRow>
+              <TableCell
+                colSpan={data.roles.length + 1}
+                className="h-24 text-center"
+              >
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
         </Table>
       </div>
     </div>

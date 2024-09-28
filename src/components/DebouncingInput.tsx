@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {Input} from "@/components/ui/input.tsx";
+import React, { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input.tsx";
 
 export interface IProps {
   className?: string;
@@ -8,14 +8,12 @@ export interface IProps {
   onChange: (value: string) => void;
 }
 
-const Index: React.FC<IProps> = (
-  {
-    className = '',
-    placeholder = '',
-    value = '',
-    onChange
-  }
-) => {
+const Index: React.FC<IProps> = ({
+  className = "",
+  placeholder = "",
+  value = "",
+  onChange,
+}) => {
   const [inputValue, setInputValue] = useState(value);
 
   useEffect(() => {
@@ -24,16 +22,18 @@ const Index: React.FC<IProps> = (
   }, [inputValue]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => setInputValue(value), 300);
+    const timeout = setTimeout(() => setInputValue(value), 0);
     return () => clearTimeout(timeout);
   }, [value]);
 
-  return <Input
-    placeholder={placeholder}
-    value={inputValue}
-    onChange={event => setInputValue(String(event.target.value))}
-    className={`${className}`}
-  />
-}
+  return (
+    <Input
+      placeholder={placeholder}
+      value={inputValue}
+      onChange={(event) => setInputValue(String(event.target.value))}
+      className={`${className}`}
+    />
+  );
+};
 
 export default Index;
