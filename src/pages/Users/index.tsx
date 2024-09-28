@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useLazyGetUsersQuery } from "@/store/user/api.ts";
+import React, { useMemo, useState } from "react";
+import { useGetUsersQuery } from "@/store/user/api.ts";
 import DataTable from "@/components/dataTable";
 import { tableColumn } from "./columns.tsx";
 import { IPaginationState, TRecord } from "@/interfaces";
-import { defaultAPIResponse, defaultPagination } from "@/lib/constants.ts";
+import {DEFAULT_PAGE_SIZE, defaultAPIResponse, defaultPagination} from "@/lib/constants.ts";
 import { Link, Outlet } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
 import { SortingState } from "@tanstack/react-table";
@@ -12,18 +12,13 @@ import Action from "@/pages/Users/Action.tsx";
 import { Plus } from "lucide-react";
 
 const Index: React.FC = () => {
-  const [queryString, setQueryString] = useState<TRecord>({});
-  const [getUsers, { data = defaultAPIResponse, isFetching }] =
-    useLazyGetUsersQuery();
+  const [queryString, setQueryString] = useState<TRecord>({
+    perPage: DEFAULT_PAGE_SIZE
+  });
+  const { data = defaultAPIResponse, isFetching } = useGetUsersQuery(queryString ? convertToQuery(queryString) : '');
   const columns = useMemo(() => tableColumn, []);
   const [selectedRows, setSelectedRows] = useState<TRecord>({});
   const [resetTrigger, setResetTrigger] = useState<number>(0);
-
-  useEffect(() => {
-    if (Object.keys(queryString).length > 1) {
-      getUsers(convertToQuery(queryString));
-    }
-  }, [getUsers, queryString]);
 
   const handlePagination = (pagination: IPaginationState) => {
     setQueryString({

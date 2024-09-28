@@ -14,7 +14,7 @@ export const permissionApi = createApi({
     getPermissions: builder.query<IGetPermissionResponse, string>({
       query: (query: string = "") => `${query}`,
       transformResponse: ({ data }) => data,
-      providesTags: ["Permission"],
+      providesTags: (_result, _error, query) => [{ type: "Permission", id: query }],
     }),
     updatePermission: builder.mutation<void, IUpdatePermissionRequest>({
       query: (payload) => ({
@@ -29,6 +29,6 @@ export const permissionApi = createApi({
 
 // Export hooks for usage in functional components
 export const {
-  useLazyGetPermissionsQuery,
+  useGetPermissionsQuery,
   useUpdatePermissionMutation
 } = permissionApi;

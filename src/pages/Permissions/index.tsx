@@ -3,7 +3,7 @@ import DebouncingInput from "@/components/DebouncingInput.tsx";
 import { EUserType } from "@/interfaces";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
 import {
-  useLazyGetPermissionsQuery,
+  useGetPermissionsQuery,
   useUpdatePermissionMutation,
 } from "@/store/permission/api.ts";
 import {
@@ -23,18 +23,16 @@ import { IRole } from "@/interfaces/role.ts";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
 const Index: React.FC = () => {
-  const [getPermissions, { data = defaultGetPermissionResponse }] =
-    useLazyGetPermissionsQuery();
+  // const [getPermissions, { data = defaultGetPermissionResponse }] =
+  //   useLazyGetPermissionsQuery();
+
   const [updatePermission] = useUpdatePermissionMutation();
   const [search, setSearch] = useState<string>("");
   const [listType, setListType] = useState<EUserType>(EUserType.ADMIN);
   const [assignedPermission, setAssignedPermission] = useState<string[]>([]);
   const [updatingPermission, setUpdatingPermission] = useState<string[]>([]);
-
-  // Fetch permissions when `listType` changes
-  useEffect(() => {
-    getPermissions(`?type=${listType}`);
-  }, [listType, getPermissions]);
+  // Use useGetPermissionsQuery with listType as a dependency
+  const { data = defaultGetPermissionResponse } = useGetPermissionsQuery(`?type=${listType}`);
 
   // Update assigned permissions whenever new data is fetched
   useEffect(() => {
@@ -90,7 +88,7 @@ const Index: React.FC = () => {
       );
 
       return (
-        <TableCell key={role.id} className="capitalize text-center w-40">
+        <TableCell key={role.id} className="capitalize text-center flex justify-center">
           {isUpdating ? (
             <ReloadIcon className="h-5 w-4 animate-spin text-primary" />
           ) : (
@@ -151,7 +149,7 @@ const Index: React.FC = () => {
             <TableBody>
               {filteredPermissions.map((permission) => (
                 <React.Fragment key={permission.id}>
-                  <TableRow>
+                  <TableRow className={`bg-gray-100 hover:bg-gray-100`}>
                     <TableCell className="font-medium capitalize">
                       {permission.name}
                     </TableCell>
@@ -179,14 +177,16 @@ const Index: React.FC = () => {
               ))}
             </TableBody>
           ) : (
-            <TableRow>
-              <TableCell
-                colSpan={data.roles.length + 1}
-                className="h-24 text-center"
-              >
-                No results.
-              </TableCell>
-            </TableRow>
+            <TableBody>
+              <TableRow>
+                <TableCell
+                  colSpan={data.roles.length + 1}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            </TableBody>
           )}
         </Table>
       </div>

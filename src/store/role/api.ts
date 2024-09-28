@@ -63,7 +63,7 @@ export const roleApi = createApi({
 
 // Export hooks for usage in functional components
 export const {
-  useLazyGetRolesQuery,
+  useGetRolesQuery,
   useLazyGetRoleByIdQuery,
   useCreateRoleMutation,
   useUpdateRoleMutation,

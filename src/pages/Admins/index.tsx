@@ -1,29 +1,30 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import DataTable from "@/components/dataTable";
 import { tableColumns } from "./columns.tsx";
 import { IPaginationState, TRecord } from "@/interfaces";
-import { defaultAPIResponse, defaultPagination } from "@/lib/constants.ts";
+import {DEFAULT_PAGE_SIZE, defaultAPIResponse, defaultPagination} from "@/lib/constants.ts";
 import { Link, Outlet } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
 import { SortingState } from "@tanstack/react-table";
 import { convertToQuery } from "@/lib/utils.ts";
-import { useLazyGetAdminsQuery } from "@/store/admin/api";
+import { useGetAdminsQuery } from "@/store/admin/api";
 import { Plus } from "lucide-react";
 import Action from "@/pages/Admins/Action.tsx";
 
 const Index: React.FC = () => {
-  const [queryString, setQueryString] = useState<TRecord>({});
-  const [getAdmins, { data = defaultAPIResponse, isFetching }] =
-    useLazyGetAdminsQuery();
+  const [queryString, setQueryString] = useState<TRecord>({
+    perPage: DEFAULT_PAGE_SIZE
+  });
+  const { data = defaultAPIResponse, isFetching } = useGetAdminsQuery(queryString ? convertToQuery(queryString) : '');
   const columns = useMemo(() => tableColumns, []);
   const [selectedRows, setSelectedRows] = useState<TRecord>({});
   const [resetTrigger, setResetTrigger] = useState<number>(0);
 
-  useEffect(() => {
-    if (Object.keys(queryString).length > 1) {
-      getAdmins(convertToQuery(queryString));
-    }
-  }, [getAdmins, queryString]);
+  // useEffect(() => {
+  //   if (Object.keys(queryString).length > 1) {
+  //     getAdmins(convertToQuery(queryString));
+  //   }
+  // }, [getAdmins, queryString]);
 
   const handlePagination = (pagination: IPaginationState) => {
     setQueryString({
