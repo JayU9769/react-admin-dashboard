@@ -68,7 +68,7 @@ const Index: React.FC<IProps> = (
   useEffect(() => {
     return () => {
       console.log("On Unmount");
-      dispatch(rootApi.util.invalidateTags([{ type: EAPITags.DROPDOWN_OPTIONS, id: type }]))
+      // dispatch(rootApi.util.invalidateTags([{ type: EAPITags.DROPDOWN_OPTIONS, id: type }]))
     }
   }, []);
   return (
