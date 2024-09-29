@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import React, { useEffect, useState } from "react";
-import { useGetDropdownOptionsQuery, rootApi } from "@/store/root/api.ts";
+import { useGetDropdownOptionsQuery, rootApi, useGetDropdownValueQuery } from "@/store/root/api.ts";
 import { EAPITags } from "@/interfaces";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
@@ -22,8 +22,9 @@ const Index: React.FC<IProps> = ({ placeholderLabel = "Select Item", placeholder
   const [keyword, setKeyword] = useState<string>("");
   ///////////////////////// Redux States and Actions... /////////////////////////
   const dispatch = useDispatch<AppDispatch>();
-  const { data } = useGetDropdownOptionsQuery({ type: type, keyword: keyword });
-
+  const { data = [] } = useGetDropdownOptionsQuery({ type: type, keyword: keyword });
+  const { data: selectedItem } = useGetDropdownValueQuery({ type: type, value }, { skip: !value });
+  console.log(selectedItem);
   //   useEffect(() => {
   //     return () => {
   //       dispatch(rootApi.util.invalidateTags([{ type: EAPITags.DROPDOWN_OPTIONS, id: type }]));
@@ -42,14 +43,11 @@ const Index: React.FC<IProps> = ({ placeholderLabel = "Select Item", placeholder
     }
   };
 
-  const items = data && Array.isArray(data) ? data : [];
-  const selectedItem = items.find((item) => item.value === value);
-
   return (
     <Popover modal={true} open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" role="combobox" className={cn("w-full justify-between", !value && "text-muted-foreground")}>
-          {selectedItem ? selectedItem.label : `${placeholderLabel}`}
+          {selectedItem ? selectedItem?.label : `${placeholderLabel}`}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -59,7 +57,7 @@ const Index: React.FC<IProps> = ({ placeholderLabel = "Select Item", placeholder
           <CommandList>
             <CommandEmpty>No Results.</CommandEmpty>
             <CommandGroup>
-              {items.map((item) => (
+              {data.map((item) => (
                 <CommandItem
                   value={item.label}
                   key={item.value}

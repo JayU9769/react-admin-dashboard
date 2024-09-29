@@ -108,6 +108,7 @@ const Index: React.FC = () => {
               Role <RequiredMark />
             </Label>
             <SelectType value={formik.values.roles[0]} onChange={(val: string) => formik.setFieldValue("roles", [val])} type="roles" />
+            {/* <SelectType value={formik.values.roles[0]} onChange={(val: string) => formik.setFieldValue("roles", [val])} type="users" /> */}
             <div className={`min-h-4`}>{formik.touched.email && formik.errors.email && <InputErrorMessage message={formik.errors.email} />}</div>
           </Col>
           <Col>
