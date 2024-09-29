@@ -1,17 +1,22 @@
 import React, { useMemo, useState } from "react";
 import DataTable from "@/components/dataTable";
 import { tableColumns } from "./columns.tsx";
-import { IPaginationState, TRecord } from "@/interfaces";
+import {EAPITags, IPaginationState, TRecord} from "@/interfaces";
 import {DEFAULT_PAGE_SIZE, defaultAPIResponse, defaultPagination} from "@/lib/constants.ts";
 import { Link, Outlet } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
 import { SortingState } from "@tanstack/react-table";
 import { convertToQuery } from "@/lib/utils.ts";
-import { useGetAdminsQuery } from "@/store/admin/api";
+import {adminApi, useGetAdminsQuery} from "@/store/admin/api";
 import { Plus } from "lucide-react";
 import Action from "@/pages/Admins/Action.tsx";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "@/store";
 
 const Index: React.FC = () => {
+
+  ///////////////////////// Redux States and Actions... /////////////////////////
+  const dispatch = useDispatch<AppDispatch>();
   const [queryString, setQueryString] = useState<TRecord>({
     perPage: DEFAULT_PAGE_SIZE
   });
@@ -19,12 +24,6 @@ const Index: React.FC = () => {
   const columns = useMemo(() => tableColumns, []);
   const [selectedRows, setSelectedRows] = useState<TRecord>({});
   const [resetTrigger, setResetTrigger] = useState<number>(0);
-
-  // useEffect(() => {
-  //   if (Object.keys(queryString).length > 1) {
-  //     getAdmins(convertToQuery(queryString));
-  //   }
-  // }, [getAdmins, queryString]);
 
   const handlePagination = (pagination: IPaginationState) => {
     setQueryString({
@@ -59,6 +58,8 @@ const Index: React.FC = () => {
     setResetTrigger(prev => prev + 1);
   };
 
+  const handleRefresh = () => dispatch(adminApi.util.invalidateTags([EAPITags.ADMIN]));
+
   return (
     <>
       <DataTable
@@ -71,6 +72,7 @@ const Index: React.FC = () => {
         onSorting={handleSorting}
         onRowSelection={(rows) => setSelectedRows(rows)}
         resetSelection={resetTrigger}
+        onRefresh={handleRefresh}
         tableActions={<>
           <Action
             type={"bulk"}

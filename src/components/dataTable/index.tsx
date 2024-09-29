@@ -45,6 +45,7 @@ interface IProps<TData, TValue> {
   id: string;
   onRowSelection?: (table: TRecord) => void;
   resetSelection?: number;
+  onRefresh?: () => void;
 }
 
 const Index = <TData, TValue>(
@@ -59,6 +60,7 @@ const Index = <TData, TValue>(
     isLoading = true,
     id,
     onRowSelection,
+    onRefresh,
     resetSelection,
   }: IProps<TData, TValue>
 ) => {
@@ -152,7 +154,7 @@ const Index = <TData, TValue>(
             variant={"outline"}
             size={"sm"}
             onClick={() => {
-              onPagination(pagination);
+              if (onRefresh) onRefresh();
             }}
           >
             <RefreshCw className="mr-2 h-4 w-4"/>

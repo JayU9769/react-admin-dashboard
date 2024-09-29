@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import DataTable from "@/components/dataTable";
 import { tableColumn } from "./columns.tsx";
-import { IPaginationState, TRecord } from "@/interfaces";
+import {EAPITags, IPaginationState, TRecord} from "@/interfaces";
 import {DEFAULT_PAGE_SIZE, defaultAPIResponse, defaultPagination} from "@/lib/constants.ts";
 import { Link, Outlet } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
@@ -10,8 +10,14 @@ import { convertToQuery } from "@/lib/utils.ts";
 import { useGetRolesQuery } from "@/store/role/api";
 import Action from "@/pages/Roles/Action.tsx";
 import { Plus } from "lucide-react";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "@/store";
+import {roleApi} from "@/store/role/api.ts";
 
 const Index: React.FC = () => {
+
+  ///////////////////////// Redux States and Actions... /////////////////////////
+  const dispatch = useDispatch<AppDispatch>();
   const [queryString, setQueryString] = useState<TRecord>({
     perPage: DEFAULT_PAGE_SIZE
   });
@@ -53,6 +59,8 @@ const Index: React.FC = () => {
     setResetTrigger(prev => prev + 1);
   };
 
+  const handleRefresh = () => dispatch(roleApi.util.invalidateTags([EAPITags.ROLE]));
+
   return (
     <>
       <DataTable
@@ -65,6 +73,7 @@ const Index: React.FC = () => {
         onSorting={handleSorting}
         onRowSelection={(rows) => setSelectedRows(rows)}
         resetSelection={resetTrigger}
+        onRefresh={handleRefresh}
         tableActions={<>
           <Action
             type={"bulk"}

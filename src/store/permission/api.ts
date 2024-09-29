@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_BASE_URL } from "@/lib/constants.ts";
 import {IGetPermissionResponse, IUpdatePermissionRequest} from "@/interfaces/permission.ts";
+import {EAPITags} from "@/interfaces";
 
 // Create API service
 export const permissionApi = createApi({
@@ -9,12 +10,12 @@ export const permissionApi = createApi({
     baseUrl: `${API_BASE_URL}/permissions`,
     credentials: "include",
   }),
-  tagTypes: ["Permission"],
+  tagTypes: [EAPITags.PERMISSION],
   endpoints: (builder) => ({
     getPermissions: builder.query<IGetPermissionResponse, string>({
       query: (query: string = "") => `${query}`,
       transformResponse: ({ data }) => data,
-      providesTags: (_result, _error, query) => [{ type: "Permission", id: query }],
+      providesTags: (_result, _error, query) => [{ type: EAPITags.PERMISSION, id: query }],
     }),
     updatePermission: builder.mutation<void, IUpdatePermissionRequest>({
       query: (payload) => ({
@@ -22,7 +23,7 @@ export const permissionApi = createApi({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: () => ["Permission"],
+      invalidatesTags: () => [EAPITags.PERMISSION],
     }),
   }),
 });

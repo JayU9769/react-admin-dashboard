@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from "react";
-import { useGetUsersQuery } from "@/store/user/api.ts";
+import {useGetUsersQuery, userApi} from "@/store/user/api.ts";
 import DataTable from "@/components/dataTable";
 import { tableColumn } from "./columns.tsx";
-import { IPaginationState, TRecord } from "@/interfaces";
+import {EAPITags, IPaginationState, TRecord} from "@/interfaces";
 import {DEFAULT_PAGE_SIZE, defaultAPIResponse, defaultPagination} from "@/lib/constants.ts";
 import { Link, Outlet } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
@@ -10,8 +10,13 @@ import { SortingState } from "@tanstack/react-table";
 import { convertToQuery } from "@/lib/utils.ts";
 import Action from "@/pages/Users/Action.tsx";
 import { Plus } from "lucide-react";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "@/store";
 
 const Index: React.FC = () => {
+
+  ///////////////////////// Redux States and Actions... /////////////////////////
+  const dispatch = useDispatch<AppDispatch>();
   const [queryString, setQueryString] = useState<TRecord>({
     perPage: DEFAULT_PAGE_SIZE
   });
@@ -53,6 +58,8 @@ const Index: React.FC = () => {
     setResetTrigger(prev => prev + 1);
   };
 
+  const handleRefresh = () => dispatch(userApi.util.invalidateTags([EAPITags.USER]));
+
   return (
     <>
       <DataTable
@@ -65,6 +72,7 @@ const Index: React.FC = () => {
         onSorting={handleSorting}
         onRowSelection={(rows) => setSelectedRows(rows)}
         resetSelection={resetTrigger}
+        onRefresh={handleRefresh}
         tableActions={<>
           <Action
             type={"bulk"}

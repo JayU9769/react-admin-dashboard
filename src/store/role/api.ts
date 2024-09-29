@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IRole } from "@/interfaces/role.ts";
 import { IUpdateRoleArgs } from "./types.ts";
-import {IListAPIResponse, IUpdateAction, TIds} from "@/interfaces";
+import {EAPITags, IListAPIResponse, IUpdateAction, TIds} from "@/interfaces";
 import { API_BASE_URL } from "@/lib/constants.ts";
 
 // Create API service
@@ -11,18 +11,18 @@ export const roleApi = createApi({
     baseUrl: `${API_BASE_URL}/roles`,
     credentials: "include",
   }),
-  tagTypes: ["Role"],
+  tagTypes: [EAPITags.ROLE],
   endpoints: (builder) => ({
     getRoles: builder.query<IListAPIResponse, string>({
       query: (query: string = "") => `${query}`,
       transformResponse: ({ data }) => data,
       providesTags: ({ rows }: any) =>
-        rows ? rows.map(({ id }: IRole) => ({ type: "Role", id })) : ["Role"],
+        rows ? rows.map(({ id }: IRole) => ({ type: EAPITags.ROLE, id })) : [EAPITags.ROLE],
     }),
     getRoleById: builder.query<IRole, string>({
       query: (id) => `/${id}`,
       transformResponse: ({ data }) => data,
-      providesTags: (_result, _error, id) => [{ type: "Role", id }],
+      providesTags: (_result, _error, id) => [{ type: EAPITags.ROLE, id }],
     }),
     createRole: builder.mutation<IRole, Partial<IRole>>({
       query: (body) => ({
@@ -31,7 +31,7 @@ export const roleApi = createApi({
         body: body,
       }),
       transformResponse: ({ data }) => data,
-      invalidatesTags: ["Role"],
+      invalidatesTags: [EAPITags.ROLE],
     }),
     updateRole: builder.mutation<IRole, IUpdateRoleArgs>({
       query: ({ id, updatedBody }) => ({
@@ -40,7 +40,7 @@ export const roleApi = createApi({
         body: updatedBody,
       }),
       transformResponse: ({ data }) => data,
-      invalidatesTags: () => ["Role"],
+      invalidatesTags: () => [EAPITags.ROLE],
     }),
     updateRoleAction: builder.mutation<void, IUpdateAction>({
       query: (payload) => ({
@@ -48,7 +48,7 @@ export const roleApi = createApi({
         method: "POST", // Use "PATCH" if you prefer partial updates
         body: payload,
       }),
-      invalidatesTags: () => ["Role"],
+      invalidatesTags: () => [EAPITags.ROLE],
     }),
     deleteRole: builder.mutation<void, TIds>({
       query: (ids: TIds) => ({
@@ -56,7 +56,7 @@ export const roleApi = createApi({
         method: "DELETE",
         body: { ids },
       }),
-      invalidatesTags: () => ["Role"],
+      invalidatesTags: () => [EAPITags.ROLE],
     }),
   }),
 });

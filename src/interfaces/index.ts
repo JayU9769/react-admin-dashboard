@@ -35,4 +35,12 @@ export enum EUserType {
   ADMIN = 'admin'
 }
 
+export enum EAPITags {
+  AUTH = 'Auth',
+  ADMIN = 'Admin',
+  USER = 'User',
+  ROLE = 'Role',
+  PERMISSION = 'Permission',
+}
+
 export type TIds = Array<string>;

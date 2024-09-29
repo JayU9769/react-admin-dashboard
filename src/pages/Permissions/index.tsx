@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import DebouncingInput from "@/components/DebouncingInput.tsx";
-import { EUserType } from "@/interfaces";
+import {EAPITags, EUserType} from "@/interfaces";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
 import {
+  permissionApi,
   useGetPermissionsQuery,
   useUpdatePermissionMutation,
 } from "@/store/permission/api.ts";
@@ -21,16 +22,21 @@ import {
 } from "@/interfaces/permission.ts";
 import { IRole } from "@/interfaces/role.ts";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import {RefreshCw} from "lucide-react";
+import {Button} from "@/components/ui/button.tsx";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "@/store";
 
 const Index: React.FC = () => {
-  // const [getPermissions, { data = defaultGetPermissionResponse }] =
-  //   useLazyGetPermissionsQuery();
 
+  ///////////////////////// Redux States and Actions... /////////////////////////
+  const dispatch = useDispatch<AppDispatch>();
   const [updatePermission] = useUpdatePermissionMutation();
   const [search, setSearch] = useState<string>("");
   const [listType, setListType] = useState<EUserType>(EUserType.ADMIN);
   const [assignedPermission, setAssignedPermission] = useState<string[]>([]);
   const [updatingPermission, setUpdatingPermission] = useState<string[]>([]);
+
   // Use useGetPermissionsQuery with listType as a dependency
   const { data = defaultGetPermissionResponse } = useGetPermissionsQuery(`?type=${listType}`);
 
@@ -74,6 +80,8 @@ const Index: React.FC = () => {
     }
   };
 
+  const handleRefresh = () => dispatch(permissionApi.util.invalidateTags([{ type: EAPITags.PERMISSION, id: `?type=${listType}` }]));
+
   // Helper function to render the role cells for each permission
   const renderRoleCells = (permission: IPermission) => {
     const permissionIds = permission.parentId
@@ -115,6 +123,14 @@ const Index: React.FC = () => {
             onChange={(value) => setSearch(value)}
             className="h-8 w-[150px] lg:w-[250px] bg-white"
           />
+          <Button
+            variant={"outline"}
+            size={"sm"}
+            onClick={handleRefresh}
+          >
+            <RefreshCw className="mr-2 h-4 w-4"/>
+            Reload
+          </Button>
         </div>
         <div>
           <Tabs
