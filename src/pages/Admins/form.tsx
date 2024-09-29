@@ -14,6 +14,7 @@ import { Switch } from "@/components/ui/switch.tsx";
 import { useParams } from "react-router-dom";
 import { useCreateAdminMutation, useUpdateAdminMutation, useGetAdminByIdQuery } from "@/store/admin/api";
 import { IAdminForm } from "@/interfaces/admin";
+import { SelectType } from "./Select";
 
 const getValidationSchema = (isEditMode: boolean) => {
   return Yup.object().shape({
@@ -103,6 +104,13 @@ const Index: React.FC = () => {
               <div className={`min-h-4`}>{formik.touched.password && formik.errors.password && <InputErrorMessage message={formik.errors.password} />}</div>
             </Col>
           )}
+          <Col>
+            <Label htmlFor="email">
+              Role <RequiredMark />
+            </Label>
+            <SelectType field={{ value: null }} />
+            <div className={`min-h-4`}>{formik.touched.email && formik.errors.email && <InputErrorMessage message={formik.errors.email} />}</div>
+          </Col>
           <Col>
             <div className="flex items-center space-x-4 rounded-md border p-4">
               <div className="flex-1 space-y-1">
