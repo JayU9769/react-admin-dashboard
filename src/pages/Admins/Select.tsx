@@ -3,6 +3,11 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import React, {useEffect} from "react";
+import {useGetDropdownOptionsQuery, rootApi} from "@/store/root/api.ts";
+import {EAPITags} from "@/interfaces";
+import { useDispatch } from "react-redux";
+import {AppDispatch} from "@/store";
 
 const data = [
   { label: "English", value: "efghfghn" },
@@ -43,12 +48,29 @@ const data = [
   { label: "Chinese", value: "zhq" },
 ] as const;
 
-interface ISelectType {
-  selectedValue: string | null;
-  selectedLabel: string | null;
+interface IProps {
+  type: string;
+  value: string | null;
   onChange: (val: string) => void;
 }
-export function SelectType({ selectedValue, selectedLabel, onChange }: ISelectType) {
+const Index: React.FC<IProps> = (
+  {
+    value,
+    type,
+    onChange
+  }
+) => {
+
+  ///////////////////////// Redux States and Actions... /////////////////////////
+  const dispatch = useDispatch<AppDispatch>();
+  const { data } = useGetDropdownOptionsQuery(type)
+
+  useEffect(() => {
+    return () => {
+      console.log("On Unmount");
+      dispatch(rootApi.util.invalidateTags([{ type: EAPITags.DROPDOWN_OPTIONS, id: type }]))
+    }
+  }, []);
   return (
     <Popover modal={true}>
       <PopoverTrigger asChild>
@@ -82,3 +104,5 @@ export function SelectType({ selectedValue, selectedLabel, onChange }: ISelectTy
     </Popover>
   );
 }
+
+export default Index;

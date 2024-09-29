@@ -41,6 +41,7 @@ export enum EAPITags {
   USER = "User",
   ROLE = "Role",
   PERMISSION = "Permission",
+  DROPDOWN_OPTIONS = "DropdownOptions",
 }
 
 export type TIds = Array<string>;
