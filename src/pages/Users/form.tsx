@@ -120,7 +120,7 @@ const Index: React.FC = () => {
                 name="status"
                 checked={formik.values.status === 1}
                 onCheckedChange={(value) => {
-                  formik.setFieldValue("status", value ? "active" : "inactive");
+                  formik.setFieldValue("status", value ? 1 : 0);
                 }}
               />
             </div>

@@ -69,7 +69,6 @@ const Index: React.FC = () => {
       });
     },
   });
-  console.log(formik.values);
   return (
     <DrawerForm
       ref={drawerRef}
@@ -122,9 +121,9 @@ const Index: React.FC = () => {
               <Switch
                 id="status"
                 name="status"
-                checked={formik.values.status ? true : false}
+                checked={formik.values.status === 1}
                 onCheckedChange={(value) => {
-                  formik.setFieldValue("status", value ? "active" : "inactive");
+                  formik.setFieldValue("status", value ? 1 : 0);
                 }}
               />
             </div>
