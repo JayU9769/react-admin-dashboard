@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
   useCreateUserMutation,
-  useLazyGetUserByIdQuery,
+  useGetUserByIdQuery,
   useUpdateUserMutation,
 } from "@/store/user/api";
 import { showAlert } from "@/components/ui/sonner";
@@ -42,19 +42,21 @@ const getValidationSchema = (isEditMode: boolean) => {
 };
 
 const Index: React.FC = () => {
+  const params = useParams();
   const drawerRef = useRef<DrawerRef>(null);
-  const [updateUser, { isLoading: isUpdateLoding }] = useUpdateUserMutation();
-  const [getUserById, { data }] = useLazyGetUserByIdQuery();
+  const [updateUser, { isLoading: isUpdateLoading }] = useUpdateUserMutation();
+  const { data } = useGetUserByIdQuery(params.id as string, {
+    skip: !params.id, // Skip the query if params.id is undefined
+  });
   const [createUser, { isLoading }] = useCreateUserMutation();
   const [formData, setFormData] = useState<IUser>(defaultUser);
   const [formState, setFormState] = useState(0);
 
-  const params = useParams();
+
 
   useEffect(() => {
     if (params.id) {
       setFormState(1);
-      getUserById(params.id);
     } else {
       setFormState(0);
     }
@@ -96,7 +98,7 @@ const Index: React.FC = () => {
       // size={"9/12"}
       direction="right"
     >
-      {(isLoading || isUpdateLoding) && <Loader />}
+      {(isLoading || isUpdateLoading) && <Loader />}
       <form onSubmit={formik.handleSubmit}>
         <Grid className="p-4 pb-0">
           <Col>

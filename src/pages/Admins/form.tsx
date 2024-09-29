@@ -15,7 +15,7 @@ import { useParams } from "react-router-dom";
 import {
   useCreateAdminMutation,
   useUpdateAdminMutation,
-  useLazyGetAdminByIdQuery,
+  useGetAdminByIdQuery,
 } from "@/store/admin/api";
 import { IAdminForm } from "@/interfaces/admin";
 
@@ -41,24 +41,25 @@ const getValidationSchema = (isEditMode: boolean) => {
 };
 
 const Index: React.FC = () => {
+
+  const params = useParams();
   const drawerRef = useRef<DrawerRef>(null);
   const [updateAdmin, { isLoading: isUpdateLoading }] =
     useUpdateAdminMutation();
-  const [getAdminById, { data }] = useLazyGetAdminByIdQuery();
+  const { data } = useGetAdminByIdQuery(params.id as string, {
+    skip: !params.id, // Skip the query if params.id is undefined
+  });
   const [createAdmin, { isLoading }] = useCreateAdminMutation();
   const [formData, setFormData] = useState<IAdminForm>(defaultAdminForm);
   const [formState, setFormState] = useState(0);
 
-  const params = useParams();
-
   useEffect(() => {
     if (params.id) {
       setFormState(1);
-      getAdminById(params.id);
     } else {
       setFormState(0);
     }
-  }, [getAdminById, params.id]);
+  }, [params.id]);
 
   useEffect(() => {
     if (data) {

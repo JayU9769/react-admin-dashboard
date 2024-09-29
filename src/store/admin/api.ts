@@ -127,7 +127,7 @@ export const {
   useGetAuthQuery,
   useLogoutMutation,
   useGetAdminsQuery,
-  useLazyGetAdminByIdQuery,
+  useGetAdminByIdQuery,
   useCreateAdminMutation,
   useUpdateAdminMutation,
   useUpdateAdminActionMutation,

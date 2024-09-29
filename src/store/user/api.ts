@@ -73,7 +73,7 @@ export const userApi = createApi({
 // Export hooks for usage in functional components
 export const {
   useGetUsersQuery,
-  useLazyGetUserByIdQuery,
+  useGetUserByIdQuery,
   useCreateUserMutation,
   useUpdateUserMutation,
   useUpdateUserActionMutation,

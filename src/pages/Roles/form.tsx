@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
   useCreateRoleMutation,
-  useLazyGetRoleByIdQuery,
+  useGetRoleByIdQuery,
   useUpdateRoleMutation,
 } from "@/store/role/api";
 import { showAlert } from "@/components/ui/sonner";
@@ -28,23 +28,24 @@ const validationSchema = Yup.object().shape({
 });
 
 const Index: React.FC = () => {
+
+  const params = useParams();
   const drawerRef = useRef<DrawerRef>(null);
-  const [updateRole, { isLoading: isUpdateLoding }] = useUpdateRoleMutation();
-  const [getRoleById, { data }] = useLazyGetRoleByIdQuery();
+  const [updateRole, { isLoading: isUpdateLoading }] = useUpdateRoleMutation();
+  const { data } = useGetRoleByIdQuery(params.id as string, {
+    skip: !params.id, // Skip the query if params.id is undefined
+  });
   const [createRole, { isLoading }] = useCreateRoleMutation();
   const [formData, setFormData] = useState<IRole>(defaultRole);
   const [formState, setFormState] = useState(0);
 
-  const params = useParams();
-
   useEffect(() => {
     if (params.id) {
       setFormState(1);
-      getRoleById(params.id);
     } else {
       setFormState(0);
     }
-  }, [getRoleById, params.id]);
+  }, [params.id]);
 
   useEffect(() => {
     if (data) {
@@ -82,7 +83,7 @@ const Index: React.FC = () => {
       size="sm"
       direction="right"
     >
-      {(isLoading || isUpdateLoding) && <Loader />}
+      {(isLoading || isUpdateLoading) && <Loader />}
       <form onSubmit={formik.handleSubmit}>
         <Grid className="p-4 pb-0">
           <Col>

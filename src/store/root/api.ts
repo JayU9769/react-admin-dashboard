@@ -6,13 +6,10 @@ export const rootApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_URL,
   }),
-  endpoints: (builder) => ({
-    getUsers: builder.query({
-      query: (query: string = "") => `/users${query}`,
-    })
+  endpoints: (_builder) => ({
   }),
 });
 
 export const {
-  useLazyGetUsersQuery,
+
 } = rootApi;
