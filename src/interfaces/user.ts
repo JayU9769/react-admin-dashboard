@@ -5,7 +5,7 @@ export interface IUser {
   email: string;
   password: string;
   phoneNo: string;
-  status: string;
+  status: number;
 }
 
 export const defaultUser: IUser = {
@@ -14,7 +14,7 @@ export const defaultUser: IUser = {
   email: "",
   phoneNo: "",
   password: "",
-  status: "active",
+  status: 1,
 };
 
 export interface IChangePassword {

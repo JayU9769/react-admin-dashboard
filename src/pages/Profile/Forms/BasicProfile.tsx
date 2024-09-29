@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import InputErrorMessage from "@/components/form/InputErrorMessage";
-import { Button } from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,17 +8,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { showAlert } from "@/components/ui/sonner";
-import { IAdmin } from "@/interfaces/admin";
-import { useUpdateProfileMutation } from "@/store/admin/api";
-import { adminStates } from "@/store/admin/slice";
-import { useFormik } from "formik";
-import { Save } from "lucide-react";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {showAlert} from "@/components/ui/sonner";
+import {IAdmin} from "@/interfaces/admin";
+import {useUpdateProfileMutation} from "@/store/admin/api";
+import {adminStates} from "@/store/admin/slice";
+import {useFormik} from "formik";
+import {Save} from "lucide-react";
+import {useState} from "react";
+import {useSelector} from "react-redux";
 import RequiredMark from "@/components/form/RequiredMark";
+import {ReloadIcon} from "@radix-ui/react-icons";
 
 const getValidationSchema = () => {
   Yup.object().shape({
@@ -33,8 +34,8 @@ const getValidationSchema = () => {
 };
 
 const BasicProfile: React.FC = () => {
-  const [updateProfile] = useUpdateProfileMutation();
-  const { auth } = useSelector(adminStates);
+  const [updateProfile, {isLoading}] = useUpdateProfileMutation();
+  const {auth} = useSelector(adminStates);
   const [formData] = useState<IAdmin>(auth);
   const formik = useFormik({
     initialValues: formData,
@@ -42,7 +43,7 @@ const BasicProfile: React.FC = () => {
     enableReinitialize: true,
     onSubmit: async (values) => {
       updateProfile({
-        updatedBody: { name: values.name, email: values.email },
+        updatedBody: {name: values.name, email: values.email},
       }).then((res: any) => {
         if (res.data) {
           showAlert("Profile Updated", "success");
@@ -69,7 +70,7 @@ const BasicProfile: React.FC = () => {
           <form onSubmit={formik.handleSubmit}>
             <div className="mb-3">
               <Label htmlFor="name">
-                Name <RequiredMark />
+                Name <RequiredMark/>
               </Label>
               <Input
                 id="name"
@@ -81,13 +82,13 @@ const BasicProfile: React.FC = () => {
               />
               <div className={`min-h-4`}>
                 {formik.touched.name && formik.errors.name && (
-                  <InputErrorMessage message={formik.errors.name} />
+                  <InputErrorMessage message={formik.errors.name}/>
                 )}
               </div>
             </div>
             <div className="mb-3">
               <Label htmlFor="email">
-                E-Mail <RequiredMark />
+                E-Mail <RequiredMark/>
               </Label>
               <Input
                 id="email"
@@ -99,13 +100,18 @@ const BasicProfile: React.FC = () => {
               />
               <div className={`min-h-4`}>
                 {formik.touched.email && formik.errors.email && (
-                  <InputErrorMessage message={formik.errors.email} />
+                  <InputErrorMessage message={formik.errors.email}/>
                 )}
               </div>
             </div>
-            <Button type="submit">
-              <Save size={18} />
-              Update
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? <>
+                <ReloadIcon className={`h-4 w-4 animate-spin`}  />
+                Updating
+              </> : <>
+                <Save className={`h-4 w-4`} />
+                Update
+              </>}
             </Button>
           </form>
         </CardContent>

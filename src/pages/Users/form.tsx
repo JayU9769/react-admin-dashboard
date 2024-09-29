@@ -189,7 +189,7 @@ const Index: React.FC = () => {
               <Switch
                 id="status"
                 name="status"
-                checked={formik.values.status === "active"}
+                checked={formik.values.status === 1}
                 onCheckedChange={(value) => {
                   formik.setFieldValue("status", value ? "active" : "inactive");
                 }}

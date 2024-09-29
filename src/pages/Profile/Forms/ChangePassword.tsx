@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -24,6 +23,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuth } from "@/store/admin/slice";
+import {ReloadIcon} from "@radix-ui/react-icons";
 
 const validationSchema = Yup.object().shape({
   currentPassword: Yup.string()
@@ -39,7 +39,7 @@ const validationSchema = Yup.object().shape({
     .required("Confirm password is required"),
 });
 const ChangePassword: React.FC = () => {
-  const [updateProfilePassword] = useUpdateProfilePasswordMutation();
+  const [updateProfilePassword, {isLoading}] = useUpdateProfilePasswordMutation();
   const dispatch = useDispatch();
   const [formData] = useState<IProfileChangePassword>(
     defaultProfileChangePassword
@@ -144,14 +144,17 @@ const ChangePassword: React.FC = () => {
                   )}
               </div>
             </div>
+            <Button type={`submit`}>
+              {isLoading ? <>
+                <ReloadIcon className={`h-4 w-4 animate-spin`}  />
+                Updating
+              </> : <>
+                <Save className={`h-4 w-4`} />
+                Update
+              </>}
+            </Button>
           </form>
         </CardContent>
-        <CardFooter className="border-t px-6 py-4">
-          <Button onClick={() => formik.handleSubmit()}>
-            <Save size={18} />
-            Update
-          </Button>
-        </CardFooter>
       </Card>
     </>
   );
