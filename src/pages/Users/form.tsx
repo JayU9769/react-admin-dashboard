@@ -18,7 +18,7 @@ import "react-international-phone/style.css";
 
 const getValidationSchema = (isEditMode: boolean) => {
   return Yup.object().shape({
-    name: Yup.string().required("First Name is required").min(8, "Name must be 3 characters or more").max(50, "Name must be 50 characters or less"),
+    name: Yup.string().required("First Name is required").min(3, "Name must be 3 characters or more").max(50, "Name must be 50 characters or less"),
     email: Yup.string().required("Email is required").email("Invalid Email").max(50, "Email must be 50 characters or less"),
     ...(!isEditMode && { password: Yup.string().required("Password is required").min(8, "Password must be at least 8 characters").max(50, "Password must be 50 characters or less") }), // No password validation in edit mode
     // Add additional validation rules for other fields if necessary

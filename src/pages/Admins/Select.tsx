@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
-const languages = [
+const data = [
   { label: "English", value: "efghfghn" },
   { label: "French", value: "ffghr" },
   { label: "German", value: "dcvbe" },
@@ -43,33 +43,36 @@ const languages = [
   { label: "Chinese", value: "zhq" },
 ] as const;
 
-export function SelectType({ field }: any) {
+interface ISelectType {
+  selectedValue: string | null;
+  selectedLabel: string | null;
+  onChange: (val: string) => void;
+}
+export function SelectType({ selectedValue, selectedLabel, onChange }: ISelectType) {
   return (
-    <Popover>
+    <Popover modal={true}>
       <PopoverTrigger asChild>
-        <Button variant="outline" role="combobox" className={cn("w-full justify-between", !field.value && "text-muted-foreground")}>
-          {/* {field.value ? languages.find((language) => language.value === field.value)?.label : } */}
-          Select language
+        <Button variant="outline" role="combobox" className={cn("w-full justify-between", !selectedValue && "text-muted-foreground")}>
+          {selectedLabel ? selectedLabel : "Select item"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="popover-content-width-full p-0">
         <Command>
-          <CommandInput placeholder="Search language..." />
+          <CommandInput placeholder="Search item..." />
           <CommandList>
-            <CommandEmpty>No language found.</CommandEmpty>
+            <CommandEmpty>No Results.</CommandEmpty>
             <CommandGroup>
-              {languages.map((language) => (
+              {data.map((item) => (
                 <CommandItem
-                  value={language.label}
-                  key={language.value}
+                  value={item.label}
+                  key={item.value}
                   onSelect={() => {
-                    //   form.setValue("language", language.value);
-                    console.log(language.value);
+                    onChange(item.value);
                   }}
                 >
-                  <Check className={cn("mr-2 h-4 w-4", language.value === field.value ? "opacity-100" : "opacity-0")} />
-                  {language.label}
+                  <Check className={cn("mr-2 h-4 w-4", item.value === selectedValue ? "opacity-100" : "opacity-0")} />
+                  {item.label}
                 </CommandItem>
               ))}
             </CommandGroup>

@@ -18,7 +18,7 @@ import { SelectType } from "./Select";
 
 const getValidationSchema = (isEditMode: boolean) => {
   return Yup.object().shape({
-    name: Yup.string().required("First Name is required").max(50, "Name must be 50 characters or less"),
+    name: Yup.string().required("First Name is required").min(3, "Name must be 3 characters or more").max(50, "Name must be 50 characters or less"),
     email: Yup.string().required("Email is required").email("Invalid Email").max(50, "Email must be 50 characters or less"),
     ...(isEditMode
       ? {} // No password validation in edit mode
@@ -69,7 +69,7 @@ const Index: React.FC = () => {
       });
     },
   });
-
+  console.log(formik.values);
   return (
     <DrawerForm
       ref={drawerRef}
@@ -108,7 +108,7 @@ const Index: React.FC = () => {
             <Label htmlFor="email">
               Role <RequiredMark />
             </Label>
-            <SelectType field={{ value: null }} />
+            <SelectType selectedValue={formik.values.roles} selectedLabel={null} onChange={(val: string) => formik.setFieldValue("roles", val)} />
             <div className={`min-h-4`}>{formik.touched.email && formik.errors.email && <InputErrorMessage message={formik.errors.email} />}</div>
           </Col>
           <Col>

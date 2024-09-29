@@ -8,6 +8,7 @@ export interface IAdmin {
   email: string;
   status: number;
   name: string;
+  roles: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -18,6 +19,7 @@ export interface IAdminForm {
   status: number;
   password?: string;
   name: string;
+  roles: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -28,6 +30,7 @@ export const defaultAdminForm: IAdminForm = {
   name: "",
   password: "",
   status: 1,
+  roles: "",
   createdAt: new Date(),
   updatedAt: new Date(),
 };
@@ -37,6 +40,7 @@ export const defaultAdmin: IAdmin = {
   email: "",
   name: "",
   status: 1,
+  roles: "",
   createdAt: new Date(),
   updatedAt: new Date(),
 };
