@@ -9,9 +9,7 @@ const Index: React.FC = () => {
     <>
       <div className="grid gap-2 text-center mb-4">
         <h1 className="text-3xl font-bold">Sign Up</h1>
-        <p className="text-balance text-muted-foreground">
-          Enter your information to create an account
-        </p>
+        <p className="text-balance text-muted-foreground">Enter your information to create an account</p>
       </div>
       <div className="grid gap-4">
         <div className="grid grid-cols-2 gap-4">
@@ -30,11 +28,7 @@ const Index: React.FC = () => {
         </div>
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            type="password"
-            autoComplete="current-password"
-          />
+          <Input id="password" type="password" autoComplete="current-password" />
         </div>
         <Button type="submit" className="w-full">
           Create an account

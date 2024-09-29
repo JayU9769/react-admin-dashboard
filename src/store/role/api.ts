@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IRole } from "@/interfaces/role.ts";
 import { IUpdateRoleArgs } from "./types.ts";
-import {EAPITags, IListAPIResponse, IUpdateAction, TIds} from "@/interfaces";
+import { EAPITags, IListAPIResponse, IUpdateAction, TIds } from "@/interfaces";
 import { API_BASE_URL } from "@/lib/constants.ts";
 
 // Create API service
@@ -16,8 +16,7 @@ export const roleApi = createApi({
     getRoles: builder.query<IListAPIResponse, string>({
       query: (query: string = "") => `${query}`,
       transformResponse: ({ data }) => data,
-      providesTags: ({ rows }: any) =>
-        rows ? rows.map(({ id }: IRole) => ({ type: EAPITags.ROLE, id })) : [EAPITags.ROLE],
+      providesTags: ({ rows }: any) => (rows ? rows.map(({ id }: IRole) => ({ type: EAPITags.ROLE, id })) : [EAPITags.ROLE]),
     }),
     getRoleById: builder.query<IRole, string>({
       query: (id) => `/${id}`,
@@ -62,11 +61,4 @@ export const roleApi = createApi({
 });
 
 // Export hooks for usage in functional components
-export const {
-  useGetRolesQuery,
-  useGetRoleByIdQuery,
-  useCreateRoleMutation,
-  useUpdateRoleMutation,
-  useUpdateRoleActionMutation,
-  useDeleteRoleMutation,
-} = roleApi;
+export const { useGetRolesQuery, useGetRoleByIdQuery, useCreateRoleMutation, useUpdateRoleMutation, useUpdateRoleActionMutation, useDeleteRoleMutation } = roleApi;

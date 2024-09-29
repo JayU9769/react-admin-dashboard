@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_BASE_URL } from "@/lib/constants.ts";
-import {IGetPermissionResponse, IUpdatePermissionRequest} from "@/interfaces/permission.ts";
-import {EAPITags} from "@/interfaces";
+import { IGetPermissionResponse, IUpdatePermissionRequest } from "@/interfaces/permission.ts";
+import { EAPITags } from "@/interfaces";
 
 // Create API service
 export const permissionApi = createApi({
@@ -29,7 +29,4 @@ export const permissionApi = createApi({
 });
 
 // Export hooks for usage in functional components
-export const {
-  useGetPermissionsQuery,
-  useUpdatePermissionMutation
-} = permissionApi;
+export const { useGetPermissionsQuery, useUpdatePermissionMutation } = permissionApi;

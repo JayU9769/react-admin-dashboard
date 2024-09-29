@@ -7,19 +7,14 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { showAlert } from "@/components/ui/sonner";
 import Loader from "@/components/utility/BasicLoader";
-import {
-  defaultAdminChangePassword,
-  IChangePassword,
-} from "@/interfaces/user.ts";
+import { defaultAdminChangePassword, IChangePassword } from "@/interfaces/user.ts";
 import InputErrorMessage from "@/components/form/InputErrorMessage.tsx";
 import RequiredMark from "@/components/form/RequiredMark.tsx";
 import { useParams } from "react-router-dom";
 import { useUpdateUserPasswordMutation } from "@/store/user/api";
 
 const validationSchema = Yup.object().shape({
-  newPassword: Yup.string()
-    .required("New password is required")
-    .min(8, "Password must be at least 8 characters long"),
+  newPassword: Yup.string().required("New password is required").min(8, "Password must be at least 8 characters long"),
 
   confirmNewPassword: Yup.string()
     .oneOf([Yup.ref("newPassword") as any, null], "Passwords must match")
@@ -47,10 +42,7 @@ const Index: React.FC = () => {
           showAlert(res.data || "Updated", "success");
         }
         if (res.error) {
-          showAlert(
-            (res.error as any).data.message || "Internal server error",
-            "error"
-          );
+          showAlert((res.error as any).data.message || "Internal server error", "error");
         }
       });
     },
@@ -71,42 +63,15 @@ const Index: React.FC = () => {
             <Label htmlFor="newPassword">
               New Password <RequiredMark />
             </Label>
-            <Input
-              id="newPassword"
-              name="newPassword"
-              type="password"
-              onChange={formik.handleChange}
-              value={formik.values.newPassword}
-              onBlur={formik.handleBlur}
-              autoComplete="off"
-            />
-            <div className={`min-h-4`}>
-              {formik.touched.newPassword && formik.errors.newPassword && (
-                <InputErrorMessage message={formik.errors.newPassword} />
-              )}
-            </div>
+            <Input id="newPassword" name="newPassword" type="password" onChange={formik.handleChange} value={formik.values.newPassword} onBlur={formik.handleBlur} autoComplete="off" />
+            <div className={`min-h-4`}>{formik.touched.newPassword && formik.errors.newPassword && <InputErrorMessage message={formik.errors.newPassword} />}</div>
           </Col>
           <Col>
             <Label htmlFor="confirmNewPassword">
               Confirm New Password <RequiredMark />
             </Label>
-            <Input
-              id="confirmNewPassword"
-              name="confirmNewPassword"
-              type="password"
-              onChange={formik.handleChange}
-              value={formik.values.confirmNewPassword}
-              onBlur={formik.handleBlur}
-              autoComplete="off"
-            />
-            <div className={`min-h-4`}>
-              {formik.touched.confirmNewPassword &&
-                formik.errors.confirmNewPassword && (
-                  <InputErrorMessage
-                    message={formik.errors.confirmNewPassword}
-                  />
-                )}
-            </div>
+            <Input id="confirmNewPassword" name="confirmNewPassword" type="password" onChange={formik.handleChange} value={formik.values.confirmNewPassword} onBlur={formik.handleBlur} autoComplete="off" />
+            <div className={`min-h-4`}>{formik.touched.confirmNewPassword && formik.errors.confirmNewPassword && <InputErrorMessage message={formik.errors.confirmNewPassword} />}</div>
           </Col>
         </Grid>
       </form>

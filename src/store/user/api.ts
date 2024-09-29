@@ -1,8 +1,8 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {IUser} from "@/interfaces/user.ts";
-import {IUpdatePasswordArgs, IUpdateUserArgs} from "./types.ts";
-import {EAPITags, IListAPIResponse, IUpdateAction, TIds} from "@/interfaces";
-import {API_BASE_URL} from "@/lib/constants.ts";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { IUser } from "@/interfaces/user.ts";
+import { IUpdatePasswordArgs, IUpdateUserArgs } from "./types.ts";
+import { EAPITags, IListAPIResponse, IUpdateAction, TIds } from "@/interfaces";
+import { API_BASE_URL } from "@/lib/constants.ts";
 
 // Create API service
 export const userApi = createApi({
@@ -15,14 +15,13 @@ export const userApi = createApi({
   endpoints: (builder) => ({
     getUsers: builder.query<IListAPIResponse, string>({
       query: (query: string = "") => `${query}`,
-      transformResponse: ({data}) => data,
-      providesTags: ({rows}: any) =>
-        rows ? rows.map(({id}: IUser) => ({type: EAPITags.USER, id})) : [EAPITags.USER],
+      transformResponse: ({ data }) => data,
+      providesTags: ({ rows }: any) => (rows ? rows.map(({ id }: IUser) => ({ type: EAPITags.USER, id })) : [EAPITags.USER]),
     }),
     getUserById: builder.query<IUser, string>({
       query: (id) => `/${id}`,
-      transformResponse: ({data}) => data,
-      providesTags: (_result, _error, id) => [{type: EAPITags.USER, id}],
+      transformResponse: ({ data }) => data,
+      providesTags: (_result, _error, id) => [{ type: EAPITags.USER, id }],
     }),
     createUser: builder.mutation<IUser, Partial<IUser>>({
       query: (newUser) => ({
@@ -30,16 +29,16 @@ export const userApi = createApi({
         method: "POST",
         body: newUser,
       }),
-      transformResponse: ({data}) => data,
+      transformResponse: ({ data }) => data,
       invalidatesTags: [EAPITags.USER],
     }),
     updateUser: builder.mutation<IUser, IUpdateUserArgs>({
-      query: ({id, updatedUser}) => ({
+      query: ({ id, updatedUser }) => ({
         url: `/${id}`,
         method: "PUT", // Use "PATCH" if you prefer partial updates
         body: updatedUser,
       }),
-      transformResponse: ({data}) => data,
+      transformResponse: ({ data }) => data,
       invalidatesTags: () => [EAPITags.USER],
     }),
     updateUserAction: builder.mutation<void, IUpdateAction>({
@@ -54,29 +53,21 @@ export const userApi = createApi({
       query: (ids: TIds) => ({
         url: `/`,
         method: "DELETE",
-        body: {ids},
+        body: { ids },
       }),
       invalidatesTags: () => [EAPITags.USER],
     }),
     updateUserPassword: builder.mutation<IUser, IUpdatePasswordArgs>({
-      query: ({id, updatedBody}) => ({
+      query: ({ id, updatedBody }) => ({
         url: `change-password/${id}`,
         method: "PATCH",
         body: updatedBody,
       }),
-      transformResponse: ({message}) => message,
+      transformResponse: ({ message }) => message,
       invalidatesTags: () => [EAPITags.USER],
     }),
   }),
 });
 
 // Export hooks for usage in functional components
-export const {
-  useGetUsersQuery,
-  useGetUserByIdQuery,
-  useCreateUserMutation,
-  useUpdateUserMutation,
-  useUpdateUserActionMutation,
-  useDeleteUserMutation,
-  useUpdateUserPasswordMutation,
-} = userApi;
+export const { useGetUsersQuery, useGetUserByIdQuery, useCreateUserMutation, useUpdateUserMutation, useUpdateUserActionMutation, useDeleteUserMutation, useUpdateUserPasswordMutation } = userApi;

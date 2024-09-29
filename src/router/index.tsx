@@ -1,9 +1,5 @@
-import {
-  createBrowserRouter,
-  RouteObject,
-  RouterProvider,
-} from "react-router-dom";
-import React, { lazy } from "react";
+import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
+import React from "react";
 import { ThemeProvider } from "next-themes";
 import { AnimatePresence } from "framer-motion";
 import { TRecord } from "@/interfaces";
@@ -25,14 +21,14 @@ import ChangePassword from "@/pages/Profile/Forms/ChangePassword";
 import DeleteAccount from "@/pages/Profile/Forms/DeleteAccount";
 
 // Lazy-loaded components
-const Login = lazy(() => import("@/pages/Auth/Login.tsx"));
-const Signup = lazy(() => import("@/pages/Auth/Signup.tsx"));
-const Dashboard = lazy(() => import("@/pages/Dashboard.tsx"));
-const Users = lazy(() => import("@/pages/Users"));
-const Permissions = lazy(() => import("@/pages/Permissions"));
-const Roles = lazy(() => import("@/pages/Roles"));
-const Admins = lazy(() => import("@/pages/Admins"));
-const ProfileLayout = lazy(() => import("@/pages/Profile/Layout"));
+import Login from "@/pages/Auth/Login.tsx";
+import Signup from "@/pages/Auth/Signup.tsx";
+import Dashboard from "@/pages/Dashboard.tsx";
+import Users from "@/pages/Users";
+import Permissions from "@/pages/Permissions";
+import Roles from "@/pages/Roles";
+import Admins from "@/pages/Admins";
+import ProfileLayout from "@/pages/Profile/Layout";
 
 type TRouteObject = Omit<RouteObject, "children"> & {
   animate: boolean;
@@ -199,16 +195,9 @@ const routes: TRouteObject[] = [
 const buildRouter = (routes: TRouteObject[]): RouteObject[] => {
   return routes.map((route) => ({
     ...route,
-    element: route.animate ? (
-      <PageTransition id={route.id || ""}>{route.element}</PageTransition>
-    ) : (
-      route.element
-    ),
+    element: route.animate ? <PageTransition id={route.id || ""}>{route.element}</PageTransition> : route.element,
     loader: route.data ? () => route.data : undefined,
-    children:
-      route.children && route.children.length > 0
-        ? buildRouter(route.children)
-        : [],
+    children: route.children && route.children.length > 0 ? buildRouter(route.children) : [],
   })) as RouteObject[];
 };
 
@@ -221,13 +210,7 @@ const Routes: React.FC = () => {
 
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <AnimatePresence mode="wait">
-        {error.statusCode !== 0 ? (
-          <ErrorComponent />
-        ) : (
-          <RouterProvider router={router} />
-        )}
-      </AnimatePresence>
+      <AnimatePresence mode="wait">{error.statusCode !== 0 ? <ErrorComponent /> : <RouterProvider router={router} />}</AnimatePresence>
       <Toaster position={"top-right"} visibleToasts={5} />
     </ThemeProvider>
   );

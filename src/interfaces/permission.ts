@@ -1,11 +1,10 @@
-import {EUserType} from "@/interfaces/index.ts";
-import {defaultRole, IRole} from "@/interfaces/role.ts";
-
+import { EUserType } from "@/interfaces/index.ts";
+import { defaultRole, IRole } from "@/interfaces/role.ts";
 
 export interface IGetPermissionResponse {
   permissions: IPermission[];
   roles: IRole[];
-  roleHasPermissions: IRoleHasPermission[]
+  roleHasPermissions: IRoleHasPermission[];
 }
 
 export interface IPermission {
@@ -31,12 +30,11 @@ export interface IRoleHasPermission {
   permissionId: string;
 }
 
-
 export const defaultGetPermissionResponse: IGetPermissionResponse = {
   permissions: [],
   roles: [],
-  roleHasPermissions: []
-}
+  roleHasPermissions: [],
+};
 
 export interface IUpdatePermissionRequest {
   value: number;
@@ -47,5 +45,5 @@ export interface IUpdatePermissionRequest {
 export const defaultUpdatePermissionRequest: IUpdatePermissionRequest = {
   value: 0,
   role: defaultRole,
-  permission: defaultPermission
-}
+  permission: defaultPermission,
+};

@@ -10,23 +10,13 @@ export const tableColumn: ColumnDef<IRole>[] = [
     id: "select",
     header: ({ table }) => (
       <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
+        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
         className="translate-y-[2px]"
       />
     ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
-    ),
+    cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" className="translate-y-[2px]" />,
     enableSorting: false,
     enableHiding: false,
   },
@@ -60,9 +50,7 @@ export const tableColumn: ColumnDef<IRole>[] = [
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
       return (
-        <div
-          className={`capitalize flex gap-1 text-muted-foreground items-center`}
-        >
+        <div className={`capitalize flex gap-1 text-muted-foreground items-center`}>
           {status ? (
             <>
               <CircleCheck className={`text-green-600`} size={16} /> Active

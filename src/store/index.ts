@@ -1,18 +1,17 @@
-import {configureStore} from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "@/store/root/slice";
 import userReducer from "@/store/user/slice";
 import roleReducer from "@/store/role/slice";
 import adminReducer from "@/store/admin/slice";
 import permissionReducer from "@/store/permission/slice";
-import {ThunkAction} from "redux-thunk";
-import {Action} from "redux";
+import { ThunkAction } from "redux-thunk";
+import { Action } from "redux";
 import handleError from "@/store/middlewares/handleError.ts";
-import {rootApi} from "@/store/root/api.ts";
-import {userApi} from "@/store/user/api.ts";
-import {roleApi} from "@/store/role/api.ts";
-import {adminApi} from "@/store/admin/api.ts";
-import {permissionApi} from "@/store/permission/api.ts";
-
+import { rootApi } from "@/store/root/api.ts";
+import { userApi } from "@/store/user/api.ts";
+import { roleApi } from "@/store/role/api.ts";
+import { adminApi } from "@/store/admin/api.ts";
+import { permissionApi } from "@/store/permission/api.ts";
 
 // Use `configureStore` function to create the store:
 const store = configureStore({
@@ -46,10 +45,5 @@ export type AppDispatch = typeof store.dispatch;
 
 export type RootState = ReturnType<typeof store.getState>;
 
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
->;
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>;
 export default store;

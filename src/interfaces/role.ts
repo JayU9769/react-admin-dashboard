@@ -1,4 +1,4 @@
-import {EUserType} from "@/interfaces/index.ts";
+import { EUserType } from "@/interfaces/index.ts";
 
 export interface IRole {
   id: string;

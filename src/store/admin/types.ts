@@ -1,9 +1,4 @@
-import {
-  IAdmin,
-  IChangePassword,
-  IProfileChangePassword,
-  IProfileUpdate,
-} from "@/interfaces/admin";
+import { IAdmin, IChangePassword, IProfileChangePassword, IProfileUpdate } from "@/interfaces/admin";
 
 export type IAdminInitialState = {
   auth: IAdmin;

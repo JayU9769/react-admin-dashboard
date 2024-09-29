@@ -1,9 +1,9 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {defaultCustomError, ICustomError, IRootInitialState} from "@/store/root/types";
-import {RootState} from "@/store";
-import type {UIMatch} from "@remix-run/router";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { defaultCustomError, ICustomError, IRootInitialState } from "@/store/root/types";
+import { RootState } from "@/store";
+import type { UIMatch } from "@remix-run/router";
 
-const isCollapsed =  window.localStorage.getItem("isCollapsed");
+const isCollapsed = window.localStorage.getItem("isCollapsed");
 
 const initialState: IRootInitialState = {
   isCollapsed: isCollapsed === "true",
@@ -14,8 +14,8 @@ const initialState: IRootInitialState = {
     pathname: "/admin",
     params: {},
     data: undefined,
-    handle: undefined
-  }
+    handle: undefined,
+  },
 };
 
 export const rootSlice = createSlice({
@@ -31,15 +31,11 @@ export const rootSlice = createSlice({
     },
     setCustomError: (state, action: PayloadAction<ICustomError>) => {
       state.error = action.payload;
-    }
+    },
   },
 });
 
-export const {
-  setIsCollapsed,
-  setCurrentRoute,
-  setCustomError
-} = rootSlice.actions;
+export const { setIsCollapsed, setCurrentRoute, setCustomError } = rootSlice.actions;
 
 export const rootStates = (state: RootState) => state.root;
 

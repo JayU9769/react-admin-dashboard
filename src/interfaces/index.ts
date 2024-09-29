@@ -17,30 +17,30 @@ export interface IPaginationResponse {
 
 export interface IListAPIResponse {
   count: number;
-  rows: TRecord[]
+  rows: TRecord[];
 }
 
 export interface IUpdateAction {
-  ids: string[]
+  ids: string[];
   field: {
     name: string;
     value: number | string;
-  }
+  };
 }
 
-export type TActionType = 'single' | 'bulk';
+export type TActionType = "single" | "bulk";
 
 export enum EUserType {
-  USER = 'user',
-  ADMIN = 'admin'
+  USER = "user",
+  ADMIN = "admin",
 }
 
 export enum EAPITags {
-  AUTH = 'Auth',
-  ADMIN = 'Admin',
-  USER = 'User',
-  ROLE = 'Role',
-  PERMISSION = 'Permission',
+  AUTH = "Auth",
+  ADMIN = "Admin",
+  USER = "User",
+  ROLE = "Role",
+  PERMISSION = "Permission",
 }
 
 export type TIds = Array<string>;

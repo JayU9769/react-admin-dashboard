@@ -2,12 +2,7 @@
 import React from "react";
 
 export type TResponsiveNumberOrString = number | string;
-export type TJustifyContentValue =
-  | "start"
-  | "center"
-  | "end"
-  | "between"
-  | "around";
+export type TJustifyContentValue = "start" | "center" | "end" | "between" | "around";
 export type TAlignItemsValue = "start" | "center" | "end" | "stretch";
 export type TDirectionValue = "row" | "row-reverse" | "col" | "col-reverse";
 export type TAlignSelfValue = "auto" | "start" | "center" | "end" | "stretch";

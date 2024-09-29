@@ -12,40 +12,26 @@ import InputErrorMessage from "@/components/form/InputErrorMessage.tsx";
 import RequiredMark from "@/components/form/RequiredMark.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
 import { useParams } from "react-router-dom";
-import {
-  useCreateAdminMutation,
-  useUpdateAdminMutation,
-  useGetAdminByIdQuery,
-} from "@/store/admin/api";
+import { useCreateAdminMutation, useUpdateAdminMutation, useGetAdminByIdQuery } from "@/store/admin/api";
 import { IAdminForm } from "@/interfaces/admin";
 
 const getValidationSchema = (isEditMode: boolean) => {
   Yup.object().shape({
-    name: Yup.string()
-      .required("First Name is required")
-      .max(50, "Name must be 50 characters or less"),
-    email: Yup.string()
-      .required("Email is required")
-      .email("Invalid Email")
-      .max(50, "Email must be 50 characters or less"),
+    name: Yup.string().required("First Name is required").max(50, "Name must be 50 characters or less"),
+    email: Yup.string().required("Email is required").email("Invalid Email").max(50, "Email must be 50 characters or less"),
     ...(isEditMode
       ? {} // No password validation in edit mode
       : {
-          password: Yup.string()
-            .required("Password is required")
-            .min(8, "Password must be at least 8 characters")
-            .max(50, "Password must be 50 characters or less"),
+          password: Yup.string().required("Password is required").min(8, "Password must be at least 8 characters").max(50, "Password must be 50 characters or less"),
         }),
     // Add additional validation rules for other fields if necessary
   });
 };
 
 const Index: React.FC = () => {
-
   const params = useParams();
   const drawerRef = useRef<DrawerRef>(null);
-  const [updateAdmin, { isLoading: isUpdateLoading }] =
-    useUpdateAdminMutation();
+  const [updateAdmin, { isLoading: isUpdateLoading }] = useUpdateAdminMutation();
   const { data } = useGetAdminByIdQuery(params.id as string, {
     skip: !params.id, // Skip the query if params.id is undefined
   });
@@ -72,18 +58,12 @@ const Index: React.FC = () => {
     validationSchema: getValidationSchema(formState === 1),
     enableReinitialize: true,
     onSubmit: async (values) => {
-      (formState
-        ? updateAdmin({ id: params.id as string, updatedBody: values })
-        : createAdmin(values)
-      ).then((res) => {
+      (formState ? updateAdmin({ id: params.id as string, updatedBody: values }) : createAdmin(values)).then((res) => {
         if (res.data) {
           drawerRef.current?.closeDrawer();
         }
         if (res.error) {
-          showAlert(
-            (res.error as any).data.message || "Internal server error",
-            "error"
-          );
+          showAlert((res.error as any).data.message || "Internal server error", "error");
         }
       });
     },
@@ -104,57 +84,23 @@ const Index: React.FC = () => {
             <Label htmlFor="name">
               Name <RequiredMark />
             </Label>
-            <Input
-              id="name"
-              name="name"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.name}
-              onBlur={formik.handleBlur}
-            />
-            <div className={`min-h-4`}>
-              {formik.touched.name && formik.errors.name && (
-                <InputErrorMessage message={formik.errors.name} />
-              )}
-            </div>
+            <Input id="name" name="name" type="text" onChange={formik.handleChange} value={formik.values.name} onBlur={formik.handleBlur} />
+            <div className={`min-h-4`}>{formik.touched.name && formik.errors.name && <InputErrorMessage message={formik.errors.name} />}</div>
           </Col>
           <Col>
             <Label htmlFor="email">
               E-Mail <RequiredMark />
             </Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              onChange={formik.handleChange}
-              value={formik.values.email}
-              onBlur={formik.handleBlur}
-            />
-            <div className={`min-h-4`}>
-              {formik.touched.email && formik.errors.email && (
-                <InputErrorMessage message={formik.errors.email} />
-              )}
-            </div>
+            <Input id="email" name="email" type="email" onChange={formik.handleChange} value={formik.values.email} onBlur={formik.handleBlur} />
+            <div className={`min-h-4`}>{formik.touched.email && formik.errors.email && <InputErrorMessage message={formik.errors.email} />}</div>
           </Col>
           {!formState && (
             <Col>
               <Label htmlFor="password">
                 Password <RequiredMark />
               </Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                onBlur={formik.handleBlur}
-                autoComplete="off"
-              />
-              <div className={`min-h-4`}>
-                {formik.touched.password && formik.errors.password && (
-                  <InputErrorMessage message={formik.errors.password} />
-                )}
-              </div>
+              <Input id="password" name="password" type="password" onChange={formik.handleChange} value={formik.values.password} onBlur={formik.handleBlur} autoComplete="off" />
+              <div className={`min-h-4`}>{formik.touched.password && formik.errors.password && <InputErrorMessage message={formik.errors.password} />}</div>
             </Col>
           )}
           <Col>
@@ -163,10 +109,7 @@ const Index: React.FC = () => {
                 <Label className={`mb-0`} htmlFor="status">
                   Status <RequiredMark />
                 </Label>
-                <p className="text-xs leading-normal text-muted-foreground">
-                  Use this option to set the user as Active or Inactive across
-                  the platform.
-                </p>
+                <p className="text-xs leading-normal text-muted-foreground">Use this option to set the user as Active or Inactive across the platform.</p>
               </div>
               <Switch
                 id="status"

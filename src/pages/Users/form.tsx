@@ -5,11 +5,7 @@ import { useFormik } from "formik";
 import { Col, Grid } from "@/components/utility";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {
-  useCreateUserMutation,
-  useGetUserByIdQuery,
-  useUpdateUserMutation,
-} from "@/store/user/api";
+import { useCreateUserMutation, useGetUserByIdQuery, useUpdateUserMutation } from "@/store/user/api";
 import { showAlert } from "@/components/ui/sonner";
 import Loader from "@/components/utility/BasicLoader";
 import { defaultUser, IUser } from "@/interfaces/user.ts";
@@ -22,20 +18,12 @@ import "react-international-phone/style.css";
 
 const getValidationSchema = (isEditMode: boolean) => {
   Yup.object().shape({
-    name: Yup.string()
-      .required("First Name is required")
-      .max(50, "Name must be 50 characters or less"),
-    email: Yup.string()
-      .required("Email is required")
-      .email("Invalid Email")
-      .max(50, "Email must be 50 characters or less"),
+    name: Yup.string().required("First Name is required").max(50, "Name must be 50 characters or less"),
+    email: Yup.string().required("Email is required").email("Invalid Email").max(50, "Email must be 50 characters or less"),
     ...(isEditMode
       ? {} // No password validation in edit mode
       : {
-          password: Yup.string()
-            .required("Password is required")
-            .min(8, "Password must be at least 8 characters")
-            .max(50, "Password must be 50 characters or less"),
+          password: Yup.string().required("Password is required").min(8, "Password must be at least 8 characters").max(50, "Password must be 50 characters or less"),
         }),
     // Add additional validation rules for other fields if necessary
   });
@@ -51,8 +39,6 @@ const Index: React.FC = () => {
   const [createUser, { isLoading }] = useCreateUserMutation();
   const [formData, setFormData] = useState<IUser>(defaultUser);
   const [formState, setFormState] = useState(0);
-
-
 
   useEffect(() => {
     if (params.id) {
@@ -73,18 +59,12 @@ const Index: React.FC = () => {
     validationSchema: getValidationSchema(formState === 1),
     enableReinitialize: true,
     onSubmit: async (values) => {
-      (formState
-        ? updateUser({ id: params.id as string, updatedUser: values })
-        : createUser(values)
-      ).then((res) => {
+      (formState ? updateUser({ id: params.id as string, updatedUser: values }) : createUser(values)).then((res) => {
         if (res.data) {
           drawerRef.current?.closeDrawer();
         }
         if (res.error) {
-          showAlert(
-            (res.error as any).data.message || "Internal server error",
-            "error"
-          );
+          showAlert((res.error as any).data.message || "Internal server error", "error");
         }
       });
     },
@@ -105,75 +85,31 @@ const Index: React.FC = () => {
             <Label htmlFor="name">
               Name <RequiredMark />
             </Label>
-            <Input
-              id="name"
-              name="name"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.name}
-              onBlur={formik.handleBlur}
-            />
-            <div className={`min-h-4`}>
-              {formik.touched.name && formik.errors.name && (
-                <InputErrorMessage message={formik.errors.name} />
-              )}
-            </div>
+            <Input id="name" name="name" type="text" onChange={formik.handleChange} value={formik.values.name} onBlur={formik.handleBlur} />
+            <div className={`min-h-4`}>{formik.touched.name && formik.errors.name && <InputErrorMessage message={formik.errors.name} />}</div>
           </Col>
           <Col>
             <Label htmlFor="email">
               E-Mail <RequiredMark />
             </Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              onChange={formik.handleChange}
-              value={formik.values.email}
-              onBlur={formik.handleBlur}
-            />
-            <div className={`min-h-4`}>
-              {formik.touched.email && formik.errors.email && (
-                <InputErrorMessage message={formik.errors.email} />
-              )}
-            </div>
+            <Input id="email" name="email" type="email" onChange={formik.handleChange} value={formik.values.email} onBlur={formik.handleBlur} />
+            <div className={`min-h-4`}>{formik.touched.email && formik.errors.email && <InputErrorMessage message={formik.errors.email} />}</div>
           </Col>
           {!formState && (
             <Col>
               <Label htmlFor="password">
                 Password <RequiredMark />
               </Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                onBlur={formik.handleBlur}
-                autoComplete="off"
-              />
-              <div className={`min-h-4`}>
-                {formik.touched.password && formik.errors.password && (
-                  <InputErrorMessage message={formik.errors.password} />
-                )}
-              </div>
+              <Input id="password" name="password" type="password" onChange={formik.handleChange} value={formik.values.password} onBlur={formik.handleBlur} autoComplete="off" />
+              <div className={`min-h-4`}>{formik.touched.password && formik.errors.password && <InputErrorMessage message={formik.errors.password} />}</div>
             </Col>
           )}
           <Col>
             <Label htmlFor="phoneNo">
               Phone <RequiredMark />
             </Label>
-            <PhoneInput
-              defaultCountry="in"
-              className="w-full"
-              value={formik.values.phoneNo}
-              onChange={(phone) => formik.setFieldValue("phoneNo", phone)}
-              onBlur={formik.handleBlur}
-            />
-            <div className={`min-h-4`}>
-              {formik.touched.phoneNo && formik.errors.phoneNo && (
-                <InputErrorMessage message={formik.errors.phoneNo} />
-              )}
-            </div>
+            <PhoneInput defaultCountry="in" className="w-full" value={formik.values.phoneNo} onChange={(phone) => formik.setFieldValue("phoneNo", phone)} onBlur={formik.handleBlur} />
+            <div className={`min-h-4`}>{formik.touched.phoneNo && formik.errors.phoneNo && <InputErrorMessage message={formik.errors.phoneNo} />}</div>
           </Col>
           <Col>
             <div className="flex items-center space-x-4 rounded-md border p-4">
@@ -181,10 +117,7 @@ const Index: React.FC = () => {
                 <Label className={`mb-0`} htmlFor="status">
                   Status <RequiredMark />
                 </Label>
-                <p className="text-xs leading-normal text-muted-foreground">
-                  Use this option to set the user as Active or Inactive across
-                  the platform.
-                </p>
+                <p className="text-xs leading-normal text-muted-foreground">Use this option to set the user as Active or Inactive across the platform.</p>
               </div>
               <Switch
                 id="status"

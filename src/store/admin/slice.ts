@@ -18,18 +18,12 @@ export const adminSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addMatcher(
-        adminApi.endpoints.login.matchFulfilled,
-        (state, action: PayloadAction<IAdmin>) => {
-          state.auth = action.payload;
-        }
-      )
-      .addMatcher(
-        adminApi.endpoints.getAuth.matchFulfilled,
-        (state, action: PayloadAction<IAdmin>) => {
-          state.auth = action.payload;
-        }
-      )
+      .addMatcher(adminApi.endpoints.login.matchFulfilled, (state, action: PayloadAction<IAdmin>) => {
+        state.auth = action.payload;
+      })
+      .addMatcher(adminApi.endpoints.getAuth.matchFulfilled, (state, action: PayloadAction<IAdmin>) => {
+        state.auth = action.payload;
+      })
       .addMatcher(adminApi.endpoints.logout.matchFulfilled, (state) => {
         state.auth = defaultAdmin;
       });

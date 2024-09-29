@@ -14,16 +14,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import {
-  EllipsisVertical,
-  Key,
-  ListChecks,
-  SquarePen,
-  Trash2,
-} from "lucide-react";
+import { EllipsisVertical, Key, ListChecks, SquarePen, Trash2 } from "lucide-react";
 import ConfirmDialog from "@/components/ConfirmDialog.tsx";
 import { TActionType, TIds } from "@/interfaces";
-import {useDeleteAdminMutation, useUpdateAdminActionMutation} from "@/store/admin/api.ts";
+import { useDeleteAdminMutation, useUpdateAdminActionMutation } from "@/store/admin/api.ts";
 import { showAlert } from "@/components/ui/sonner.tsx";
 import { useNavigate } from "react-router-dom";
 import { adminStates } from "@/store/admin/slice";
@@ -36,20 +30,12 @@ interface IProps {
   onUpdateAction?: () => void;
 }
 
-const Index: React.FC<IProps> = (
-  {
-    type,
-    ids,
-    onDelete,
-    onUpdateAction
-  }
-) => {
+const Index: React.FC<IProps> = ({ type, ids, onDelete, onUpdateAction }) => {
   const [deleteAdmin, { isLoading }] = useDeleteAdminMutation();
   const [updateAdminAction] = useUpdateAdminActionMutation();
   const navigate = useNavigate();
   const [model, setModel] = useState(false);
   const { auth } = useSelector(adminStates);
-
 
   const handleDeleteAction = () => {
     deleteAdmin(ids).then((res) => {
@@ -59,35 +45,28 @@ const Index: React.FC<IProps> = (
         if (onDelete) onDelete();
       }
       if (res.error) {
-        showAlert(
-          (res.error as any).data.message || "Internal server error",
-          "error"
-        );
+        showAlert((res.error as any).data.message || "Internal server error", "error");
       }
     });
-  }
-
+  };
 
   const handleUpdateStatusAction = (status: number) => {
     updateAdminAction({
       ids,
       field: {
-        name: 'status',
-        value: status
-      }
+        name: "status",
+        value: status,
+      },
     }).then((res) => {
       if (res.data) {
         showAlert("Status updated successfully", "success");
         if (onUpdateAction) onUpdateAction();
       }
       if (res.error) {
-        showAlert(
-          (res.error as any).data.message || "Internal server error",
-          "error"
-        );
+        showAlert((res.error as any).data.message || "Internal server error", "error");
       }
-    })
-  }
+    });
+  };
 
   return (
     <>
@@ -102,11 +81,7 @@ const Index: React.FC<IProps> = (
         )}
         {type === "single" && (
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="link"
-              size={`sm`}
-              className={`gap-2 text-muted-foreground`}
-            >
+            <Button variant="link" size={`sm`} className={`gap-2 text-muted-foreground`}>
               <EllipsisVertical className={`h-4 w-4`} />
             </Button>
           </DropdownMenuTrigger>
@@ -135,9 +110,7 @@ const Index: React.FC<IProps> = (
                     <SquarePen className={`h-4 w-4`} />
                   </DropdownMenuShortcut>
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => navigate(`change-password/${ids[0]}`)}
-                >
+                <DropdownMenuItem onClick={() => navigate(`change-password/${ids[0]}`)}>
                   Change Password
                   <DropdownMenuShortcut>
                     <Key className={`h-4 w-4`} />
@@ -158,12 +131,7 @@ const Index: React.FC<IProps> = (
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <ConfirmDialog
-        open={model}
-        isLoading={isLoading}
-        onClose={() => setModel(false)}
-        callBack={handleDeleteAction}
-      />
+      <ConfirmDialog open={model} isLoading={isLoading} onClose={() => setModel(false)} callBack={handleDeleteAction} />
     </>
   );
 };

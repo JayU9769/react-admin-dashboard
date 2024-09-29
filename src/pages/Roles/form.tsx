@@ -5,11 +5,7 @@ import { useFormik } from "formik";
 import { Col, Grid } from "@/components/utility";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {
-  useCreateRoleMutation,
-  useGetRoleByIdQuery,
-  useUpdateRoleMutation,
-} from "@/store/role/api";
+import { useCreateRoleMutation, useGetRoleByIdQuery, useUpdateRoleMutation } from "@/store/role/api";
 import { showAlert } from "@/components/ui/sonner";
 import Loader from "@/components/utility/BasicLoader";
 import { defaultRole, IRole } from "@/interfaces/role.ts";
@@ -21,14 +17,11 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string()
-    .required("Name is required")
-    .max(50, "Name must be 50 characters or less"),
+  name: Yup.string().required("Name is required").max(50, "Name must be 50 characters or less"),
   // Add additional validation rules for other fields if necessary
 });
 
 const Index: React.FC = () => {
-
   const params = useParams();
   const drawerRef = useRef<DrawerRef>(null);
   const [updateRole, { isLoading: isUpdateLoading }] = useUpdateRoleMutation();
@@ -58,31 +51,19 @@ const Index: React.FC = () => {
     validationSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
-      (formState
-        ? updateRole({ id: params.id as string, updatedBody: values })
-        : createRole(values)
-      ).then((res) => {
+      (formState ? updateRole({ id: params.id as string, updatedBody: values }) : createRole(values)).then((res) => {
         if (res.data) {
           drawerRef.current?.closeDrawer();
         }
         if (res.error) {
-          showAlert(
-            (res.error as any).data.message || "Internal server error",
-            "error"
-          );
+          showAlert((res.error as any).data.message || "Internal server error", "error");
         }
       });
     },
   });
 
   return (
-    <DrawerForm
-      ref={drawerRef}
-      title={formState ? "Edit Role" : "Create Role"}
-      onSubmit={formik.handleSubmit}
-      size="sm"
-      direction="right"
-    >
+    <DrawerForm ref={drawerRef} title={formState ? "Edit Role" : "Create Role"} onSubmit={formik.handleSubmit} size="sm" direction="right">
       {(isLoading || isUpdateLoading) && <Loader />}
       <form onSubmit={formik.handleSubmit}>
         <Grid className="p-4 pb-0">
@@ -90,14 +71,7 @@ const Index: React.FC = () => {
             <Label htmlFor="name">
               Name <RequiredMark />
             </Label>
-            <Input
-              id="name"
-              name="name"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.name}
-              onBlur={formik.handleBlur}
-            />
+            <Input id="name" name="name" type="text" onChange={formik.handleChange} value={formik.values.name} onBlur={formik.handleBlur} />
             {formik.touched.name && formik.errors.name && (
               <div className={`min-h-4`}>
                 <InputErrorMessage message={formik.errors.name} />
@@ -108,11 +82,7 @@ const Index: React.FC = () => {
             <Label htmlFor="type">
               Type <RequiredMark />
             </Label>
-            <Tabs
-              value={formik.values.type}
-              defaultValue={EUserType.ADMIN}
-              onValueChange={(value) => formik.setFieldValue("type", value)}
-            >
+            <Tabs value={formik.values.type} defaultValue={EUserType.ADMIN} onValueChange={(value) => formik.setFieldValue("type", value)}>
               <TabsList>
                 <TabsTrigger value={EUserType.ADMIN} className={`capitalize`}>
                   {EUserType.ADMIN}

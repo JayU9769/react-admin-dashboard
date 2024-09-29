@@ -1,26 +1,25 @@
 import React, { useMemo, useState } from "react";
-import {useGetUsersQuery, userApi} from "@/store/user/api.ts";
+import { useGetUsersQuery, userApi } from "@/store/user/api.ts";
 import DataTable from "@/components/dataTable";
 import { tableColumn } from "./columns.tsx";
-import {EAPITags, IPaginationState, TRecord} from "@/interfaces";
-import {DEFAULT_PAGE_SIZE, defaultAPIResponse, defaultPagination} from "@/lib/constants.ts";
+import { EAPITags, IPaginationState, TRecord } from "@/interfaces";
+import { DEFAULT_PAGE_SIZE, defaultAPIResponse, defaultPagination } from "@/lib/constants.ts";
 import { Link, Outlet } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
 import { SortingState } from "@tanstack/react-table";
 import { convertToQuery } from "@/lib/utils.ts";
 import Action from "@/pages/Users/Action.tsx";
 import { Plus } from "lucide-react";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "@/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store";
 
 const Index: React.FC = () => {
-
   ///////////////////////// Redux States and Actions... /////////////////////////
   const dispatch = useDispatch<AppDispatch>();
   const [queryString, setQueryString] = useState<TRecord>({
-    perPage: DEFAULT_PAGE_SIZE
+    perPage: DEFAULT_PAGE_SIZE,
   });
-  const { data = defaultAPIResponse, isFetching } = useGetUsersQuery(queryString ? convertToQuery(queryString) : '');
+  const { data = defaultAPIResponse, isFetching } = useGetUsersQuery(queryString ? convertToQuery(queryString) : "");
   const columns = useMemo(() => tableColumn, []);
   const [selectedRows, setSelectedRows] = useState<TRecord>({});
   const [resetTrigger, setResetTrigger] = useState<number>(0);
@@ -55,7 +54,7 @@ const Index: React.FC = () => {
 
   const handleResetTableSelection = () => {
     setSelectedRows({});
-    setResetTrigger(prev => prev + 1);
+    setResetTrigger((prev) => prev + 1);
   };
 
   const handleRefresh = () => dispatch(userApi.util.invalidateTags([EAPITags.USER]));
@@ -73,14 +72,11 @@ const Index: React.FC = () => {
         onRowSelection={(rows) => setSelectedRows(rows)}
         resetSelection={resetTrigger}
         onRefresh={handleRefresh}
-        tableActions={<>
-          <Action
-            type={"bulk"}
-            ids={Object.keys(selectedRows)}
-            onDelete={handleResetTableSelection}
-            onUpdateAction={handleResetTableSelection}
-          />
-        </>}
+        tableActions={
+          <>
+            <Action type={"bulk"} ids={Object.keys(selectedRows)} onDelete={handleResetTableSelection} onUpdateAction={handleResetTableSelection} />
+          </>
+        }
         toolbarChildren={
           <>
             <Link to="create" className={buttonVariants({ size: "sm" })}>
