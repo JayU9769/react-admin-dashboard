@@ -16,7 +16,7 @@ import { useCreateAdminMutation, useUpdateAdminMutation, useGetAdminByIdQuery } 
 import { IAdminForm } from "@/interfaces/admin";
 
 const getValidationSchema = (isEditMode: boolean) => {
-  Yup.object().shape({
+  return Yup.object().shape({
     name: Yup.string().required("First Name is required").max(50, "Name must be 50 characters or less"),
     email: Yup.string().required("Email is required").email("Invalid Email").max(50, "Email must be 50 characters or less"),
     ...(isEditMode
