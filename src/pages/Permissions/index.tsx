@@ -45,6 +45,7 @@ const Index: React.FC = () => {
 
   // Handle updating the permission state
   const handleChangeChecked = async (value: boolean, role: IRole, permission: IPermission) => {
+    if (role.isSystem) return
     const loadingString = `${role.id}-${permission.id}`;
     setUpdatingPermission((prev) => [...prev, loadingString]);
 
@@ -67,8 +68,8 @@ const Index: React.FC = () => {
       const isChecked = permissionIds.every((pid) => assignedPermission.includes(`${role.id}-${pid}`));
 
       return (
-        <TableCell key={role.id} className="capitalize text-center">
-          {isUpdating ? <ReloadIcon className="h-5 w-4 animate-spin text-primary" /> : <Checkbox id={id} checked={isChecked} onCheckedChange={(value) => handleChangeChecked(value as boolean, role, permission)} />}
+        <TableCell key={role.id} className="capitalize text-center flex justify-center">
+          {isUpdating ? <ReloadIcon className="h-5 w-4 animate-spin text-primary" /> : <Checkbox id={id} checked={isChecked} disabled={!!role.isSystem} onCheckedChange={(value) => handleChangeChecked(value as boolean, role, permission)} />}
         </TableCell>
       );
     });
