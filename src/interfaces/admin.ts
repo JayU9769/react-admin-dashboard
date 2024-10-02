@@ -9,6 +9,7 @@ export interface IAdmin {
   status: number;
   name: string;
   roles: Array<string>;
+  permissions: Array<string>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -41,6 +42,7 @@ export const defaultAdmin: IAdmin = {
   name: "",
   status: 1,
   roles: [],
+  permissions: [],
   createdAt: new Date(),
   updatedAt: new Date(),
 };

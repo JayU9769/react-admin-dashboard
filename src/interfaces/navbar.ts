@@ -8,4 +8,5 @@ export interface INavItem {
   label?: string;
   icon: LucideIcon;
   path: string;
+  permissionName: string;
 }

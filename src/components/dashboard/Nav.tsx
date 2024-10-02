@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { INavItem } from "@/interfaces/navbar.ts";
 import { useSelector } from "react-redux";
 import { rootStates } from "@/store/root/slice.ts";
+import {adminStates} from "@/store/admin/slice.ts";
 
 interface IProps {
   isCollapsed: boolean;
@@ -19,6 +20,7 @@ interface IProps {
 
 const Index: React.FC<IProps> = ({ links, isCollapsed = false }) => {
   const { currentRoute } = useSelector(rootStates);
+  const { auth } = useSelector(adminStates);
   return (
     <div
       data-collapsed={isCollapsed}
@@ -32,9 +34,9 @@ const Index: React.FC<IProps> = ({ links, isCollapsed = false }) => {
             isCollapsed ? "justify-center px-2" : ""
           }`}
         >
-          {links.map((link, index) =>
+          {links.filter(l => auth.permissions.includes(l.permissionName)).map((link, index) =>
             isCollapsed ? (
-              <Tooltip key={index}>
+              <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
                     to={link.path}
@@ -47,7 +49,7 @@ const Index: React.FC<IProps> = ({ links, isCollapsed = false }) => {
                       }),
                       "h-9 w-9",
                       currentRoute.id.includes(link.id) &&
-                        "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
+                      "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
                     )}
                   >
                     <link.icon className="h-4 w-4" />

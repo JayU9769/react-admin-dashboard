@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
-import React from "react";
+import React, {useMemo} from "react";
 import { ThemeProvider } from "next-themes";
 import { AnimatePresence } from "framer-motion";
 import { TRecord } from "@/interfaces";
@@ -29,6 +29,8 @@ import Permissions from "@/pages/Permissions";
 import Roles from "@/pages/Roles";
 import Admins from "@/pages/Admins";
 import ProfileLayout from "@/pages/Profile/Layout";
+import {adminStates} from "@/store/admin/slice.ts";
+import UnAuthorizedComponent from "@/components/UnAuthorizedComponent.tsx";
 
 type TRouteObject = Omit<RouteObject, "children"> & {
   animate: boolean;
@@ -65,7 +67,7 @@ const routes: TRouteObject[] = [
         path: "",
         element: <Dashboard />,
         id: "admin.home",
-        data: { title: "Dashboard" },
+        data: { title: "Dashboard", permissionName: "admin-dashboard" },
         animate: true,
       },
       {
@@ -100,21 +102,21 @@ const routes: TRouteObject[] = [
       },
       {
         path: "users",
-        data: { title: "Users" },
+        data: { title: "Users", permissionName: "user-view" },
         element: <Users />,
         animate: true,
         id: "admin.users",
         children: [
           {
             id: "admin.users.create",
-            data: { title: "Create User" },
+            data: { title: "Create User", permissionName: "user-create" },
             path: "create",
             element: <UserForm />,
             animate: false,
           },
           {
             id: "admin.users.edit",
-            data: { title: "Edit User" },
+            data: { title: "Edit User", permissionName: "user-update" },
             path: "edit/:id",
             element: <UserForm />,
             animate: false,
@@ -129,22 +131,22 @@ const routes: TRouteObject[] = [
         ],
       },
       {
-        path: "role",
-        data: { title: "Roles" },
+        path: "roles",
+        data: { title: "Roles", permissionName: "role-view" },
         element: <Roles />,
         animate: true,
-        id: "admin.role",
+        id: "admin.roles",
         children: [
           {
-            id: "admin.role.create",
-            data: { title: "Create Role" },
+            id: "admin.roles.create",
+            data: { title: "Create Role", permissionName: "role-create" },
             path: "create",
             element: <RoleForm />,
             animate: false,
           },
           {
-            id: "admin.role.edit",
-            data: { title: "Edit Role" },
+            id: "admin.roles.edit",
+            data: { title: "Edit Role", permissionName: "role-update" },
             path: "edit/:id",
             element: <RoleForm />,
             animate: false,
@@ -153,28 +155,28 @@ const routes: TRouteObject[] = [
       },
       {
         path: "permissions",
-        data: { title: "Permissions" },
+        data: { title: "Permissions", permissionName: "admin-permission" },
         element: <Permissions />,
         animate: true,
         id: "admin.permissions",
       },
       {
         path: "list",
-        data: { title: "Admins" },
+        data: { title: "Admins", permissionName: "admin-view" },
         element: <Admins />,
         animate: true,
         id: "admin.admins",
         children: [
           {
             id: "admin.admins.create",
-            data: { title: "Create Admin" },
+            data: { title: "Create Admin", permissionName: "admin-create" },
             path: "create",
             element: <AdminForm />,
             animate: false,
           },
           {
             id: "admin.admins.edit",
-            data: { title: "Edit Admin" },
+            data: { title: "Edit Admin", permissionName: "admin-update" },
             path: "edit/:id",
             element: <AdminForm />,
             animate: false,
@@ -192,21 +194,29 @@ const routes: TRouteObject[] = [
   },
 ];
 
-const buildRouter = (routes: TRouteObject[]): RouteObject[] => {
+const buildRouter = (routes: TRouteObject[], permissions: string[]): RouteObject[] => {
   return routes.map((route) => ({
     ...route,
-    element: route.animate ? <PageTransition id={route.id || ""}>{route.element}</PageTransition> : route.element,
+    element: route.data && route.data.permissionName && !permissions.includes(route.data.permissionName) ? <UnAuthorizedComponent /> : (route.animate ? <PageTransition id={route.id || ""}>{route.element}</PageTransition> : route.element),
     loader: route.data ? () => route.data : undefined,
-    children: route.children && route.children.length > 0 ? buildRouter(route.children) : [],
+    children: route.children && route.children.length > 0 ? buildRouter(route.children, permissions) : [],
   })) as RouteObject[];
 };
 
-const router = createBrowserRouter(buildRouter(routes), {
-  basename: "/",
-});
 
 const Routes: React.FC = () => {
   const { error } = useSelector(rootStates);
+  const { auth } = useSelector(adminStates);
+
+  // Memoize router to avoid unnecessary recalculations
+  const router = useMemo(
+    () =>
+      createBrowserRouter(buildRouter(routes, auth.permissions), {
+        basename: "/",
+      }),
+    [auth.permissions]
+  );
+
 
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
