@@ -12,6 +12,7 @@ import { Plus } from "lucide-react";
 import Action from "@/pages/Admins/Action.tsx";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
+import usePermission from "@/hooks/usePermissions.tsx";
 
 const Index: React.FC = () => {
   ///////////////////////// Redux States and Actions... /////////////////////////
@@ -59,6 +60,8 @@ const Index: React.FC = () => {
 
   const handleRefresh = () => dispatch(adminApi.util.invalidateTags([EAPITags.ADMIN]));
 
+  const hasCreatePermission = usePermission("admin-create");
+
   return (
     <>
       <DataTable
@@ -78,12 +81,14 @@ const Index: React.FC = () => {
           </>
         }
         toolbarChildren={
-          <>
-            <Link to="create" className={buttonVariants({ size: "sm" })}>
-              <Plus size={18} />
-              Create
-            </Link>
-          </>
+          hasCreatePermission && (
+            <>
+              <Link to="create" className={buttonVariants({ size: "sm" })}>
+                <Plus size={18} />
+                Create
+              </Link>
+            </>
+          )
         }
       />
       <Outlet />
