@@ -32,6 +32,7 @@ import DebouncingInput from "@/components/DebouncingInput.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {RefreshCw} from "lucide-react";
 import ViewOptions from "@/components/dataTable/ViewOptions.tsx";
+import EmptyBox from "@/components/EmptyBox.tsx";
 
 interface IProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -205,7 +206,7 @@ const Index = <TData, TValue>(
                 </TableRow>
               </>
             )}
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -229,7 +230,7 @@ const Index = <TData, TValue>(
                       colSpan={columns.length}
                       className="h-24 text-center"
                     >
-                      No results.
+                      <EmptyBox />
                     </TableCell>
                   </TableRow>
                 )}
