@@ -12,6 +12,7 @@ import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button.tsx";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
+import EmptyBox from "@/components/EmptyBox.tsx";
 
 const Index: React.FC = () => {
 
@@ -136,7 +137,7 @@ const Index: React.FC = () => {
             <TableBody>
               <TableRow>
                 <TableCell colSpan={data.roles.length + 1} className="h-24 text-center">
-                  No results.
+                  <EmptyBox />
                 </TableCell>
               </TableRow>
             </TableBody>
