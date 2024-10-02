@@ -81,7 +81,7 @@ const Index: React.FC = () => {
                 </svg>
             </div>
             <h1 className="mt-4 text-6xl font-bold tracking-tight text-foreground sm:text-7xl">{ error.statusCode }</h1>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <p className="mt-4 text-lg text-muted-foreground font-bold">
                 { error.message || 'Oops, it looks like Something went wrong.' }
             </p>
             <div className="mt-6">
