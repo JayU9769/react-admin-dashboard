@@ -20,6 +20,7 @@ import { TActionType, TIds } from "@/interfaces";
 import { useDeleteUserMutation, useUpdateUserActionMutation } from "@/store/user/api.ts";
 import { showAlert } from "@/components/ui/sonner.tsx";
 import { useNavigate } from "react-router-dom";
+import usePermission from "@/hooks/usePermissions";
 
 interface IProps {
   type: TActionType;
@@ -33,6 +34,8 @@ const Index: React.FC<IProps> = ({ type, ids, onDelete, onUpdateAction }) => {
   const [updateAction] = useUpdateUserActionMutation();
   const navigate = useNavigate();
   const [model, setModel] = useState(false);
+  const hasDeletePermission = usePermission("user-delete");
+  const hasUpdatePermission = usePermission("user-update");
 
   const handleDeleteAction = () => {
     deleteUser(ids).then((res) => {
@@ -91,20 +94,24 @@ const Index: React.FC<IProps> = ({ type, ids, onDelete, onUpdateAction }) => {
             </>
           )}
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => setModel(!model)}>
-              Delete
-              <DropdownMenuShortcut>
-                <Trash2 className={`h-4 w-4`} />
-              </DropdownMenuShortcut>
-            </DropdownMenuItem>
+            {hasDeletePermission && (
+              <DropdownMenuItem onClick={() => setModel(!model)}>
+                Delete
+                <DropdownMenuShortcut>
+                  <Trash2 className={`h-4 w-4`} />
+                </DropdownMenuShortcut>
+              </DropdownMenuItem>
+            )}
             {type === "single" && (
               <>
-                <DropdownMenuItem onClick={() => navigate(`edit/${ids[0]}`)}>
-                  Edit
-                  <DropdownMenuShortcut>
-                    <SquarePen className={`h-4 w-4`} />
-                  </DropdownMenuShortcut>
-                </DropdownMenuItem>
+                {hasUpdatePermission && (
+                  <DropdownMenuItem onClick={() => navigate(`edit/${ids[0]}`)}>
+                    Edit
+                    <DropdownMenuShortcut>
+                      <SquarePen className={`h-4 w-4`} />
+                    </DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem onClick={() => navigate(`change-password/${ids[0]}`)}>
                   Change Password
                   <DropdownMenuShortcut>
@@ -126,7 +133,7 @@ const Index: React.FC<IProps> = ({ type, ids, onDelete, onUpdateAction }) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <ConfirmDialog open={model} isLoading={isLoading} onClose={() => setModel(false)} callBack={handleDeleteAction} />
+      {hasDeletePermission && <ConfirmDialog open={model} isLoading={isLoading} onClose={() => setModel(false)} callBack={handleDeleteAction} />}
     </>
   );
 };

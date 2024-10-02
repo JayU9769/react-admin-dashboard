@@ -16,26 +16,31 @@ import {
 import { Button } from "@/components/ui/button.tsx";
 import { EllipsisVertical, Key, ListChecks, SquarePen, Trash2 } from "lucide-react";
 import ConfirmDialog from "@/components/ConfirmDialog.tsx";
-import { TActionType, TIds } from "@/interfaces";
+import { TActionType, TIds, TRecord } from "@/interfaces";
 import { useDeleteAdminMutation, useUpdateAdminActionMutation } from "@/store/admin/api.ts";
 import { showAlert } from "@/components/ui/sonner.tsx";
 import { useNavigate } from "react-router-dom";
 import { adminStates } from "@/store/admin/slice";
 import { useSelector } from "react-redux";
+import usePermission from "@/hooks/usePermissions";
 
 interface IProps {
   type: TActionType;
   ids: TIds;
+  row?: TRecord;
   onDelete?: () => void;
   onUpdateAction?: () => void;
 }
 
-const Index: React.FC<IProps> = ({ type, ids, onDelete, onUpdateAction }) => {
+const Index: React.FC<IProps> = ({ type, ids, row, onDelete, onUpdateAction }) => {
   const [deleteAdmin, { isLoading }] = useDeleteAdminMutation();
   const [updateAdminAction] = useUpdateAdminActionMutation();
   const navigate = useNavigate();
   const [model, setModel] = useState(false);
   const { auth } = useSelector(adminStates);
+  const hasDeletePermission = usePermission("admin-delete");
+  const hasUpdatePermission = usePermission("admin-update");
+  const isSystem = row && row.isSystem ? true : false;
 
   const handleDeleteAction = () => {
     deleteAdmin(ids).then((res) => {
@@ -94,7 +99,7 @@ const Index: React.FC<IProps> = ({ type, ids, onDelete, onUpdateAction }) => {
             </>
           )}
           <DropdownMenuGroup>
-            {!ids.includes(auth.id) && (
+            {!ids.includes(auth.id) && hasDeletePermission && !isSystem && (
               <DropdownMenuItem onClick={() => setModel(!model)}>
                 Delete
                 <DropdownMenuShortcut>
@@ -104,12 +109,14 @@ const Index: React.FC<IProps> = ({ type, ids, onDelete, onUpdateAction }) => {
             )}
             {type === "single" && (
               <>
-                <DropdownMenuItem onClick={() => navigate(`edit/${ids[0]}`)}>
-                  Edit
-                  <DropdownMenuShortcut>
-                    <SquarePen className={`h-4 w-4`} />
-                  </DropdownMenuShortcut>
-                </DropdownMenuItem>
+                {hasUpdatePermission && (
+                  <DropdownMenuItem onClick={() => navigate(`edit/${ids[0]}`)}>
+                    Edit
+                    <DropdownMenuShortcut>
+                      <SquarePen className={`h-4 w-4`} />
+                    </DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem onClick={() => navigate(`change-password/${ids[0]}`)}>
                   Change Password
                   <DropdownMenuShortcut>
@@ -131,7 +138,7 @@ const Index: React.FC<IProps> = ({ type, ids, onDelete, onUpdateAction }) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <ConfirmDialog open={model} isLoading={isLoading} onClose={() => setModel(false)} callBack={handleDeleteAction} />
+      {hasDeletePermission && <ConfirmDialog open={model} isLoading={isLoading} onClose={() => setModel(false)} callBack={handleDeleteAction} />}
     </>
   );
 };

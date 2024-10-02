@@ -24,7 +24,6 @@ const Index: React.FC<IProps> = ({ placeholderLabel = "Select Item", placeholder
   const dispatch = useDispatch<AppDispatch>();
   const { data = [] } = useGetDropdownOptionsQuery({ type: type, keyword: keyword });
   const { data: selectedItem } = useGetDropdownValueQuery({ type: type, value }, { skip: !value });
-  console.log(selectedItem);
   //   useEffect(() => {
   //     return () => {
   //       dispatch(rootApi.util.invalidateTags([{ type: EAPITags.DROPDOWN_OPTIONS, id: type }]));

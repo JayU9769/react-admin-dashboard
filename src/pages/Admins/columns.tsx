@@ -72,7 +72,7 @@ export const tableColumns: ColumnDef<IAdmin>[] = [
     header: ({ column }) => <ColumnHeader column={column} title="Actions" />,
     cell: ({ row }) => {
       const id = row.getValue("id") as string;
-      return <Action type={"single"} ids={[id]} />;
+      return <Action type={"single"} ids={[id]} row={row.original} />;
     },
     enableSorting: false,
     enableHiding: true,

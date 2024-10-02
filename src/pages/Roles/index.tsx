@@ -13,6 +13,7 @@ import { Plus } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
 import { roleApi } from "@/store/role/api.ts";
+import usePermission from "@/hooks/usePermissions.tsx";
 
 const Index: React.FC = () => {
   ///////////////////////// Redux States and Actions... /////////////////////////
@@ -24,6 +25,7 @@ const Index: React.FC = () => {
   const columns = useMemo(() => tableColumn, []);
   const [selectedRows, setSelectedRows] = useState<TRecord>({});
   const [resetTrigger, setResetTrigger] = useState<number>(0);
+  const hasCreatePermission = usePermission("role-create");
 
   const handlePagination = (pagination: IPaginationState) => {
     setQueryString({
@@ -79,12 +81,14 @@ const Index: React.FC = () => {
           </>
         }
         toolbarChildren={
-          <>
-            <Link to="create" className={buttonVariants({ size: "sm" })}>
-              <Plus size={18} />
-              Create
-            </Link>
-          </>
+          hasCreatePermission && (
+            <>
+              <Link to="create" className={buttonVariants({ size: "sm" })}>
+                <Plus size={18} />
+                Create
+              </Link>
+            </>
+          )
         }
       />
       <Outlet />

@@ -24,6 +24,7 @@ const Index: React.FC = () => {
   const columns = useMemo(() => tableColumns, []);
   const [selectedRows, setSelectedRows] = useState<TRecord>({});
   const [resetTrigger, setResetTrigger] = useState<number>(0);
+  const hasCreatePermission = usePermission("admin-create");
 
   const handlePagination = (pagination: IPaginationState) => {
     setQueryString({
@@ -59,8 +60,6 @@ const Index: React.FC = () => {
   };
 
   const handleRefresh = () => dispatch(adminApi.util.invalidateTags([EAPITags.ADMIN]));
-
-  const hasCreatePermission = usePermission("admin-create");
 
   return (
     <>
